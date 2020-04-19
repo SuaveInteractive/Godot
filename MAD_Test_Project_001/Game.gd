@@ -8,34 +8,24 @@ onready var submarine : Sprite = $Submarine
 
 class_name Submarine
 
-
 var path = []
 var moveSpeed : float = 20.0
 
-func _unhandled_input(event : InputEvent) -> void:
-		
-	if not event is InputEventMouseButton:
-		return
-	if not Input.is_mouse_button_pressed(BUTTON_LEFT):
-		return
+var selectedUnits = []
+var target : Vector2 = Vector2(-1, -1)
+
+enum UnitActions {NONE, MoveAction, PatrolAction, TargetAction}
+var unitAction = UnitActions.NONE
+
+func _ready():
+	$Target.visible = false
 	
-	if event.button_index == BUTTON_LEFT:
-		var loc = event.get_global_position()
-		var newPath = nav_2d.get_simple_path(submarine.global_position, loc)
-		newPath.remove(0);
-		
-		path = newPath
-		
-		# draw the path
-		line_2d.clear_points()
-		line_2d.add_point(submarine.global_position)
-		for i in range(path.size()):
-			line_2d.add_point(path[i])
-		
-		
 func _process(_delta):
-	var distance = moveSpeed * _delta;
-	moveAlongPath(distance)
+	if Input.is_action_pressed("ui_MoveAction"):
+		if not selectedUnits.empty():
+			$MoveAction.MoveNodesToPosition(get_viewport().get_mouse_position(), selectedUnits)
+	#var distance = moveSpeed * _delta;
+	#moveAlongPath(distance)
 
 func moveAlongPath(_distance):
 	var lastPos = $Submarine.position
@@ -53,6 +43,32 @@ func moveAlongPath(_distance):
 		lastPos = path[0]
 		path.remove(0)
 
+func _unhandled_input(event : InputEvent) -> void:	
+	if not event is InputEventMouseButton:
+		return
+	if Input.is_mouse_button_pressed(BUTTON_LEFT):
+		if unitAction == UnitActions.TargetAction:
+			for unit in selectedUnits:
+				var mouseEvent = event as InputEventMouse
+				target = mouseEvent.position
+				$Targets.addTarget(unit, target)
+				$Target.position = target
+				$Target.visible = true
+			unitAction = UnitActions.NONE
+		elif unitAction == UnitActions.NONE:
+			# Clear all the units that were selected
+			for unit in selectedUnits:
+				unit.setSelected(false)
+			$UnitMenu.visible = false
+			selectedUnits = []
 
 func _on_Button_button_down():
 	$Missile.position = $Submarine.position
+
+func OnUnitSelected(node):
+	node.setSelected(true)
+	$UnitMenu.visible = true
+	selectedUnits.append(node);
+	
+func TargetPressed():
+	unitAction = UnitActions.TargetAction

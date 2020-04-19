@@ -5,9 +5,11 @@ onready var nav_2d : Navigation2D = $"../World Map/Navigation2D"
 onready var selectedNode 
 
 func _ready():
+	return
 	self.set_process_unhandled_input(false)
 
 func _unhandled_input(event : InputEvent) -> void:	
+	return
 	if not event is InputEventMouseButton:
 		return
 	if not Input.is_mouse_button_pressed(BUTTON_LEFT):
@@ -27,6 +29,7 @@ func _unhandled_input(event : InputEvent) -> void:
 #			line_2d.add_point(path[i])
 
 func _on_Submarine_clicked(node):
+	return
 	selectedNode = node 
 	selectedNode.get_node("Selected").visible = true
 	self.visible = true

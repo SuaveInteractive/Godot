@@ -5,15 +5,34 @@ onready var line_2d : Line2D = $"../Line2D"
 
 var path = []
 var moveSpeed : float = 20.0
+var selected : bool = false setget setSelected, getSelected
+#var target : Vector2 = Vector2(-1, -1) setget setTarget, getTarget
 
 signal clicked(node)
 
 func _ready():
 	$Selected.visible = false
+	#$Target.visible = false
 	
 func _process(_delta):
 	var distance = moveSpeed * _delta;
 	moveAlongPath(distance)
+	
+func setSelected(_selected : bool):
+	selected = _selected
+	$Selected.visible = _selected
+	
+func getSelected() -> bool:
+	return selected
+	
+#func setTarget(_target : Vector2):
+#	target = _target
+#	$Target.global_position = target
+#	if getSelected():
+#		$Target.visible = true
+#
+#func getTarget() -> Vector2:
+#	return target
 
 func moveAlongPath(_distance):
 	var lastPos = position
@@ -32,7 +51,6 @@ func moveAlongPath(_distance):
 		path.remove(0)
 
 func _on_Submarine_input_event(viewport, event, shape_idx):
-
 	if not event is InputEventMouseButton:
 		return
 	if not Input.is_mouse_button_pressed(BUTTON_LEFT):

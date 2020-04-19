@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Textures/WorldTexture.bmp" type="Texture" id=1]
 [ext_resource path="res://Textures/Submarine.png" type="Texture" id=2]
@@ -8,6 +8,9 @@
 [ext_resource path="res://Textures/Submarine_Selection.png" type="Texture" id=6]
 [ext_resource path="res://Submarine.gd" type="Script" id=7]
 [ext_resource path="res://UnitMenu.gd" type="Script" id=8]
+[ext_resource path="res://MoveAction.gd" type="Script" id=9]
+[ext_resource path="res://Textures/Target.png" type="Texture" id=10]
+[ext_resource path="res://Targets.gd" type="Script" id=11]
 
 [sub_resource type="NavigationPolygon" id=1]
 vertices = PoolVector2Array( 691.238, 294.272, 628.932, 286.272, 317.401, 246.272, 304.94, 198.272, 801.888, -2.99567, 801.888, 603.535, 759.775, 438.272, 734.853, 366.272, 722.392, 326.272, 753.545, 470.272, 585.318, 302.272, 547.934, 310.272, 510.55, 342.272, 709.93, 518.272, -0.361107, -1.72803, 199.019, 86.272, 547.934, 414.272, 423.322, 454.272, 273.786, 310.272, 666.316, 550.272, -0.361107, 598.272, 516.781, 518.272, 410.86, 478.272, 142.943, 326.272, 61.9452, 214.272, 286.248, 142.272, 30.792, 158.272, 86.8677, 94.272 )
@@ -29,6 +32,12 @@ __meta__ = {
 "_edit_horizontal_guides_": [ -66.4966 ]
 }
 
+[node name="MoveAction" type="Node" parent="."]
+script = ExtResource( 9 )
+
+[node name="Targets" type="Node" parent="."]
+script = ExtResource( 11 )
+
 [node name="World Map" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 centered = false
@@ -36,13 +45,12 @@ centered = false
 [node name="Navigation2D" type="Navigation2D" parent="World Map"]
 
 [node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="World Map/Navigation2D"]
+position = Vector2( 1.62903, 0 )
 navpoly = SubResource( 1 )
 
-[node name="Line2D" type="Line2D" parent="."]
-position = Vector2( 1056, -24 )
-points = PoolVector2Array( -200, 160, -232, 24 )
-width = 2.0
-default_color = Color( 1, 1, 1, 1 )
+[node name="Target" type="Sprite" parent="."]
+position = Vector2( 56.5919, 55.8805 )
+texture = ExtResource( 10 )
 
 [node name="Submarine" type="Area2D" parent="."]
 position = Vector2( 630, 130 )
@@ -70,16 +78,6 @@ texture = ExtResource( 5 )
 position = Vector2( 184, 200 )
 shape = SubResource( 3 )
 
-[node name="Button" type="Button" parent="."]
-margin_left = 24.0
-margin_top = 16.0
-margin_right = 96.0
-margin_bottom = 36.0
-text = "Launch"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Missile" type="Area2D" parent="."]
 position = Vector2( 928, 8 )
 
@@ -89,6 +87,22 @@ texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Missile"]
 shape = SubResource( 4 )
+
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2( 1056, -24 )
+points = PoolVector2Array( -200, 160, -232, 24 )
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+
+[node name="Button" type="Button" parent="."]
+margin_left = 24.0
+margin_top = 16.0
+margin_right = 96.0
+margin_bottom = 36.0
+text = "Launch"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="UnitMenu" type="Control" parent="."]
 visible = false
@@ -117,6 +131,7 @@ text = "Target"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="clicked" from="Submarine" to="UnitMenu" method="_on_Submarine_clicked"]
+[connection signal="clicked" from="Submarine" to="." method="OnUnitSelected"]
 [connection signal="input_event" from="Submarine" to="Submarine" method="_on_Submarine_input_event"]
 [connection signal="button_down" from="Button" to="." method="_on_Button_button_down"]
+[connection signal="pressed" from="UnitMenu/Target" to="." method="TargetPressed"]
