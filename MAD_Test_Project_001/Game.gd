@@ -18,7 +18,7 @@ enum UnitActions {NONE, MoveAction, PatrolAction, TargetAction}
 var unitAction = UnitActions.NONE
 
 func _ready():
-	$Target.visible = false
+	$NuclearExplosion.visible = false
 	
 func _process(_delta):
 	if Input.is_action_pressed("ui_MoveAction"):
@@ -52,8 +52,9 @@ func _unhandled_input(event : InputEvent) -> void:
 				var mouseEvent = event as InputEventMouse
 				target = mouseEvent.position
 				$Targets.addTarget(unit, target)
-				$Target.position = target
-				$Target.visible = true
+				#$Target.position = target
+				#$Target.visible = true
+			$Targets.showTargets(selectedUnits)
 			unitAction = UnitActions.NONE
 		elif unitAction == UnitActions.NONE:
 			# Clear all the units that were selected
@@ -63,12 +64,18 @@ func _unhandled_input(event : InputEvent) -> void:
 			selectedUnits = []
 
 func _on_Button_button_down():
-	$Missile.position = $Submarine.position
+	$LaunchStrike.launchStringOnTargets($Targets.getTargets())
 
 func OnUnitSelected(node):
 	node.setSelected(true)
 	$UnitMenu.visible = true
 	selectedUnits.append(node);
+	$Targets.showTargets(selectedUnits)
 	
 func TargetPressed():
 	unitAction = UnitActions.TargetAction
+	
+func OnTargetReached(_target):
+	$NuclearExplosion.position = _target
+	$NuclearExplosion.visible = true
+	$NuclearExplosion.play()
