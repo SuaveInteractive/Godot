@@ -27,10 +27,3 @@ func _unhandled_input(event : InputEvent) -> void:
 #		line_2d.add_point(submarine.global_position)
 #		for i in range(path.size()):
 #			line_2d.add_point(path[i])
-
-func _on_Submarine_clicked(node):
-	return
-	selectedNode = node 
-	selectedNode.get_node("Selected").visible = true
-	self.visible = true
-	self.set_process_unhandled_input(true)

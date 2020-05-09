@@ -47,3 +47,19 @@ func _on_Submarine_input_event(viewport, event, shape_idx):
 	
 	if event.button_index == BUTTON_LEFT:
 		emit_signal("clicked", self)
+		
+func save():
+	var save_dict = {
+		"filename" : get_filename(),
+		"name" : name,
+		"parent" : get_parent().get_path(),
+		"pos_x" : position.x, # Vector2 is not supported by JSON
+		"pos_y" : position.y,
+		"selected" : selected
+	}
+	return save_dict
+
+func load(_dic):
+	position.x = _dic["pos_x"]
+	position.y = _dic["pos_y"]
+	selected = _dic["selected"]

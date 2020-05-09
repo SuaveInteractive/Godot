@@ -1,51 +1,44 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Textures/WorldTexture.bmp" type="Texture" id=1]
-[ext_resource path="res://Textures/Submarine.png" type="Texture" id=2]
 [ext_resource path="res://Textures/ExplosionSpriteSheet.png" type="Texture" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=4]
-[ext_resource path="res://Textures/City.png" type="Texture" id=5]
-[ext_resource path="res://Textures/Submarine_Selection.png" type="Texture" id=6]
-[ext_resource path="res://Submarine.gd" type="Script" id=7]
+[ext_resource path="res://City.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Units.gd" type="Script" id=6]
 [ext_resource path="res://UnitMenu.gd" type="Script" id=8]
 [ext_resource path="res://MoveAction.gd" type="Script" id=9]
 [ext_resource path="res://Launch.gd" type="Script" id=10]
 [ext_resource path="res://Targets.gd" type="Script" id=11]
+[ext_resource path="res://CreateGame.gd" type="Script" id=12]
 
 [sub_resource type="NavigationPolygon" id=1]
 vertices = PoolVector2Array( 691.238, 294.272, 628.932, 286.272, 317.401, 246.272, 304.94, 198.272, 801.888, -2.99567, 801.888, 603.535, 759.775, 438.272, 734.853, 366.272, 722.392, 326.272, 753.545, 470.272, 585.318, 302.272, 547.934, 310.272, 510.55, 342.272, 709.93, 518.272, -0.361107, -1.72803, 199.019, 86.272, 547.934, 414.272, 423.322, 454.272, 273.786, 310.272, 666.316, 550.272, -0.361107, 598.272, 516.781, 518.272, 410.86, 478.272, 142.943, 326.272, 61.9452, 214.272, 286.248, 142.272, 30.792, 158.272, 86.8677, 94.272 )
 polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 5, 6 ), PoolIntArray( 4, 6, 7, 8 ), PoolIntArray( 9, 6, 5 ), PoolIntArray( 2, 1, 10, 11 ), PoolIntArray( 2, 11, 12 ), PoolIntArray( 4, 8, 0 ), PoolIntArray( 13, 9, 5 ), PoolIntArray( 14, 4, 0, 15 ), PoolIntArray( 2, 12, 16, 17, 18 ), PoolIntArray( 19, 13, 5 ), PoolIntArray( 19, 5, 20, 21 ), PoolIntArray( 22, 21, 20 ), PoolIntArray( 18, 17, 22, 20, 23 ), PoolIntArray( 24, 23, 20 ), PoolIntArray( 0, 3, 25 ), PoolIntArray( 26, 24, 20 ), PoolIntArray( 26, 20, 14 ), PoolIntArray( 27, 26, 14 ), PoolIntArray( 15, 27, 14 ), PoolIntArray( 15, 0, 25 ) ]
 outlines = [ PoolVector2Array( 801.888, -2.99567, 801.888, 603.535, -0.361107, 598.272, -0.361107, -1.72803 ), PoolVector2Array( 304.94, 198.272, 317.401, 246.272, 273.786, 310.272, 142.943, 326.272, 61.9452, 214.272, 30.792, 158.272, 86.8677, 94.272, 199.019, 86.272, 286.248, 142.272 ), PoolVector2Array( 547.934, 310.272, 510.55, 342.272, 547.934, 414.272, 423.322, 454.272, 410.86, 478.272, 516.781, 518.272, 666.316, 550.272, 709.93, 518.272, 753.545, 470.272, 759.775, 438.272, 734.853, 366.272, 722.392, 326.272, 691.238, 294.272, 628.932, 286.272, 585.318, 302.272 ) ]
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 79.5378, 20.6911 )
-
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 27.4903, 15.0686 )
-
-[sub_resource type="AtlasTexture" id=4]
+[sub_resource type="AtlasTexture" id=3]
 flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 100, 100 )
 
-[sub_resource type="AtlasTexture" id=5]
+[sub_resource type="AtlasTexture" id=4]
 flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 100, 0, 100, 100 )
 
-[sub_resource type="AtlasTexture" id=6]
+[sub_resource type="AtlasTexture" id=5]
 flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 0, 100, 100, 100 )
 
-[sub_resource type="AtlasTexture" id=7]
+[sub_resource type="AtlasTexture" id=6]
 flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 100, 100, 100, 100 )
 
-[sub_resource type="SpriteFrames" id=8]
+[sub_resource type="SpriteFrames" id=7]
 animations = [ {
-"frames": [ SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
 "loop": false,
 "name": "default",
 "speed": 10.0
@@ -57,14 +50,22 @@ __meta__ = {
 "_edit_horizontal_guides_": [ -66.4966 ]
 }
 
+[node name="CreateGame" type="Node" parent="."]
+script = ExtResource( 12 )
+
 [node name="MoveAction" type="Node" parent="."]
 script = ExtResource( 9 )
 
-[node name="Targets" type="Node" parent="."]
+[node name="Targets" type="Node" parent="." groups=[
+"Persistent",
+]]
 script = ExtResource( 11 )
 
 [node name="LaunchStrike" type="Node" parent="."]
 script = ExtResource( 10 )
+
+[node name="Units" type="Node" parent="."]
+script = ExtResource( 6 )
 
 [node name="World Map" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -73,34 +74,10 @@ centered = false
 [node name="Navigation2D" type="Navigation2D" parent="World Map"]
 
 [node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="World Map/Navigation2D"]
-position = Vector2( 5.6095, 0.663422 )
 navpoly = SubResource( 1 )
 
-[node name="Submarine" type="Area2D" parent="."]
-position = Vector2( 630, 130 )
-script = ExtResource( 7 )
-
-[node name="SubmarineSprite" type="Sprite" parent="Submarine"]
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
-
-[node name="Selected" type="Sprite" parent="Submarine"]
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 6 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Submarine"]
-scale = Vector2( 0.5, 0.5 )
-shape = SubResource( 2 )
-
-[node name="City" type="Area2D" parent="."]
-
-[node name="CitySprite" type="Sprite" parent="City"]
-position = Vector2( 184, 192 )
-texture = ExtResource( 5 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="City"]
-position = Vector2( 184, 200 )
-shape = SubResource( 3 )
+[node name="City" parent="." instance=ExtResource( 5 )]
+position = Vector2( 639.858, 427.117 )
 
 [node name="Line2D" type="Line2D" parent="."]
 position = Vector2( 1056, -24 )
@@ -148,8 +125,6 @@ __meta__ = {
 
 [node name="NuclearExplosion" type="AnimatedSprite" parent="."]
 visible = false
-frames = SubResource( 8 )
-[connection signal="clicked" from="Submarine" to="." method="OnUnitSelected"]
-[connection signal="input_event" from="Submarine" to="Submarine" method="_on_Submarine_input_event"]
+frames = SubResource( 7 )
 [connection signal="button_down" from="LaunchButton" to="." method="_on_Button_button_down"]
 [connection signal="pressed" from="UnitMenu/Target" to="." method="TargetPressed"]

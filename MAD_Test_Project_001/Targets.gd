@@ -3,6 +3,7 @@ extends Node
 var targets = {}
 
 var targetScene = load("res://Target.tscn")
+var targetsArray = []
 
 func addTarget(_node : Node, _target : Vector2):
 	if targets.has(_node) == false:
@@ -20,8 +21,25 @@ func showTargets(_nodeList : Array):
 		var nodeTargets = targets.get(node)
 		if nodeTargets != null:
 			for target in nodeTargets:
-				var scene_instance = targetScene.instance()
-				scene_instance.position = target
-				scene_instance.set_name("target")
-				add_child(scene_instance)
+				var targetInstance = targetScene.instance()
+				targetInstance.position = target
+				targetInstance.set_name("target")
+				add_child(targetInstance)
+				
+				targetsArray.append(targetInstance)
 
+func hideTargets():
+	for target in targetsArray:
+		target.queue_free()
+	targetsArray = []
+
+func save():
+	var save_dict = {
+		"filename" : get_filename(),
+		"name" : name,
+		"parent" : get_parent().get_path(),
+	}
+	return save_dict
+	
+func load(_dic):
+	pass
