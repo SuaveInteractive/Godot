@@ -4,11 +4,7 @@ extends Node2D
 
 onready var nav_2d : Navigation2D = $"World Map/Navigation2D"
 onready var line_2d : Line2D = $Line2D
-onready var submarine : Sprite = $Submarine
 
-class_name Submarine
-
-var path = []
 var moveSpeed : float = 20.0
 
 var selectedUnits = []
@@ -29,22 +25,6 @@ func _process(_delta):
 		save_game()
 	elif Input.is_action_just_pressed("QuickLoad"):
 		load_game()
-
-func moveAlongPath(_distance):
-	var lastPos = $Submarine.position
-	for i in range(path.size()):
-		var distanceToNext = lastPos.distance_to(path[0])
-		if _distance <= distanceToNext:
-			$Submarine.position = lastPos.linear_interpolate(path[0], _distance / distanceToNext)
-			break
-		elif _distance < 0.0:
-			$Submarine.position = path[0]
-			set_process(false)
-			break
-			
-		_distance -= distanceToNext
-		lastPos = path[0]
-		path.remove(0)
 
 func _unhandled_input(event : InputEvent) -> void:	
 	if not event is InputEventMouseButton:
@@ -86,6 +66,12 @@ func OnTargetReached(_target, _hits):
 	for hit in _hits:
 		if hit == $City:
 			$City.setPopulation(49)
+			
+func OnPostLoad():
+	selectedUnits = []
+	unitAction = UnitActions.NONE
+	$UnitMenu.visible = false
+	$Targets.hideTargets()
 
 # https://docs.godotengine.org/en/3.1/tutorials/io/saving_games.html
 # C:\Users\Manix\AppData\Roaming\Godot\app_userdata\MAD_Test_Project_001
@@ -124,7 +110,11 @@ func load_game():
 		var new_object = null
 		if not path.empty():
 			new_object = load(current_line["filename"]).instance()
-			get_node(current_line["parent"]).add_child(new_object)
+			var parentNode = get_node(current_line["parent"])
+			if parentNode.has_method ("addChildMethod"):
+				parentNode.call("addChildMethod", new_object)
+			else:
+				get_node(current_line["parent"]).add_child(new_object)
 		elif not nodeName.empty():
 			new_object = get_node(nodeName)
 			
@@ -135,3 +125,5 @@ func load_game():
 				continue
 			new_object.set(i, current_line[i])
 	save_game.close()
+	
+	OnPostLoad()

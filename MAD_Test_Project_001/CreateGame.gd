@@ -14,5 +14,5 @@ func createGame(_parent):
 	var submarineInstance = submarineScene.instance()
 	submarineInstance.position = Vector2(630, 130)
 	submarineInstance.set_name("submarine")
-	get_node("../Units").addUnit(submarineInstance)
+	get_node("../Units").addChildMethod(submarineInstance)
 	

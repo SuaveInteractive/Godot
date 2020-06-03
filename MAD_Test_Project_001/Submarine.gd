@@ -1,8 +1,5 @@
 extends Area2D
 
-onready var nav_2d : Navigation2D = $"../World Map/Navigation2D"
-onready var line_2d : Line2D = $"../Line2D"
-
 var path = []
 var moveSpeed : float = 20.0
 var selected : bool = false setget setSelected, getSelected
@@ -55,11 +52,9 @@ func save():
 		"parent" : get_parent().get_path(),
 		"pos_x" : position.x, # Vector2 is not supported by JSON
 		"pos_y" : position.y,
-		"selected" : selected
 	}
 	return save_dict
 
 func load(_dic):
 	position.x = _dic["pos_x"]
 	position.y = _dic["pos_y"]
-	selected = _dic["selected"]

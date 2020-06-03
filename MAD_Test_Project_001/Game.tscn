@@ -16,29 +16,29 @@ vertices = PoolVector2Array( 691.238, 294.272, 628.932, 286.272, 317.401, 246.27
 polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 5, 6 ), PoolIntArray( 4, 6, 7, 8 ), PoolIntArray( 9, 6, 5 ), PoolIntArray( 2, 1, 10, 11 ), PoolIntArray( 2, 11, 12 ), PoolIntArray( 4, 8, 0 ), PoolIntArray( 13, 9, 5 ), PoolIntArray( 14, 4, 0, 15 ), PoolIntArray( 2, 12, 16, 17, 18 ), PoolIntArray( 19, 13, 5 ), PoolIntArray( 19, 5, 20, 21 ), PoolIntArray( 22, 21, 20 ), PoolIntArray( 18, 17, 22, 20, 23 ), PoolIntArray( 24, 23, 20 ), PoolIntArray( 0, 3, 25 ), PoolIntArray( 26, 24, 20 ), PoolIntArray( 26, 20, 14 ), PoolIntArray( 27, 26, 14 ), PoolIntArray( 15, 27, 14 ), PoolIntArray( 15, 0, 25 ) ]
 outlines = [ PoolVector2Array( 801.888, -2.99567, 801.888, 603.535, -0.361107, 598.272, -0.361107, -1.72803 ), PoolVector2Array( 304.94, 198.272, 317.401, 246.272, 273.786, 310.272, 142.943, 326.272, 61.9452, 214.272, 30.792, 158.272, 86.8677, 94.272, 199.019, 86.272, 286.248, 142.272 ), PoolVector2Array( 547.934, 310.272, 510.55, 342.272, 547.934, 414.272, 423.322, 454.272, 410.86, 478.272, 516.781, 518.272, 666.316, 550.272, 709.93, 518.272, 753.545, 470.272, 759.775, 438.272, 734.853, 366.272, 722.392, 326.272, 691.238, 294.272, 628.932, 286.272, 585.318, 302.272 ) ]
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=2]
 flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 100, 100 )
 
-[sub_resource type="AtlasTexture" id=4]
+[sub_resource type="AtlasTexture" id=3]
 flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 100, 0, 100, 100 )
 
-[sub_resource type="AtlasTexture" id=5]
+[sub_resource type="AtlasTexture" id=4]
 flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 0, 100, 100, 100 )
 
-[sub_resource type="AtlasTexture" id=6]
+[sub_resource type="AtlasTexture" id=5]
 flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 100, 100, 100, 100 )
 
-[sub_resource type="SpriteFrames" id=7]
+[sub_resource type="SpriteFrames" id=6]
 animations = [ {
-"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
 "loop": false,
 "name": "default",
 "speed": 10.0
@@ -56,9 +56,7 @@ script = ExtResource( 12 )
 [node name="MoveAction" type="Node" parent="."]
 script = ExtResource( 9 )
 
-[node name="Targets" type="Node" parent="." groups=[
-"Persistent",
-]]
+[node name="Targets" type="Node" parent="."]
 script = ExtResource( 11 )
 
 [node name="LaunchStrike" type="Node" parent="."]
@@ -87,9 +85,9 @@ default_color = Color( 1, 1, 1, 1 )
 
 [node name="LaunchButton" type="Button" parent="."]
 margin_left = 24.0
-margin_top = 16.0
+margin_top = 15.0
 margin_right = 96.0
-margin_bottom = 36.0
+margin_bottom = 35.0
 text = "Launch"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -125,6 +123,6 @@ __meta__ = {
 
 [node name="NuclearExplosion" type="AnimatedSprite" parent="."]
 visible = false
-frames = SubResource( 7 )
+frames = SubResource( 6 )
 [connection signal="button_down" from="LaunchButton" to="." method="_on_Button_button_down"]
 [connection signal="pressed" from="UnitMenu/Target" to="." method="TargetPressed"]

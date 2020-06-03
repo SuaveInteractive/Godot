@@ -1,45 +1,35 @@
 extends Node
 
-var targets = {}
-
 var targetScene = load("res://Target.tscn")
-var targetsArray = []
 
-func addTarget(_node : Node, _target : Vector2):
-	if targets.has(_node) == false:
-		targets[_node] = []
-	targets[_node].append(_target)
+func addTarget(_owner : Node, _target : Vector2):
+	var targetInstance = targetScene.instance()
+	targetInstance.targetOwner = _owner
+	targetInstance.position = _target
+	targetInstance.set_name("target")
+	add_child(targetInstance)
 	
 func getTargets() -> Dictionary:
+	var targets = {}
+	for i in get_children():
+		if targets.has(i.targetOwner) == false:
+			targets[i.targetOwner] = []
+		targets[i.targetOwner].append(i.position)
 	return targets
 	
-func getTargetsForNode(_node : Node) -> Array:
-	return targets[_node]
+func getTargetsForNode(_owner : Node) -> Array:
+	var targetArray = []
+	for target in get_children():
+		if target.owner == owner:
+			targetArray.append(target)
+	return targetArray
 	
-func showTargets(_nodeList : Array):
-	for node in _nodeList:
-		var nodeTargets = targets.get(node)
-		if nodeTargets != null:
-			for target in nodeTargets:
-				var targetInstance = targetScene.instance()
-				targetInstance.position = target
-				targetInstance.set_name("target")
-				add_child(targetInstance)
-				
-				targetsArray.append(targetInstance)
+func showTargets(_ownerList : Array):
+	for target in get_children():
+		for targetOwner in _ownerList:
+			if target.targetOwner == targetOwner:
+				target.visible = true
 
 func hideTargets():
-	for target in targetsArray:
-		target.queue_free()
-	targetsArray = []
-
-func save():
-	var save_dict = {
-		"filename" : get_filename(),
-		"name" : name,
-		"parent" : get_parent().get_path(),
-	}
-	return save_dict
-	
-func load(_dic):
-	pass
+	for target in get_children():
+		target.visible = false
