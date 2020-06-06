@@ -34,9 +34,13 @@ func save():
 		"parent" : get_parent().get_path(),
 		"pos_x" : position.x, # Vector2 is not supported by JSON
 		"pos_y" : position.y,
+		"target_pos_x" : target.x,
+		"target_pos_y" : target.y,
 	}
 	return save_dict
 
 func load(_dic):
 	position.x = _dic["pos_x"]
 	position.y = _dic["pos_y"]
+	target.x = _dic["target_pos_x"]
+	target.y = _dic["target_pos_y"]

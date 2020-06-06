@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Textures/WorldTexture.bmp" type="Texture" id=1]
+[ext_resource path="res://GameSaver/GameSaver.gd" type="Script" id=2]
 [ext_resource path="res://Textures/ExplosionSpriteSheet.png" type="Texture" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=4]
 [ext_resource path="res://City.tscn" type="PackedScene" id=5]
@@ -49,6 +50,9 @@ script = ExtResource( 4 )
 __meta__ = {
 "_edit_horizontal_guides_": [ -66.4966 ]
 }
+
+[node name="GameSaver" type="Node" parent="."]
+script = ExtResource( 2 )
 
 [node name="CreateGame" type="Node" parent="."]
 script = ExtResource( 12 )
@@ -124,5 +128,6 @@ __meta__ = {
 [node name="NuclearExplosion" type="AnimatedSprite" parent="."]
 visible = false
 frames = SubResource( 6 )
+[connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
 [connection signal="button_down" from="LaunchButton" to="." method="_on_Button_button_down"]
 [connection signal="pressed" from="UnitMenu/Target" to="." method="TargetPressed"]

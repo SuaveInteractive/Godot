@@ -21,9 +21,3 @@ func _unhandled_input(event : InputEvent) -> void:
 		newPath.remove(0);
 		
 		selectedNode.path = newPath
-#
-#		# draw the path
-#		line_2d.clear_points()
-#		line_2d.add_point(submarine.global_position)
-#		for i in range(path.size()):
-#			line_2d.add_point(path[i])
