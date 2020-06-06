@@ -32,6 +32,7 @@ func load_game():
 	# For our example, we will accomplish this by deleting saveable objects.
 	var save_nodes = get_tree().get_nodes_in_group("Persistent")
 	for i in save_nodes:
+		i.set_name(i.get_name() + "_QUEUED_FREE")
 		i.queue_free()
 
 	# Load the file line by line and process that dictionary to restore
