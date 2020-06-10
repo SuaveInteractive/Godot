@@ -19,6 +19,10 @@ config/name="MAD_Test_Project_001"
 run/main_scene="res://Game.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Signals="*res://Global/Signals.gd"
+
 [global]
 
 Layer=false

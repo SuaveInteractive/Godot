@@ -6,7 +6,7 @@ var moveSpeed : float = 40.0
 var target : Vector2 = Vector2(-1, -1) setget setTarget, getTarget
 
 func _ready():
-	pass
+	Signals.emit_signal("NodeCreate", "Missile", self)
 
 func setTarget(_target : Vector2):
 	target = _target

@@ -5,6 +5,8 @@ extends Node2D
 onready var nav_2d : Navigation2D = $"World Map/Navigation2D"
 onready var line_2d : Line2D = $Line2D
 
+var nuclearExplosionScene = load("res://Environmental/Scenes/NuclearExplosion.tscn")
+
 var moveSpeed : float = 20.0
 
 var selectedUnits = []
@@ -14,9 +16,11 @@ enum UnitActions {NONE, MoveAction, PatrolAction, TargetAction}
 var unitAction = UnitActions.NONE
 
 func _ready():
-	$NuclearExplosion.visible = false
 	$CreateGame.createGame(self)
 	
+	# Connect to signals
+	Signals.connect("NodeCreate", self, "OnNodeCreated")
+		
 func _process(_delta):
 	if Input.is_action_pressed("ui_MoveAction"):
 		if not selectedUnits.empty():
@@ -42,7 +46,7 @@ func _unhandled_input(event : InputEvent) -> void:
 			selectedUnits = []
 
 func _on_Button_button_down():
-	$LaunchStrike.launchStringOnTargets($Targets.getTargets())
+	$LaunchStrike.launchStrikeOnTargets($Targets.getTargets())
 
 func OnUnitSelected(node):
 	node.setSelected(true)
@@ -52,11 +56,15 @@ func OnUnitSelected(node):
 	
 func TargetPressed():
 	unitAction = UnitActions.TargetAction
-	
+
+func OnNodeCreated(_type, _obj) -> void:
+	_obj.connect("targetReached", self, "OnTargetReached")
+
 func OnTargetReached(_target, _hits):
-	$NuclearExplosion.position = _target
-	$NuclearExplosion.visible = true
-	$NuclearExplosion.play()
+	var nuclearExplosionInstance = nuclearExplosionScene.instance()
+	nuclearExplosionInstance.position = _target
+	add_child(nuclearExplosionInstance)
+	nuclearExplosionInstance.play()
 	
 	#Check any hits
 	for hit in _hits:
