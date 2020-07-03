@@ -5,7 +5,7 @@ extends Node2D
 onready var nav_2d : Navigation2D = $"World Map/Navigation2D"
 onready var line_2d : Line2D = $Line2D
 
-var nuclearExplosionScene = load("res://Environmental/Scenes/NuclearExplosion.tscn")
+var nuclearExplosionScene = load("res://GameEntities/NuclearExplosion/NuclearExplosion.tscn")
 
 var moveSpeed : float = 20.0
 
@@ -14,6 +14,8 @@ var target : Vector2 = Vector2(-1, -1)
 
 enum UnitActions {NONE, MoveAction, PatrolAction, TargetAction}
 var unitAction = UnitActions.NONE
+
+var Countries = []
 
 func _ready():
 	$CreateGame.createGame(self)

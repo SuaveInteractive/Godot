@@ -7,5 +7,6 @@
 "Persistent",
 ]]
 position = Vector2( 56.5919, 55.8805 )
+z_index = 1
 texture = ExtResource( 1 )
 script = ExtResource( 2 )

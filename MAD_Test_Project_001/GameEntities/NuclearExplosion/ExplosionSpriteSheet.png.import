@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ExplosionSpriteSheet.png-b4c8b89150759b646478cb45f487ecb5.stex"
+path="res://.import/ExplosionSpriteSheet.png-024823a7f35743908c98a004d012170a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/ExplosionSpriteSheet.png"
-dest_files=[ "res://.import/ExplosionSpriteSheet.png-b4c8b89150759b646478cb45f487ecb5.stex" ]
+source_file="res://GameEntities/NuclearExplosion/ExplosionSpriteSheet.png"
+dest_files=[ "res://.import/ExplosionSpriteSheet.png-024823a7f35743908c98a004d012170a.stex" ]
 
 [params]
 

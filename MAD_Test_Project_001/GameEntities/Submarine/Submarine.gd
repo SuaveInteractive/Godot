@@ -8,6 +8,8 @@ signal clicked(node)
 
 func _ready():
 	$Selected.visible = false
+	# Duplicate the shader material so that it's uniforms can be set per object
+	$SubmarineSprite.set_material($SubmarineSprite.get_material().duplicate())
 	
 func _process(_delta):
 	var distance = moveSpeed * _delta;
@@ -44,7 +46,10 @@ func _on_Submarine_input_event(viewport, event, shape_idx):
 	
 	if event.button_index == BUTTON_LEFT:
 		emit_signal("clicked", self)
-		
+
+func setCountry(_country):
+	$SubmarineSprite.get_material().set_shader_param("colour", _country.CountryColour)
+			
 func save():	
 	var save_dict = {
 		"filename" : get_filename(),

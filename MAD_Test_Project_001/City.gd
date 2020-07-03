@@ -7,6 +7,8 @@ var population = 100 setget setPopulation, getPopulation
 
 func _ready():
 	$DamagedCity.visible = false
+	# Duplicate the shader material so that it's uniforms can be set per object
+	$CitySprite.set_material($CitySprite.get_material().duplicate())
 
 func setPopulation(_value):
 	if population != _value:
@@ -20,6 +22,9 @@ func setPopulation(_value):
 	
 func getPopulation():
 	return population
+	
+func setCountry(_country):
+	$CitySprite.get_material().set_shader_param("colour", _country.CountryColour)
 
 func save():
 	var save_dict = {

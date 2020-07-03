@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Submarine.png-664a6fe114dc3f97d7047f432ec3535f.stex"
+path="res://.import/Submarine_Selection.png-a3cc37dfba799bf5e7f3596db076ced4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Submarine.png"
-dest_files=[ "res://.import/Submarine.png-664a6fe114dc3f97d7047f432ec3535f.stex" ]
+source_file="res://GameEntities/Submarine/Submarine_Selection.png"
+dest_files=[ "res://.import/Submarine_Selection.png-a3cc37dfba799bf5e7f3596db076ced4.stex" ]
 
 [params]
 
