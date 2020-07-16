@@ -1,6 +1,6 @@
 extends Node
 
-var targetScene = load("res://Target.tscn")
+var targetScene = load("res://GameEntities/Target/Target.tscn")
 
 func addTarget(_owner : Node, _target : Vector2):
 	var targetInstance = targetScene.instance()

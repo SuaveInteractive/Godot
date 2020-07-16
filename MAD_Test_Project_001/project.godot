@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Signals="*res://Global/Signals.gd"
+GameCommands="*res://Global/GameCommands.gd"
 
 [global]
 

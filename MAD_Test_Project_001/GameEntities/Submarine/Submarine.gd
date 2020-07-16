@@ -24,7 +24,7 @@ func getSelected() -> bool:
 	
 func moveAlongPath(_distance):
 	var lastPos = position
-	for i in range(path.size()):
+	for _i in range(path.size()):
 		var distanceToNext = lastPos.distance_to(path[0])
 		if _distance <= distanceToNext:
 			position = lastPos.linear_interpolate(path[0], _distance / distanceToNext)
@@ -38,7 +38,7 @@ func moveAlongPath(_distance):
 		lastPos = path[0]
 		path.remove(0)
 
-func _on_Submarine_input_event(viewport, event, shape_idx):
+func _on_Submarine_input_event(_viewport, event, shape_idx):
 	if not event is InputEventMouseButton:
 		return
 	if not Input.is_mouse_button_pressed(BUTTON_LEFT):

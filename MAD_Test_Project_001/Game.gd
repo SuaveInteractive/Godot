@@ -21,12 +21,15 @@ func _ready():
 	$CreateGame.createGame(self)
 	
 	# Connect to signals
-	Signals.connect("NodeCreate", self, "OnNodeCreated")
+	var err = Signals.connect("NodeCreate", self, "OnNodeCreated")
 		
 func _process(_delta):
 	if Input.is_action_pressed("ui_MoveAction"):
 		if not selectedUnits.empty():
-			$MoveAction.MoveNodesToPosition(get_viewport().get_mouse_position(), selectedUnits)
+			GameCommands.MoveCommand.Navigation_Mesh = $"World Map/Navigation2D"
+			GameCommands.MoveCommand.Position_To = get_viewport().get_mouse_position()
+			GameCommands.MoveCommand.Selected_Units = selectedUnits
+			GameCommands.MoveCommand.execute()
 
 func _unhandled_input(event : InputEvent) -> void:	
 	if not event is InputEventMouseButton:

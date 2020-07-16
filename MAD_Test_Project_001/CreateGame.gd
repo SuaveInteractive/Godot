@@ -1,10 +1,10 @@
 extends Node
 
-var cityScene = load("res://City.tscn")
+var cityScene = load("res://GameEntities/City/City.tscn")
 var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
 
 var countryScript = load("res://GameLogic/Country.gd")
-var AIPlayerScript = load("res://GameLogic/AIPlayer.gd")
+var AIOpponentScript = load("res://AI/AIOpponent.gd")
 
 func createGame(_parent):
 	# Countries
@@ -38,6 +38,5 @@ func createGame(_parent):
 	Country_2.addUnit(submarineInstance)
 	
 	# AIPlayers
-	var AIPlayer_1 = AIPlayerScript.new("AIPlayer_1", Country_2)
+	var AIPlayer_1 = AIOpponentScript.new("AIPlayer_1", Country_2)
 	_parent.add_child(AIPlayer_1)
-	

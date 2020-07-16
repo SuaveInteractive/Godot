@@ -1,8 +1,8 @@
 extends Node
 
-var missileScene = load("res://Missile.tscn")
+var missileScene = load("res://GameEntities/Missile/Missile.tscn")
 
-func _process(delta):
+func _process(_delta):
 	pass
 
 func launchStrikeOnTargets(_targetList : Dictionary):

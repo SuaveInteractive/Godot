@@ -20,3 +20,4 @@ func addUnit(_unit) -> void:
 	if Player:
 		_unit.connect("clicked", get_parent(), "OnUnitSelected")
 	add_child(_unit)
+	

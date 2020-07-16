@@ -5,10 +5,21 @@
 [ext_resource path="res://Game.gd" type="Script" id=4]
 [ext_resource path="res://Units.gd" type="Script" id=6]
 [ext_resource path="res://UnitMenu.gd" type="Script" id=8]
-[ext_resource path="res://MoveAction.gd" type="Script" id=9]
 [ext_resource path="res://Launch.gd" type="Script" id=10]
 [ext_resource path="res://Targets.gd" type="Script" id=11]
 [ext_resource path="res://CreateGame.gd" type="Script" id=12]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Node
+
+onready var nav_2d : Navigation2D = $\"../World Map/Navigation2D\"
+
+func MoveNodesToPosition(_position, _nodeList) -> void:
+	for node in _nodeList:
+		var newPath = nav_2d.get_simple_path(node.global_position, _position)
+		newPath.remove(0);
+		node.path = newPath
+"
 
 [sub_resource type="NavigationPolygon" id=1]
 vertices = PoolVector2Array( 691.238, 294.272, 628.932, 286.272, 317.401, 246.272, 304.94, 198.272, 801.888, -2.99567, 801.888, 603.535, 759.775, 438.272, 734.853, 366.272, 722.392, 326.272, 753.545, 470.272, 585.318, 302.272, 547.934, 310.272, 510.55, 342.272, 709.93, 518.272, -0.361107, -1.72803, 199.019, 86.272, 547.934, 414.272, 423.322, 454.272, 273.786, 310.272, 666.316, 550.272, -0.361107, 598.272, 516.781, 518.272, 410.86, 478.272, 142.943, 326.272, 61.9452, 214.272, 286.248, 142.272, 30.792, 158.272, 86.8677, 94.272 )
@@ -28,7 +39,7 @@ script = ExtResource( 2 )
 script = ExtResource( 12 )
 
 [node name="MoveAction" type="Node" parent="."]
-script = ExtResource( 9 )
+script = SubResource( 2 )
 
 [node name="Targets" type="Node" parent="."]
 script = ExtResource( 11 )
