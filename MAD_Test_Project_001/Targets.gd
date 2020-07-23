@@ -1,21 +1,18 @@
 extends Node
 
-var targetScene = load("res://GameEntities/Target/Target.tscn")
+# Classes who want to display Targets via this class need to implement a getTargets 
+#	func that returns a list of Position2 representing targets in world space
 
-func addTarget(_owner : Node, _target : Vector2):
-	var targetInstance = targetScene.instance()
-	targetInstance.targetOwner = _owner
-	targetInstance.position = _target
-	targetInstance.set_name("target")
-	add_child(targetInstance)
+var targetScene = load("res://GameEntities/Target/Target.tscn")
 	
 func getTargets() -> Dictionary:
-	var targets = {}
-	for i in get_children():
-		if targets.has(i.targetOwner) == false:
-			targets[i.targetOwner] = []
-		targets[i.targetOwner].append(i.position)
-	return targets
+	var Targetors = get_tree().get_nodes_in_group("Targetor")
+	var Return_Targets = {}
+	for targetor in Targetors:
+		Return_Targets[targetor] = []
+		for targets in targetor.getTargets():
+			Return_Targets[targetor].append(targets)
+	return Return_Targets
 	
 func getTargetsForNode(_owner : Node) -> Array:
 	var targetArray = []
@@ -24,12 +21,14 @@ func getTargetsForNode(_owner : Node) -> Array:
 			targetArray.append(target)
 	return targetArray
 	
-func showTargets(_ownerList : Array):
-	for target in get_children():
-		for targetOwner in _ownerList:
-			if target.targetOwner == targetOwner:
-				target.visible = true
+func showTargets(ownerList : Array):
+	for targetOwner in ownerList:
+		for target in targetOwner.getTargets():
+			var targetInstance = targetScene.instance()
+			targetInstance.position = target
+			targetInstance.set_name("target")
+			add_child(targetInstance)
 
 func hideTargets():
 	for target in get_children():
-		target.visible = false
+		target.queue_free()

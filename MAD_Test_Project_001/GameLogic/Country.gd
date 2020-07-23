@@ -3,10 +3,12 @@ extends Node
 var CountryColour : Color = Color(255)
 var Player : bool  = false
 
-func _init(_name, _player, _colour):
+func _init(_name, _player, r, g, b, a):
 	self.set_name(_name)
 	Player = _player
-	CountryColour = _colour
+	CountryColour = Color(r, g, b, a)
+	
+	self.add_to_group('Persistent')
 	
 func _process(_delta):
 	pass
@@ -20,4 +22,21 @@ func addUnit(_unit) -> void:
 	if Player:
 		_unit.connect("clicked", get_parent(), "OnUnitSelected")
 	add_child(_unit)
+	
+func save():	
+	var save_dict = {
+		"scriptPath": get_script().get_path(),
+		"parent" : get_parent().get_path(),
+		"args" : [self.get_name(), Player, CountryColour.r, CountryColour.g, CountryColour.b, CountryColour.a],
+	}	
+	return save_dict
+
+func load(_dic):
+	pass
+	
+func addChildMethod(node):
+	node.setCountry(self)
+	if Player:
+		node.connect("clicked", get_parent(), "OnUnitSelected")
+	add_child(node)
 	

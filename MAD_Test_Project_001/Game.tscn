@@ -9,7 +9,7 @@
 [ext_resource path="res://Targets.gd" type="Script" id=11]
 [ext_resource path="res://CreateGame.gd" type="Script" id=12]
 
-[sub_resource type="GDScript" id=2]
+[sub_resource type="GDScript" id=1]
 script/source = "extends Node
 
 onready var nav_2d : Navigation2D = $\"../World Map/Navigation2D\"
@@ -21,7 +21,7 @@ func MoveNodesToPosition(_position, _nodeList) -> void:
 		node.path = newPath
 "
 
-[sub_resource type="NavigationPolygon" id=1]
+[sub_resource type="NavigationPolygon" id=2]
 vertices = PoolVector2Array( 691.238, 294.272, 628.932, 286.272, 317.401, 246.272, 304.94, 198.272, 801.888, -2.99567, 801.888, 603.535, 759.775, 438.272, 734.853, 366.272, 722.392, 326.272, 753.545, 470.272, 585.318, 302.272, 547.934, 310.272, 510.55, 342.272, 709.93, 518.272, -0.361107, -1.72803, 199.019, 86.272, 547.934, 414.272, 423.322, 454.272, 273.786, 310.272, 666.316, 550.272, -0.361107, 598.272, 516.781, 518.272, 410.86, 478.272, 142.943, 326.272, 61.9452, 214.272, 286.248, 142.272, 30.792, 158.272, 86.8677, 94.272 )
 polygons = [ PoolIntArray( 0, 1, 2, 3 ), PoolIntArray( 4, 5, 6 ), PoolIntArray( 4, 6, 7, 8 ), PoolIntArray( 9, 6, 5 ), PoolIntArray( 2, 1, 10, 11 ), PoolIntArray( 2, 11, 12 ), PoolIntArray( 4, 8, 0 ), PoolIntArray( 13, 9, 5 ), PoolIntArray( 14, 4, 0, 15 ), PoolIntArray( 2, 12, 16, 17, 18 ), PoolIntArray( 19, 13, 5 ), PoolIntArray( 19, 5, 20, 21 ), PoolIntArray( 22, 21, 20 ), PoolIntArray( 18, 17, 22, 20, 23 ), PoolIntArray( 24, 23, 20 ), PoolIntArray( 0, 3, 25 ), PoolIntArray( 26, 24, 20 ), PoolIntArray( 26, 20, 14 ), PoolIntArray( 27, 26, 14 ), PoolIntArray( 15, 27, 14 ), PoolIntArray( 15, 0, 25 ) ]
 outlines = [ PoolVector2Array( 801.888, -2.99567, 801.888, 603.535, -0.361107, 598.272, -0.361107, -1.72803 ), PoolVector2Array( 304.94, 198.272, 317.401, 246.272, 273.786, 310.272, 142.943, 326.272, 61.9452, 214.272, 30.792, 158.272, 86.8677, 94.272, 199.019, 86.272, 286.248, 142.272 ), PoolVector2Array( 547.934, 310.272, 510.55, 342.272, 547.934, 414.272, 423.322, 454.272, 410.86, 478.272, 516.781, 518.272, 666.316, 550.272, 709.93, 518.272, 753.545, 470.272, 759.775, 438.272, 734.853, 366.272, 722.392, 326.272, 691.238, 294.272, 628.932, 286.272, 585.318, 302.272 ) ]
@@ -39,7 +39,7 @@ script = ExtResource( 2 )
 script = ExtResource( 12 )
 
 [node name="MoveAction" type="Node" parent="."]
-script = SubResource( 2 )
+script = SubResource( 1 )
 
 [node name="Targets" type="Node" parent="."]
 script = ExtResource( 11 )
@@ -57,7 +57,7 @@ centered = false
 [node name="Navigation2D" type="Navigation2D" parent="World Map"]
 
 [node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="World Map/Navigation2D"]
-navpoly = SubResource( 1 )
+navpoly = SubResource( 2 )
 
 [node name="Line2D" type="Line2D" parent="."]
 position = Vector2( 1056, -24 )

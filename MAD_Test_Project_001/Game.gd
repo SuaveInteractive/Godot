@@ -38,8 +38,10 @@ func _unhandled_input(event : InputEvent) -> void:
 		if unitAction == UnitActions.TargetAction:
 			for unit in selectedUnits:
 				var mouseEvent = event as InputEventMouse
-				target = mouseEvent.position
-				$Targets.addTarget(unit, target)
+				GameCommands.TargetCommand.Unit_Targeting = selectedUnits
+				GameCommands.TargetCommand.Target_Position = mouseEvent.position
+				GameCommands.TargetCommand.execute()
+				
 			$Targets.showTargets(selectedUnits)
 			unitAction = UnitActions.NONE
 		elif unitAction == UnitActions.NONE:

@@ -37,39 +37,47 @@ func load_game():
 
 	# Load the file line by line and process that dictionary to restore
 	# the object it represents.
-	var deferredLoad = []
+	var parentNode = null
 	save_game.open("user://savegame.save", File.READ)
 	while not save_game.eof_reached():
+		parentNode = null
+		
 		var current_line = parse_json(save_game.get_line())
 		if current_line == null:
 			break
 		# Firstly, we need to create the object and add it to the tree and set its position.
-		var path = current_line["filename"]
-		var nodeName = current_line["name"]
 		var new_object = null
-		if not path.empty():
-			new_object = load(current_line["filename"]).instance()
-			var parentNode = get_node(current_line["parent"])
-			if parentNode.has_method ("addChildMethod"):
-				parentNode.call("addChildMethod", new_object)
-			else:
-				get_node(current_line["parent"]).add_child(new_object)
-		elif not nodeName.empty():
-			new_object = get_node(nodeName)
+		#===== Scenes =====
+		if current_line.has("filename"):	# Load a Scene into game
+			var path = current_line["filename"]
 			
-		var deferredLoadingInfo = new_object.load(current_line)
-		if deferredLoadingInfo != null:
-			deferredLoad.append(deferredLoadingInfo)
+			new_object = load(path).instance()
+			parentNode = get_node(current_line["parent"])
+			if not parentNode.has_method ("addChildMethod"):
+				get_node(current_line["parent"]).add_child(new_object)
+				
+			var nodeName = current_line["name"]
+			if new_object == null and not nodeName.empty():
+				new_object = get_node(nodeName)
+		#===== Scripts =====	
+		elif current_line.has("scriptPath"):		# Load a Script into game
+			var script = current_line["scriptPath"]
+			# https://docs.godotengine.org/en/3.0/classes/class_object.html#class-object-callv
+			var args = current_line["args"]
+			new_object = load(script).callv("new", current_line["args"])
+			get_node(current_line["parent"]).add_child(new_object)
+		
+		new_object.load(current_line)
+
 		# Now we set the remaining variables.
 		for i in current_line.keys():
 			if i == "filename" or i == "parent" or i == "pos_x" or i == "pos_y":
 				continue
 			new_object.set(i, current_line[i])
+			
+		if parentNode != null and parentNode.has_method ("addChildMethod"):
+			parentNode.call("addChildMethod", new_object)
 	save_game.close()
 	
-	# Relink any objects that need to be
-	for deferredInfo in deferredLoad:
-		if deferredInfo.obj and deferredInfo.obj.has_method ("linkObjects"):
-			deferredInfo.obj.linkObjects(deferredInfo)
-	
 	emit_signal("OnPostLoad")
+	

@@ -3,6 +3,7 @@ extends Area2D
 var path : Array = []
 var moveSpeed : float = 20.0
 var selected : bool = false setget setSelected, getSelected
+var targets : Array = [] setget , getTargets
 
 signal clicked(node)
 
@@ -49,7 +50,13 @@ func _on_Submarine_input_event(_viewport, event, shape_idx):
 
 func setCountry(_country):
 	$SubmarineSprite.get_material().set_shader_param("colour", _country.CountryColour)
-			
+	
+func addTarget(target):
+	targets.push_back(target)
+	
+func getTargets():
+	return targets
+	
 func save():	
 	var save_dict = {
 		"filename" : get_filename(),

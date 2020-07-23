@@ -8,7 +8,7 @@ var AIOpponentScript = load("res://AI/AIOpponent.gd")
 
 func createGame(_parent):
 	# Countries
-	var Country_1 = countryScript.new("Country_1", true, Color(1, 0, 0, 1))
+	var Country_1 = countryScript.new("Country_1", true, 1, 0, 0, 1)
 	_parent.add_child(Country_1)
 	
 	var cityInstance = cityScene.instance()
@@ -23,7 +23,7 @@ func createGame(_parent):
 	Country_1.addUnit(submarineInstance)
 		
 	# AI Player
-	var Country_2 = countryScript.new("Country_2", false, Color(0, 1, 0, 1))
+	var Country_2 = countryScript.new("Country_2", false, 0, 1, 0, 1)
 	_parent.add_child(Country_2)
 	
 	cityInstance = cityScene.instance()

@@ -3,10 +3,9 @@
 [ext_resource path="res://GameEntities/Target/Target.png" type="Texture" id=1]
 [ext_resource path="res://GameEntities/Target/Target.gd" type="Script" id=2]
 
-
-
 [node name="Target" type="Sprite" groups=[
 "Persistent",
+"Target",
 ]]
 position = Vector2( 56.5919, 55.8805 )
 z_index = 1
