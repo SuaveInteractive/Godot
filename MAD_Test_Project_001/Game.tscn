@@ -2,8 +2,8 @@
 
 [ext_resource path="res://Textures/WorldTexture.bmp" type="Texture" id=1]
 [ext_resource path="res://GameSaver/GameSaver.gd" type="Script" id=2]
+[ext_resource path="res://UI/BuildButton.gd" type="Script" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=4]
-[ext_resource path="res://Units.gd" type="Script" id=6]
 [ext_resource path="res://UnitMenu.gd" type="Script" id=8]
 [ext_resource path="res://Launch.gd" type="Script" id=10]
 [ext_resource path="res://Targets.gd" type="Script" id=11]
@@ -47,9 +47,6 @@ script = ExtResource( 11 )
 [node name="LaunchStrike" type="Node" parent="."]
 script = ExtResource( 10 )
 
-[node name="Units" type="Node" parent="."]
-script = ExtResource( 6 )
-
 [node name="World Map" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 centered = false
@@ -64,6 +61,8 @@ position = Vector2( 1056, -24 )
 points = PoolVector2Array( -200, 160, -232, 24 )
 width = 2.0
 default_color = Color( 1, 1, 1, 1 )
+
+[node name="Countries" type="Node" parent="."]
 
 [node name="LaunchButton" type="Button" parent="."]
 margin_left = 24.0
@@ -102,6 +101,32 @@ text = "Target"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Build" type="Button" parent="."]
+margin_left = 12.0
+margin_top = 564.37
+margin_right = 98.0
+margin_bottom = 584.37
+toggle_mode = true
+action_mode = 0
+text = "Build"
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BuildSiloButton" type="Button" parent="Build"]
+visible = false
+margin_left = 32.0
+margin_top = -28.0
+margin_right = 115.0
+margin_bottom = -8.0
+text = "Silo"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
 [connection signal="button_down" from="LaunchButton" to="." method="_on_Button_button_down"]
 [connection signal="pressed" from="UnitMenu/Target" to="." method="TargetPressed"]
+[connection signal="toggled" from="Build" to="Build" method="_on_Build_toggled"]
+[connection signal="pressed" from="Build/BuildSiloButton" to="Build" method="_on_BuildSiloButton_pressed"]

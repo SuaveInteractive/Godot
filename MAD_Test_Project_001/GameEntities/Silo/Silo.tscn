@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://GameEntities/Silo/silo.png" type="Texture" id=1]
+
+[node name="Silo" type="Sprite"]
+scale = Vector2( 0.473682, 0.473682 )
+texture = ExtResource( 1 )

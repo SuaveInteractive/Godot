@@ -6,3 +6,5 @@ extends Node
 # https://github.com/godotengine/godot/issues/10991
 
 signal NodeCreate(name, obj)
+
+signal BuildStructure(build_Information)
