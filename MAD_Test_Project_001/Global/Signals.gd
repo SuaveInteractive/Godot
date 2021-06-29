@@ -8,3 +8,12 @@ extends Node
 signal NodeCreate(name, obj)
 
 signal BuildStructure(build_Information)
+
+signal UnitSetlected(unit)
+
+signal EntitySelected(entity)
+
+"""
+Emitted when one or more unit is selected
+"""
+signal UnitsSetlected(units)

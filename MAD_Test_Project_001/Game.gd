@@ -26,6 +26,8 @@ func _ready():
 	# Connect to signals
 	var err = Signals.connect("NodeCreate", self, "OnNodeCreated")
 	err = Signals.connect("BuildStructure", self, "OnBuildStructureEvent")
+	err = Signals.connect("UnitSetlected", self, "OnUnitSetlectedEvent")
+	err = Signals.connect("EntitySelected", self, "OnUnitSetlectedEvent")
 		
 func _process(_delta):
 	if Input.is_action_pressed("ui_MoveAction"):
@@ -53,25 +55,39 @@ func _unhandled_input(event : InputEvent) -> void:
 			GameCommands.BuildCommand.Build_Info = actionInfo
 			GameCommands.BuildCommand.execute()
 			gameAction = GameActions.NONE
+			get_tree().set_input_as_handled()
+		elif unitAction == UnitActions.MoveAction:
+			if not selectedUnits.empty():
+				GameCommands.MoveCommand.Navigation_Mesh = $"World Map/Navigation2D"
+				GameCommands.MoveCommand.Position_To = get_viewport().get_mouse_position()
+				GameCommands.MoveCommand.Selected_Units = selectedUnits
+				GameCommands.MoveCommand.execute()
+			unitAction = GameActions.NONE
 		elif unitAction == UnitActions.NONE:
 			# Clear all the units that were selected
 			for unit in selectedUnits:
-				unit.setSelected(false)
-			$UnitMenu.visible = false
+				unit.setSelected(false)		
 			$Targets.hideTargets()
 			selectedUnits = []
+			
+			Signals.emit_signal("UnitsSetlected", selectedUnits)
 
 func _on_Button_button_down():
 	$LaunchStrike.launchStrikeOnTargets($Targets.getTargets())
 
-func OnUnitSelected(node):
-	node.setSelected(true)
-	$UnitMenu.visible = true
-	selectedUnits.append(node);
-	$Targets.showTargets(selectedUnits)
+func OnUnitSetlectedEvent(unit):
+	if $Countries.isPlayerUnit(unit):
+		unit.setSelected(true)
+		selectedUnits.append(unit);
+		$Targets.showTargets(selectedUnits)
+	
+		Signals.emit_signal("UnitsSetlected", selectedUnits)
 	
 func TargetPressed():
 	unitAction = UnitActions.TargetAction
+	
+func OnMovePressed():
+	unitAction = UnitActions.MoveAction
 
 func OnNodeCreated(_type, _obj) -> void:
 	_obj.connect("targetReached", self, "OnTargetReached")
@@ -107,3 +123,5 @@ func save_game():
 		var node_data = i.call("save");
 		save_game.store_line(to_json(node_data))
 	save_game.close()
+
+

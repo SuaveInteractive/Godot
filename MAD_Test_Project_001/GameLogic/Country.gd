@@ -1,7 +1,9 @@
 extends Node
+class_name Country
 
 var CountryColour : Color = Color(255)
 var Player : bool  = false
+var Control : int = 85
 
 func _init(_name, _player, r, g, b, a):
 	self.set_name(_name)
@@ -19,8 +21,8 @@ func addCity(_city) -> void:
 
 func addUnit(_unit) -> void:
 	_unit.setCountry(self)
-	if Player:
-		_unit.connect("clicked", get_parent(), "OnUnitSelected")
+	#if Player:
+	#	_unit.connect("clicked", get_parent().get_parent(), "OnUnitSelected")
 	add_child(_unit)
 	
 func save():	
@@ -36,7 +38,7 @@ func load(_dic):
 	
 func addChildMethod(node):
 	node.setCountry(self)
-	if Player:
-		node.connect("clicked", get_parent(), "OnUnitSelected")
+	#if Player:
+	#	node.connect("clicked", get_parent(), "OnUnitSelected")
 	add_child(node)
 	

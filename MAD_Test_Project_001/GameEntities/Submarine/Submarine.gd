@@ -4,8 +4,7 @@ var path : Array = []
 var moveSpeed : float = 20.0
 var selected : bool = false setget setSelected, getSelected
 var targets : Array = [] setget , getTargets
-
-signal clicked(node)
+var PlayerCountry : bool = false
 
 func _ready():
 	$Selected.visible = false
@@ -46,10 +45,11 @@ func _on_Submarine_input_event(_viewport, event, shape_idx):
 		return
 	
 	if event.button_index == BUTTON_LEFT:
-		emit_signal("clicked", self)
+		Signals.emit_signal("UnitSetlected", self)
 
-func setCountry(_country):
-	$SubmarineSprite.get_material().set_shader_param("colour", _country.CountryColour)
+func setCountry(country):
+	$SubmarineSprite.get_material().set_shader_param("colour", country.CountryColour)
+	self.PlayerCountry = country.Player
 	
 func addTarget(target):
 	targets.push_back(target)

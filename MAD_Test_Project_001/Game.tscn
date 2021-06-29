@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Textures/WorldTexture.bmp" type="Texture" id=1]
 [ext_resource path="res://GameSaver/GameSaver.gd" type="Script" id=2]
 [ext_resource path="res://UI/BuildButton.gd" type="Script" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=4]
+[ext_resource path="res://Countries.gd" type="Script" id=5]
 [ext_resource path="res://UnitMenu.gd" type="Script" id=8]
 [ext_resource path="res://Launch.gd" type="Script" id=10]
 [ext_resource path="res://Targets.gd" type="Script" id=11]
@@ -63,8 +64,16 @@ width = 2.0
 default_color = Color( 1, 1, 1, 1 )
 
 [node name="Countries" type="Node" parent="."]
+script = ExtResource( 5 )
 
-[node name="LaunchButton" type="Button" parent="."]
+[node name="UI" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LaunchButton" type="Button" parent="UI"]
 margin_left = 24.0
 margin_top = 15.0
 margin_right = 96.0
@@ -74,7 +83,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="UnitMenu" type="Control" parent="."]
+[node name="UnitMenu" type="Control" parent="UI"]
 visible = false
 margin_left = 705.941
 margin_top = 506.932
@@ -85,7 +94,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Move" type="Button" parent="UnitMenu"]
+[node name="Move" type="Button" parent="UI/UnitMenu"]
 margin_right = 50.0
 margin_bottom = 20.0
 text = "Move"
@@ -93,7 +102,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Target" type="Button" parent="UnitMenu"]
+[node name="Target" type="Button" parent="UI/UnitMenu"]
 margin_top = 25.0
 margin_right = 51.0
 margin_bottom = 45.0
@@ -102,7 +111,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Build" type="Button" parent="."]
+[node name="Build" type="Button" parent="UI"]
 margin_left = 12.0
 margin_top = 564.37
 margin_right = 98.0
@@ -115,7 +124,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BuildSiloButton" type="Button" parent="Build"]
+[node name="BuildSiloButton" type="Button" parent="UI/Build"]
 visible = false
 margin_left = 32.0
 margin_top = -28.0
@@ -126,7 +135,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
-[connection signal="button_down" from="LaunchButton" to="." method="_on_Button_button_down"]
-[connection signal="pressed" from="UnitMenu/Target" to="." method="TargetPressed"]
-[connection signal="toggled" from="Build" to="Build" method="_on_Build_toggled"]
-[connection signal="pressed" from="Build/BuildSiloButton" to="Build" method="_on_BuildSiloButton_pressed"]
+[connection signal="button_down" from="UI/LaunchButton" to="." method="_on_Button_button_down"]
+[connection signal="pressed" from="UI/UnitMenu/Move" to="." method="OnMovePressed"]
+[connection signal="pressed" from="UI/UnitMenu/Target" to="." method="TargetPressed"]
+[connection signal="toggled" from="UI/Build" to="UI/Build" method="_on_Build_toggled"]
+[connection signal="pressed" from="UI/Build/BuildSiloButton" to="UI/Build" method="_on_BuildSiloButton_pressed"]
