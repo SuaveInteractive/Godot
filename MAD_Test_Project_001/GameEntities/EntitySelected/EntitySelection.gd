@@ -1,13 +1,15 @@
 extends Node
 
 # Need to define this below signal 
-#signal EntitySelected(entity)
 
 var Selected : bool = false
 var PlayerCountry : bool = false
 
 func _ready():
 	$SelectedSprite.visible = false
+	
+func setSelected(selected: bool) -> void:
+	$SelectedSprite.visible = selected
 
 func _on_Selection_input_event(viewport, event, shape_idx):
 	if not event is InputEventMouseButton:
@@ -17,4 +19,3 @@ func _on_Selection_input_event(viewport, event, shape_idx):
 	
 	if event.button_index == BUTTON_LEFT:
 		 Signals.emit_signal("EntitySelected", self)
-		#Signals.emit_signal("UnitSetlected", self)

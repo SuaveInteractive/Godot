@@ -23,11 +23,12 @@ func getTargetsForNode(_owner : Node) -> Array:
 	
 func showTargets(ownerList : Array):
 	for targetOwner in ownerList:
-		for target in targetOwner.getTargets():
-			var targetInstance = targetScene.instance()
-			targetInstance.position = target
-			targetInstance.set_name("target")
-			add_child(targetInstance)
+		if targetOwner.has_method("getTargets"):
+			for target in targetOwner.getTargets():
+				var targetInstance = targetScene.instance()
+				targetInstance.position = target
+				targetInstance.set_name("target")
+				add_child(targetInstance)
 
 func hideTargets():
 	for target in get_children():
