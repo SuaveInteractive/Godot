@@ -4,14 +4,19 @@
 [ext_resource path="res://GameEntities/EntitySelected/EntitySelection.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
+resource_local_to_scene = true
+extents = Vector2( 1, 1 )
 
 [node name="Selection" type="Area2D"]
 script = ExtResource( 2 )
+SelectionSprite = ExtResource( 1 )
 
 [node name="SelectionArea" type="CollisionShape2D" parent="."]
+scale = Vector2( 1.0024, 1 )
 shape = SubResource( 1 )
 
 [node name="SelectedSprite" type="Sprite" parent="."]
-scale = Vector2( 0.170135, 0.170135 )
+scale = Vector2( 0.02, 0.02 )
 texture = ExtResource( 1 )
+
 [connection signal="input_event" from="." to="." method="_on_Selection_input_event"]

@@ -134,6 +134,7 @@ text = "Silo"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
 [connection signal="button_down" from="UI/LaunchButton" to="." method="_on_Button_button_down"]
 [connection signal="pressed" from="UI/UnitMenu/Move" to="." method="OnMovePressed"]

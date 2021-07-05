@@ -17,3 +17,4 @@ shape = SubResource( 1 )
 texture = ExtResource( 1 )
 
 [node name="Selection" parent="." instance=ExtResource( 2 )]
+SelectionArea = Vector2( 60, 50 )
