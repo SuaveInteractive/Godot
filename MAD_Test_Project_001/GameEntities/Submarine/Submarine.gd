@@ -7,7 +7,6 @@ var targets : Array = [] setget , getTargets
 var PlayerCountry : bool = false
 
 func _ready():
-	$Selected.visible = false
 	# Duplicate the shader material so that it's uniforms can be set per object
 	$SubmarineSprite.set_material($SubmarineSprite.get_material().duplicate())
 	
@@ -17,7 +16,6 @@ func _process(_delta):
 	
 func setSelected(_selected : bool):
 	selected = _selected
-	$Selected.visible = _selected
 	
 func getSelected() -> bool:
 	return selected

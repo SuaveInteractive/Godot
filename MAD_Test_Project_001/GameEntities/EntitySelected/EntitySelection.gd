@@ -13,8 +13,8 @@ var DefaultSelectionSize : Vector2 = Vector2(1, 1) * 2
 var Scale : Vector2 = DefaultSelectionSize / SelectionImageSize
 
 
-var Selected : bool = false
-var PlayerCountry : bool = false
+#var Selected : bool = false
+#var PlayerCountry : bool = false
 
 func _ready():	
 	if not Engine.editor_hint:

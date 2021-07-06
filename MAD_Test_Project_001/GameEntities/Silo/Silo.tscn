@@ -9,12 +9,12 @@ extents = Vector2( 63.0278, 5.50212 )
 [node name="Silo" type="Area2D"]
 scale = Vector2( 0.75, 0.75 )
 
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2( 0.944716, 8.82083 )
 shape = SubResource( 1 )
-
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 1 )
 
 [node name="Selection" parent="." instance=ExtResource( 2 )]
 SelectionArea = Vector2( 60, 50 )

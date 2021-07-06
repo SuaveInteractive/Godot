@@ -9,7 +9,7 @@ var nuclearExplosionScene = load("res://GameEntities/NuclearExplosion/NuclearExp
 
 var moveSpeed : float = 20.0
 
-var selectedUnits = []
+var SelectedEntities = []
 var target : Vector2 = Vector2(-1, -1)
 
 enum UnitActions {NONE, MoveAction, PatrolAction, TargetAction}
@@ -31,10 +31,10 @@ func _ready():
 		
 func _process(_delta):
 	if Input.is_action_pressed("ui_MoveAction"):
-		if not selectedUnits.empty():
+		if not SelectedEntities.empty():
 			GameCommands.MoveCommand.Navigation_Mesh = $"World Map/Navigation2D"
 			GameCommands.MoveCommand.Position_To = get_viewport().get_mouse_position()
-			GameCommands.MoveCommand.Selected_Units = selectedUnits
+			GameCommands.MoveCommand.Selected_Units = GetSelectedUnitsFromEntities(SelectedEntities)
 			GameCommands.MoveCommand.execute()
 
 func _unhandled_input(event : InputEvent) -> void:	
@@ -42,12 +42,12 @@ func _unhandled_input(event : InputEvent) -> void:
 		return
 	if Input.is_mouse_button_pressed(BUTTON_LEFT):
 		if unitAction == UnitActions.TargetAction:
-			for unit in selectedUnits:
+			for unit in SelectedEntities:
 				var mouseEvent = event as InputEventMouse
-				GameCommands.TargetCommand.Unit_Targeting = selectedUnits
+				GameCommands.TargetCommand.Unit_Targeting = SelectedEntities
 				GameCommands.TargetCommand.Target_Position = mouseEvent.position
 				GameCommands.TargetCommand.execute()
-			$Targets.showTargets(selectedUnits)
+			$Targets.showTargets(SelectedEntities)
 			unitAction = UnitActions.NONE
 		elif gameAction == GameActions.BuildAction:
 			GameCommands.BuildCommand.Position_Build = get_viewport().get_mouse_position()
@@ -57,31 +57,34 @@ func _unhandled_input(event : InputEvent) -> void:
 			gameAction = GameActions.NONE
 			get_tree().set_input_as_handled()
 		elif unitAction == UnitActions.MoveAction:
-			if not selectedUnits.empty():
+			if not SelectedEntities.empty():
 				GameCommands.MoveCommand.Navigation_Mesh = $"World Map/Navigation2D"
 				GameCommands.MoveCommand.Position_To = get_viewport().get_mouse_position()
-				GameCommands.MoveCommand.Selected_Units = selectedUnits
+				GameCommands.MoveCommand.Selected_Units = SelectedEntities
 				GameCommands.MoveCommand.execute()
 			unitAction = GameActions.NONE
 		elif unitAction == UnitActions.NONE:
 			# Clear all the units that were selected
-			for unit in selectedUnits:
+			for unit in SelectedEntities:
 				unit.setSelected(false)		
 			$Targets.hideTargets()
-			selectedUnits = []
+			SelectedEntities = []
 			
-			Signals.emit_signal("UnitsSetlected", selectedUnits)
+			Signals.emit_signal("UnitsSetlected", SelectedEntities)
 
 func _on_Button_button_down():
 	$LaunchStrike.launchStrikeOnTargets($Targets.getTargets())
 
-func OnUnitSetlectedEvent(unit):
-	if $Countries.isPlayerUnit(unit):
-		unit.setSelected(true)
-		selectedUnits.append(unit);
-		$Targets.showTargets(selectedUnits)
+func OnUnitSetlectedEvent(EntitySelection):
+	if $Countries.isPlayerUnit(EntitySelection):
+		EntitySelection.setSelected(true)
+		
+		SelectedEntities.append(EntitySelection);
+		
+		var SelectionParent = EntitySelection.get_owner()
+		$Targets.showTargets(SelectedEntities)
 	
-		Signals.emit_signal("UnitsSetlected", selectedUnits)
+		Signals.emit_signal("UnitsSetlected", SelectedEntities)
 	
 func TargetPressed():
 	unitAction = UnitActions.TargetAction
@@ -108,11 +111,19 @@ func OnTargetReached(_target, _hits):
 			$City.setPopulation(49)
 			
 func OnPostLoad():
-	selectedUnits = []
+	SelectedEntities = []
 	unitAction = UnitActions.NONE
 	$UnitMenu.visible = false
 	$Targets.hideTargets()
-
+	
+func GetSelectedUnitsFromEntities(entitySelection: Array) -> Array:
+	var selectedUnits: Array = []
+	
+	for entity in entitySelection:
+		selectedUnits.append(entity.get_owner())
+	
+	return selectedUnits
+	
 # https://docs.godotengine.org/en/3.1/tutorials/io/saving_games.html
 # C:\Users\Manix\AppData\Roaming\Godot\app_userdata\MAD_Test_Project_001
 func save_game():
