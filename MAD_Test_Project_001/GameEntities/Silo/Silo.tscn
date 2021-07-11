@@ -1,12 +1,16 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://GameEntities/Silo/silo.png" type="Texture" id=1]
 [ext_resource path="res://GameEntities/EntitySelected/EntitySelection.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GameEntities/EntityBehaviours/EntityMove/EntityMove.tscn" type="PackedScene" id=3]
+[ext_resource path="res://GameEntities/EntityBehaviours/EntityTarget/EntityTarget.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 63.0278, 5.50212 )
 
-[node name="Silo" type="Area2D"]
+[node name="Silo" type="Area2D" groups=[
+"Targetor",
+]]
 scale = Vector2( 0.75, 0.75 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -18,3 +22,7 @@ shape = SubResource( 1 )
 
 [node name="Selection" parent="." instance=ExtResource( 2 )]
 SelectionArea = Vector2( 60, 50 )
+
+[node name="MoveNode" parent="." instance=ExtResource( 3 )]
+
+[node name="TargetNode" parent="." instance=ExtResource( 4 )]

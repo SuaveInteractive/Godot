@@ -10,7 +10,8 @@ func getTargets() -> Dictionary:
 	var Return_Targets = {}
 	for targetor in Targetors:
 		Return_Targets[targetor] = []
-		for targets in targetor.getTargets():
+		var targetNode = targetor.get_node("TargetNode")
+		for targets in targetNode.getTargets():
 			Return_Targets[targetor].append(targets)
 	return Return_Targets
 	
@@ -23,12 +24,12 @@ func getTargetsForNode(_owner : Node) -> Array:
 	
 func showTargets(ownerList : Array):
 	for targetOwner in ownerList:
-		if targetOwner.has_method("getTargets"):
-			for target in targetOwner.getTargets():
-				var targetInstance = targetScene.instance()
-				targetInstance.position = target
-				targetInstance.set_name("target")
-				add_child(targetInstance)
+		var targetNode = targetOwner.get_node("TargetNode")
+		for target in targetNode.getTargets():
+			var targetInstance = targetScene.instance()
+			targetInstance.position = target
+			targetInstance.set_name("target")
+			add_child(targetInstance)
 
 func hideTargets():
 	for target in get_children():

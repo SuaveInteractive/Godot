@@ -12,8 +12,6 @@ func execute() -> bool:
 		return false
 	
 	for unit in Selected_Units:
-		var newPath = Navigation_Mesh.get_simple_path(unit.global_position, Position_To)
-		newPath.remove(0);
-		unit.path = newPath
+		unit.get_node("MoveNode").createPath(Navigation_Mesh, unit.global_position, Position_To)
 	
 	return true

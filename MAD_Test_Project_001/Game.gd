@@ -44,10 +44,10 @@ func _unhandled_input(event : InputEvent) -> void:
 		if unitAction == UnitActions.TargetAction:
 			for unit in SelectedEntities:
 				var mouseEvent = event as InputEventMouse
-				GameCommands.TargetCommand.Unit_Targeting = SelectedEntities
+				GameCommands.TargetCommand.Unit_Targeting = GetSelectedUnitsFromEntities(SelectedEntities)
 				GameCommands.TargetCommand.Target_Position = mouseEvent.position
 				GameCommands.TargetCommand.execute()
-			$Targets.showTargets(SelectedEntities)
+			$Targets.showTargets(GetSelectedUnitsFromEntities(SelectedEntities))
 			unitAction = UnitActions.NONE
 		elif gameAction == GameActions.BuildAction:
 			GameCommands.BuildCommand.Position_Build = get_viewport().get_mouse_position()
@@ -81,8 +81,7 @@ func OnUnitSetlectedEvent(EntitySelection):
 		
 		SelectedEntities.append(EntitySelection);
 		
-		var SelectionParent = EntitySelection.get_owner()
-		$Targets.showTargets(SelectedEntities)
+		$Targets.showTargets(GetSelectedUnitsFromEntities(SelectedEntities))
 	
 		Signals.emit_signal("UnitsSetlected", SelectedEntities)
 	

@@ -11,6 +11,6 @@ func execute() -> bool:
 		return false
 	
 	for unit in Unit_Targeting:
-		unit.addTarget(Target_Position)
+		unit.get_node("TargetNode").addTarget(Target_Position)
 		
 	return false
