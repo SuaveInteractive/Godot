@@ -12,8 +12,16 @@ func _unhandled_input(_event : InputEvent) -> void:
 	
 func OnUnitsSetlected(units: Array) -> void:
 	if units.empty():
-		visible = false
+		$Target.visible = false
+		$Move.visible = false
 	else:
-		visible = true
+		for unit in units:
+			var targetNode = unit.get_node("TargetNode")
+			if targetNode != null:
+				$Target.visible = true
+				
+			var moveNode = unit.get_node("MoveNode")
+			if moveNode != null:
+				$Move.visible = true
 	
 

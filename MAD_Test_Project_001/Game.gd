@@ -83,7 +83,7 @@ func OnUnitSetlectedEvent(EntitySelection):
 		
 		$Targets.showTargets(GetSelectedUnitsFromEntities(SelectedEntities))
 	
-		Signals.emit_signal("UnitsSetlected", SelectedEntities)
+		Signals.emit_signal("UnitsSetlected", GetSelectedUnitsFromEntities(SelectedEntities))
 	
 func TargetPressed():
 	unitAction = UnitActions.TargetAction
@@ -98,21 +98,20 @@ func OnBuildStructureEvent(buildInfo):
 	gameAction = GameActions.BuildAction
 	actionInfo = buildInfo
 
-func OnTargetReached(_target, _hits):
+func OnTargetReached(target, hits):
 	var nuclearExplosionInstance = nuclearExplosionScene.instance()
-	nuclearExplosionInstance.position = _target
+	nuclearExplosionInstance.position = target
 	add_child(nuclearExplosionInstance)
 	nuclearExplosionInstance.play()
 	
 	#Check any hits
-	for hit in _hits:
-		if hit == $City:
-			$City.setPopulation(49)
+	for hit in hits:
+		if hit.is_class("City"):
+			hit.setPopulation(49)
 			
 func OnPostLoad():
 	SelectedEntities = []
 	unitAction = UnitActions.NONE
-	$UnitMenu.visible = false
 	$Targets.hideTargets()
 	
 func GetSelectedUnitsFromEntities(entitySelection: Array) -> Array:

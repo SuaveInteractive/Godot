@@ -10,6 +10,7 @@ func createGame(_parent):
 	# Countries
 	var Country_1 = countryScript.new("Country_1", true, 1, 0, 0, 1)
 	_parent.get_node("Countries").add_child(Country_1)
+	_parent.get_node("Countries").add_child(Country_1)
 	
 	var cityInstance = cityScene.instance()
 	cityInstance.position = Vector2(190, 190)

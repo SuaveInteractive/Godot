@@ -3,12 +3,13 @@ class_name Country
 
 var CountryColour : Color = Color(255)
 var Player : bool  = false
-var Control : int = 85
+var Control : int = 0 setget set_control
 
 func _init(_name, _player, r, g, b, a):
 	self.set_name(_name)
 	Player = _player
 	CountryColour = Color(r, g, b, a)
+	set_control(85)
 	
 	self.add_to_group('Persistent')
 	
@@ -24,6 +25,11 @@ func addUnit(_unit) -> void:
 	#if Player:
 	#	_unit.connect("clicked", get_parent().get_parent(), "OnUnitSelected")
 	add_child(_unit)
+	
+func set_control(control: int) -> void:
+	if Control != control:
+		Signals.emit_signal("CountryControlChange", self, Control, control)
+		Control = control
 	
 func save():	
 	var save_dict = {

@@ -9,18 +9,24 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Area2D",
+"class": "City",
+"language": "GDScript",
+"path": "res://GameEntities/City/City.gd"
+}, {
 "base": "Node",
 "class": "Country",
 "language": "GDScript",
 "path": "res://GameLogic/Country.gd"
 } ]
 _global_script_class_icons={
+"City": "",
 "Country": ""
 }
 
 [application]
 
-config/name="MAD_Test_Project_001"
+config/name="MAD"
 run/main_scene="res://Game.tscn"
 config/icon="res://icon.png"
 

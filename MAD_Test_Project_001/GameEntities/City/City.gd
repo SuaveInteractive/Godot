@@ -1,5 +1,7 @@
 extends Area2D
 
+class_name City
+
 signal PopulationChanged(population)
 
 var maxPopulation = 100 setget setPopulation, getPopulation
@@ -9,6 +11,15 @@ func _ready():
 	$DamagedCity.visible = false
 	# Duplicate the shader material so that it's uniforms can be set per object
 	$CitySprite.set_material($CitySprite.get_material().duplicate())
+
+"""
+ For RTTI
+"""
+func get_class() -> String: 
+	return "City"
+	
+func is_class(name: String) -> bool:
+   return .is_class(name) or (get_class() == name)
 
 func setPopulation(_value):
 	if population != _value:

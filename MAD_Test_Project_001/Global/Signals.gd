@@ -17,3 +17,8 @@ signal EntitySelected(entity)
 Emitted when one or more unit is selected
 """
 signal UnitsSetlected(units)
+
+"""
+Game State Changes
+"""
+signal CountryControlChange(country, oldControl, newControl)
