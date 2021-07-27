@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Textures/WorldTexture.bmp" type="Texture" id=1]
 [ext_resource path="res://GameSaver/GameSaver.gd" type="Script" id=2]
@@ -6,15 +6,18 @@
 [ext_resource path="res://Game.gd" type="Script" id=4]
 [ext_resource path="res://GameLogic/Countries.gd" type="Script" id=5]
 [ext_resource path="res://ControlValue.gd" type="Script" id=6]
+[ext_resource path="res://GameRules.gd" type="Script" id=7]
 [ext_resource path="res://UnitMenu.gd" type="Script" id=8]
+[ext_resource path="res://FinanceValue.gd" type="Script" id=9]
 [ext_resource path="res://Launch.gd" type="Script" id=10]
 [ext_resource path="res://Targets.gd" type="Script" id=11]
 [ext_resource path="res://CreateGame.gd" type="Script" id=12]
+[ext_resource path="res://WorldMap.gd" type="Script" id=13]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
 
-onready var nav_2d : Navigation2D = $\"../World Map/Navigation2D\"
+onready var nav_2d : Navigation2D = $\"../WorldMap/Navigation2D\"
 
 func MoveNodesToPosition(_position, _nodeList) -> void:
 	for node in _nodeList:
@@ -40,6 +43,9 @@ script = ExtResource( 2 )
 [node name="CreateGame" type="Node" parent="."]
 script = ExtResource( 12 )
 
+[node name="GameRules" type="Node" parent="."]
+script = ExtResource( 7 )
+
 [node name="MoveAction" type="Node" parent="."]
 script = SubResource( 1 )
 
@@ -49,33 +55,30 @@ script = ExtResource( 11 )
 [node name="LaunchStrike" type="Node" parent="."]
 script = ExtResource( 10 )
 
-[node name="World Map" type="Sprite" parent="."]
+[node name="WorldMap" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 centered = false
-__meta__ = {
-"_edit_lock_": true
-}
+script = ExtResource( 13 )
 
-[node name="Navigation2D" type="Navigation2D" parent="World Map"]
+[node name="Navigation2D" type="Navigation2D" parent="WorldMap"]
 
-[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="World Map/Navigation2D"]
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="WorldMap/Navigation2D"]
 navpoly = SubResource( 2 )
-
-[node name="Line2D" type="Line2D" parent="."]
-position = Vector2( 1056, -24 )
-points = PoolVector2Array( -200, 160, -232, 24 )
-width = 2.0
-default_color = Color( 1, 1, 1, 1 )
 
 [node name="Countries" type="Node" parent="."]
 script = ExtResource( 5 )
 
-[node name="UI" type="Control" parent="."]
+[node name="UI Layer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UI Layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LaunchButton" type="Button" parent="UI"]
+[node name="LaunchButton" type="Button" parent="UI Layer/UI"]
 margin_left = 24.0
 margin_top = 15.0
 margin_right = 96.0
@@ -85,7 +88,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="UnitMenu" type="Control" parent="UI"]
+[node name="UnitMenu" type="Control" parent="UI Layer/UI"]
 margin_left = 705.941
 margin_top = 506.932
 margin_right = 787.941
@@ -95,7 +98,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Move" type="Button" parent="UI/UnitMenu"]
+[node name="Move" type="Button" parent="UI Layer/UI/UnitMenu"]
 visible = false
 margin_right = 50.0
 margin_bottom = 20.0
@@ -104,7 +107,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Target" type="Button" parent="UI/UnitMenu"]
+[node name="Target" type="Button" parent="UI Layer/UI/UnitMenu"]
 visible = false
 margin_top = 25.0
 margin_right = 51.0
@@ -114,7 +117,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Build" type="Button" parent="UI"]
+[node name="Build" type="Button" parent="UI Layer/UI"]
 margin_left = 12.0
 margin_top = 564.37
 margin_right = 98.0
@@ -127,7 +130,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BuildSiloButton" type="Button" parent="UI/Build"]
+[node name="BuildSiloButton" type="Button" parent="UI Layer/UI/Build"]
 visible = false
 margin_left = 32.0
 margin_top = -28.0
@@ -138,35 +141,81 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PlayerInformation" type="Control" parent="UI"]
+[node name="PlayerInformation" type="Control" parent="UI Layer/UI"]
 margin_left = 120.0
 margin_top = 15.0
+margin_right = 120.0
+margin_bottom = 15.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ControlInfo" type="HBoxContainer" parent="UI/PlayerInformation"]
+[node name="TopBarInfoContainer" type="HBoxContainer" parent="UI Layer/UI/PlayerInformation"]
+margin_right = 40.0
+margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ControlLabel" type="Label" parent="UI/PlayerInformation/ControlInfo"]
+[node name="ControlInfoContainer" type="HBoxContainer" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer"]
+margin_right = 54.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ControlLabel" type="Label" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer"]
+margin_top = 13.0
 margin_right = 50.0
-margin_bottom = 14.0
+margin_bottom = 27.0
 text = "Control:"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ControlValue" type="Label" parent="UI/PlayerInformation/ControlInfo"]
+[node name="ControlValue" type="Label" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer"]
 margin_left = 54.0
+margin_top = 13.0
 margin_right = 54.0
-margin_bottom = 14.0
+margin_bottom = 27.0
 script = ExtResource( 6 )
 
+[node name="FinanceInfoContainer" type="HBoxContainer" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer"]
+margin_left = 58.0
+margin_right = 105.0
+margin_bottom = 40.0
+
+[node name="FinanceLable" type="Label" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer"]
+margin_top = 13.0
+margin_right = 43.0
+margin_bottom = 27.0
+text = "Money"
+
+[node name="FinanceValue" type="Label" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer"]
+margin_left = 47.0
+margin_top = 13.0
+margin_right = 47.0
+margin_bottom = 27.0
+script = ExtResource( 9 )
+
+[node name="ResultLable" type="Label" parent="UI Layer/UI"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -28.0
+margin_top = -7.0
+margin_right = 28.0
+margin_bottom = 7.0
+text = "YOU XXX"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
-[connection signal="button_down" from="UI/LaunchButton" to="." method="_on_Button_button_down"]
-[connection signal="pressed" from="UI/UnitMenu/Move" to="." method="OnMovePressed"]
-[connection signal="pressed" from="UI/UnitMenu/Target" to="." method="TargetPressed"]
-[connection signal="toggled" from="UI/Build" to="UI/Build" method="_on_Build_toggled"]
-[connection signal="pressed" from="UI/Build/BuildSiloButton" to="UI/Build" method="_on_BuildSiloButton_pressed"]
+[connection signal="button_down" from="UI Layer/UI/LaunchButton" to="." method="_on_Button_button_down"]
+[connection signal="pressed" from="UI Layer/UI/UnitMenu/Move" to="." method="OnMovePressed"]
+[connection signal="pressed" from="UI Layer/UI/UnitMenu/Target" to="." method="TargetPressed"]
+[connection signal="toggled" from="UI Layer/UI/Build" to="UI Layer/UI/Build" method="_on_Build_toggled"]
+[connection signal="pressed" from="UI Layer/UI/Build/BuildSiloButton" to="UI Layer/UI/Build" method="_on_BuildSiloButton_pressed"]

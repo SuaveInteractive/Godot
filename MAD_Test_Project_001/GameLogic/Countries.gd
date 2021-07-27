@@ -8,3 +8,9 @@ func isPlayerUnit(selection) -> bool:
 					return true
 	return false
 
+func getCountries() -> Array:
+	var countries: Array
+	for country in get_children():
+		countries.push_back(country)
+		
+	return countries

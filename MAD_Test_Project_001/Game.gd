@@ -2,8 +2,7 @@ extends Node2D
 
 # https://www.youtube.com/watch?v=Ad6Us73smNs
 
-onready var nav_2d : Navigation2D = $"World Map/Navigation2D"
-onready var line_2d : Line2D = $Line2D
+onready var nav_2d : Navigation2D = $"WorldMap/Navigation2D"
 
 var nuclearExplosionScene = load("res://GameEntities/NuclearExplosion/NuclearExplosion.tscn")
 
@@ -28,11 +27,15 @@ func _ready():
 	err = Signals.connect("BuildStructure", self, "OnBuildStructureEvent")
 	err = Signals.connect("UnitSetlected", self, "OnUnitSetlectedEvent")
 	err = Signals.connect("EntitySelected", self, "OnUnitSetlectedEvent")
+	err = Signals.connect("CountryWins", self, "OnCountryWins")
+	
 		
 func _process(_delta):
+	$GameRules.checkRules($Countries.getCountries())
+	
 	if Input.is_action_pressed("ui_MoveAction"):
 		if not SelectedEntities.empty():
-			GameCommands.MoveCommand.Navigation_Mesh = $"World Map/Navigation2D"
+			GameCommands.MoveCommand.Navigation_Mesh = $"WorldMap/Navigation2D"
 			GameCommands.MoveCommand.Position_To = get_viewport().get_mouse_position()
 			GameCommands.MoveCommand.Selected_Units = GetSelectedUnitsFromEntities(SelectedEntities)
 			GameCommands.MoveCommand.execute()
@@ -58,7 +61,7 @@ func _unhandled_input(event : InputEvent) -> void:
 			get_tree().set_input_as_handled()
 		elif unitAction == UnitActions.MoveAction:
 			if not SelectedEntities.empty():
-				GameCommands.MoveCommand.Navigation_Mesh = $"World Map/Navigation2D"
+				GameCommands.MoveCommand.Navigation_Mesh = $"WorldMap/Navigation2D"
 				GameCommands.MoveCommand.Position_To = get_viewport().get_mouse_position()
 				GameCommands.MoveCommand.Selected_Units = SelectedEntities
 				GameCommands.MoveCommand.execute()
@@ -84,7 +87,16 @@ func OnUnitSetlectedEvent(EntitySelection):
 		$Targets.showTargets(GetSelectedUnitsFromEntities(SelectedEntities))
 	
 		Signals.emit_signal("UnitsSetlected", GetSelectedUnitsFromEntities(SelectedEntities))
-	
+
+func OnCountryWins(country) -> void:
+	get_node("UI Layer/UI/ResultLable").visible = true
+	if country.get_player():
+		get_node("UI Layer/UI/ResultLable").text = "YOU WIN"
+	else:
+		get_node("UI Layer/UI/ResultLable").text = "YOU LOSE"
+		
+		
+
 func TargetPressed():
 	unitAction = UnitActions.TargetAction
 	
