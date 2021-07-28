@@ -2,8 +2,6 @@ extends Node2D
 
 # https://www.youtube.com/watch?v=Ad6Us73smNs
 
-onready var nav_2d : Navigation2D = $"WorldMap/Navigation2D"
-
 var nuclearExplosionScene = load("res://GameEntities/NuclearExplosion/NuclearExplosion.tscn")
 
 var moveSpeed : float = 20.0
@@ -35,7 +33,7 @@ func _process(_delta):
 	
 	if Input.is_action_pressed("ui_MoveAction"):
 		if not SelectedEntities.empty():
-			GameCommands.MoveCommand.Navigation_Mesh = $"WorldMap/Navigation2D"
+			GameCommands.MoveCommand.Navigation_Mesh = $"World/WorldMap/Navigation2D"
 			GameCommands.MoveCommand.Position_To = get_viewport().get_mouse_position()
 			GameCommands.MoveCommand.Selected_Units = GetSelectedUnitsFromEntities(SelectedEntities)
 			GameCommands.MoveCommand.execute()
@@ -61,7 +59,7 @@ func _unhandled_input(event : InputEvent) -> void:
 			get_tree().set_input_as_handled()
 		elif unitAction == UnitActions.MoveAction:
 			if not SelectedEntities.empty():
-				GameCommands.MoveCommand.Navigation_Mesh = $"WorldMap/Navigation2D"
+				GameCommands.MoveCommand.Navigation_Mesh = $"World/WorldMap/Navigation2D"
 				GameCommands.MoveCommand.Position_To = get_viewport().get_mouse_position()
 				GameCommands.MoveCommand.Selected_Units = SelectedEntities
 				GameCommands.MoveCommand.execute()

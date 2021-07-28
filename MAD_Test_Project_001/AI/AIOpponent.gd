@@ -42,7 +42,7 @@ func runAI() -> void:
 	"""
 	if currentPlans.size() > 0:
 		var command = currentPlans.pop_front()
-		GameCommands.MoveCommand.Navigation_Mesh = get_tree().get_root().get_node("/root/Game/WorldMap/Navigation2D")
+		GameCommands.MoveCommand.Navigation_Mesh = get_tree().get_root().get_node("/root/Game/World/WorldMap/WaterNavigation")
 		GameCommands.MoveCommand.Position_To = Vector2(500, 100)
 		GameCommands.MoveCommand.Selected_Units = [command.args.node]
 		GameCommands.MoveCommand.execute()
