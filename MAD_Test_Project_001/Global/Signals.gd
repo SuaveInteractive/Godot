@@ -9,14 +9,12 @@ signal NodeCreate(name, obj)
 
 signal BuildStructure(build_Information)
 
-signal UnitSetlected(unit)
-
-signal EntitySelected(entity)
+signal UnitSelected(unit)
 
 """
 Emitted when one or more unit is selected
 """
-signal UnitsSetlected(units)
+signal UnitsSelected(units)
 
 """
 Game State Changes

@@ -5,12 +5,12 @@ extends Control
 onready var selectedNode 
 
 func _ready():
-	Signals.connect("UnitsSetlected", self, "OnUnitsSetlected")
+	Signals.connect("UnitsSelected", self, "OnUnitsSelected")
 
 func _unhandled_input(_event : InputEvent) -> void:	
 	pass
 	
-func OnUnitsSetlected(units: Array) -> void:
+func OnUnitsSelected(units: Array) -> void:
 	if units.empty():
 		$Target.visible = false
 		$Move.visible = false

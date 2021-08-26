@@ -21,11 +21,12 @@ func _ready():
 	$CreateGame.createGame(self)
 	
 	# Connect to signals
-	var err = Signals.connect("NodeCreate", self, "OnNodeCreated")
-	err = Signals.connect("BuildStructure", self, "OnBuildStructureEvent")
-	err = Signals.connect("UnitSetlected", self, "OnUnitSetlectedEvent")
-	err = Signals.connect("EntitySelected", self, "OnUnitSetlectedEvent")
-	err = Signals.connect("CountryWins", self, "OnCountryWins")
+	Signals.connect("NodeCreate", self, "OnNodeCreated")
+	Signals.connect("BuildStructure", self, "OnBuildStructureEvent")
+	Signals.connect("UnitSelected", self, "OnUnitSetlectedEvent")
+	Signals.connect("CountryWins", self, "OnCountryWins")
+	
+	
 	
 		
 func _process(_delta):
@@ -66,25 +67,22 @@ func _unhandled_input(event : InputEvent) -> void:
 			unitAction = GameActions.NONE
 		elif unitAction == UnitActions.NONE:
 			# Clear all the units that were selected
-			for unit in SelectedEntities:
-				unit.setSelected(false)		
 			$Targets.hideTargets()
 			SelectedEntities = []
 			
-			Signals.emit_signal("UnitsSetlected", SelectedEntities)
+			Signals.emit_signal("UnitsSelected", SelectedEntities)
 
 func _on_Button_button_down():
 	$LaunchStrike.launchStrikeOnTargets($Targets.getTargets())
 
-func OnUnitSetlectedEvent(EntitySelection):
-	if $Countries.isPlayerUnit(EntitySelection):
-		EntitySelection.setSelected(true)
+func OnUnitSetlectedEvent(selectedEntity):
+	if $Countries.isPlayerUnit(selectedEntity):
+			
+		SelectedEntities.append(selectedEntity);
 		
-		SelectedEntities.append(EntitySelection);
-		
-		$Targets.showTargets(GetSelectedUnitsFromEntities(SelectedEntities))
+		$Targets.showTargets(SelectedEntities)
 	
-		Signals.emit_signal("UnitsSetlected", GetSelectedUnitsFromEntities(SelectedEntities))
+		Signals.emit_signal("UnitsSelected", SelectedEntities)
 
 func OnCountryWins(country) -> void:
 	get_node("UI Layer/UI/ResultLable").visible = true

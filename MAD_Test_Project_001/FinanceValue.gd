@@ -1,8 +1,8 @@
 extends Label
 
 func _ready():
-	var err = Signals.connect("CountryFinanceChange", self, "OnCountryFinanceChange")
+	Signals.connect("CountryFinanceChange", self, "OnCountryFinanceChange")
 	
-func OnCountryFinanceChange(country, oldFinance, newFinance):
+func OnCountryFinanceChange(country, _oldFinance, newFinance):
 	if country.Player:
 		self.text = str(newFinance)

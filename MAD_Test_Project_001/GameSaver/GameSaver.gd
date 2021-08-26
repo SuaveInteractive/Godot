@@ -63,7 +63,6 @@ func load_game():
 		elif current_line.has("scriptPath"):		# Load a Script into game
 			var script = current_line["scriptPath"]
 			# https://docs.godotengine.org/en/3.0/classes/class_object.html#class-object-callv
-			var args = current_line["args"]
 			new_object = load(script).callv("new", current_line["args"])
 			get_node(current_line["parent"]).add_child(new_object)
 		

@@ -8,13 +8,11 @@ extends Node
 export(ImageTexture) var SelectionSprite setget setSelectionSprite
 export(Vector2) var SelectionArea = Vector2(1, 1) setget setSelectionArea
 
+signal EntitySelected(entity)
+
 var SelectionImageSize : Vector2 = Vector2(100, 100)
 var DefaultSelectionSize : Vector2 = Vector2(1, 1) * 2
 var Scale : Vector2 = DefaultSelectionSize / SelectionImageSize
-
-
-#var Selected : bool = false
-#var PlayerCountry : bool = false
 
 func _ready():	
 	if not Engine.editor_hint:
@@ -23,14 +21,14 @@ func _ready():
 func setSelected(selected: bool) -> void:
 	$SelectedSprite.visible = selected
 
-func _on_Selection_input_event(viewport, event, shape_idx):
+func _on_Selection_input_event(_viewport, event, _shape_idx):
 	if not event is InputEventMouseButton:
 		return
 	if not Input.is_mouse_button_pressed(BUTTON_LEFT):
 		return
-	
+		
 	if event.button_index == BUTTON_LEFT:
-		 Signals.emit_signal("EntitySelected", self)
+		 emit_signal("EntitySelected", self)
 		
 func setSelectionSprite(texture):	
 	SelectionSprite = texture
@@ -43,7 +41,7 @@ func setSelectionArea(selectionArea: Vector2):
 	SelectionArea = selectionArea
 	
 	#fix the scale of the selection sprite
-	var Scale = (SelectionArea / SelectionImageSize) * 2
+	Scale = (SelectionArea / SelectionImageSize) * 2
 	$SelectedSprite.set_scale(Scale)
 		
 	$SelectionArea.shape.set_extents(SelectionArea)
