@@ -38,8 +38,6 @@ func addCity(_city) -> void:
 
 func addUnit(_unit) -> void:
 	_unit.setCountry(self)
-	#if Player:
-	#	_unit.connect("clicked", get_parent().get_parent(), "OnUnitSelected")
 	add_child(_unit)
 	
 func OnSetCountryActive(country, active) -> void:
@@ -86,7 +84,5 @@ func load(_dic):
 	
 func addChildMethod(node):
 	node.setCountry(self)
-	#if Player:
-	#	node.connect("clicked", get_parent(), "OnUnitSelected")
 	add_child(node)
 	

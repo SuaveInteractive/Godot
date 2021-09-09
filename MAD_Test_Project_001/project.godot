@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "Country",
 "language": "GDScript",
 "path": "res://GameLogic/Country.gd"
+}, {
+"base": "Resource",
+"class": "StructureInformation",
+"language": "GDScript",
+"path": "res://GameEntities/StructureInformation.gd"
 } ]
 _global_script_class_icons={
 "City": "",
-"Country": ""
+"Country": "",
+"StructureInformation": ""
 }
 
 [application]

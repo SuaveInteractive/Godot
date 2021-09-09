@@ -16,12 +16,15 @@ func OnUnitsSelected(units: Array) -> void:
 		$Move.visible = false
 	else:
 		for unit in units:
-			var targetNode = unit.get_node("TargetNode")
-			if targetNode != null:
-				$Target.visible = true
-				
-			var moveNode = unit.get_node("MoveNode")
-			if moveNode != null:
-				$Move.visible = true
+			if unit.isStructureConstructing():
+				pass
+			else:
+				var targetNode = unit.get_node("TargetNode")
+				if targetNode != null:
+					$Target.visible = true
+					
+				var moveNode = unit.get_node("MoveNode")
+				if moveNode != null:
+					$Move.visible = true
 	
 
