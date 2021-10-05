@@ -64,6 +64,11 @@ func set_finance(finance: int) -> void:
 	
 func get_finance() -> int:
 	return Finance
+	
+func reduceFinance(var reduction: int) -> void:
+	var newFinance = Finance - reduction
+	Signals.emit_signal("CountryFinanceChange", self, Finance, newFinance)
+	Finance = newFinance
 		
 func get_active() -> bool:
 	return Active

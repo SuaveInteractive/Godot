@@ -16,7 +16,7 @@ func OnUnitsSelected(units: Array) -> void:
 		$Move.visible = false
 	else:
 		for unit in units:
-			if unit.isStructureConstructing():
+			if unit.has_method("isStructureConstructing") and unit.isStructureConstructing():
 				pass
 			else:
 				var targetNode = unit.get_node("TargetNode")

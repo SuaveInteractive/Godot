@@ -47,6 +47,9 @@ func GetStructureState():
 func isStructureConstructing() -> bool:
 	return _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTING
 	
+func getBaseConstructionCost() -> int:
+	return StructureInformation.ContructionCost
+	
 func setShowInfoUI(show: bool) -> void:
 	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTING:
 		$StructureInformationUI/BuildPercentage.visible = show

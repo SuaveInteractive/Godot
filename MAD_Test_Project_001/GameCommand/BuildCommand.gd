@@ -16,6 +16,9 @@ func execute() -> bool:
 	var siloInstance = siloScene.instance()
 	siloInstance.position = Position_Build
 	
+	# Remove cost from the country
+	Build_Country.reduceFinance(siloInstance.getBaseConstructionCost())
+	
 	Build_Country.add_child(siloInstance)
 	
 	return true
