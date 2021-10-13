@@ -6,6 +6,9 @@ var BuildArea : PoolVector2Array = PoolVector2Array()
 var debugRecScript = load("res://Debug/DebugRectangle2D.gd")
 var debugRec : Node2D = null
 
+var debugPolylineScript = load("res://Debug/DebugPolyline2D.gd")
+var debugPolyline : Node2D = null
+
 # Work out if the build position is within the country boundary
 # https://docs.godotengine.org/en/stable/classes/class_geometry.html
 #var ClipArray = Geometry.clip_polygons_2d($Area2D/CollisionPolygon2D.polygon, 
@@ -17,6 +20,12 @@ func _ready():
 	debugRec = debugRecScript.new()
 	debugRec.Size = MouseIcon.get_rect().size
 	add_child(debugRec)
+	
+	debugPolyline = debugPolylineScript.new()
+	var polyPoints = PoolVector2Array(BuildArea)
+	polyPoints.append(BuildArea[0])
+	debugPolyline.points = polyPoints
+	add_child(debugPolyline)
 
 func _init(parameters):
 	BuildArea = parameters.BuildArea
@@ -53,6 +62,7 @@ func _process(_delta):
 		debugRec.color = Color.red
 		
 	debugRec.update()
+	debugPolyline.update()
 	
 func _unhandled_input(event : InputEvent) -> void:	
 	if not event is InputEventMouseButton:
