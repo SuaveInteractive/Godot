@@ -24,3 +24,8 @@ signal CountryFinanceChange(country, oldFinance, newFinance)
 signal SetCountryActive(country, active)
 signal CountryWins(country)
 
+"""
+Game Actions
+"""
+signal EndGameAction()
+

@@ -5,7 +5,7 @@ var GameActionScript = preload("res://GameActions/BuildAction.gd")
 var CurrentAction = null
 
 func _ready():
-	pass
+	Signals.connect("EndGameAction", self, "OnEndGameAction")
 	
 func startAction(actionInfo) -> void:
 	CurrentAction = GameActionScript.new(actionInfo)
@@ -15,3 +15,5 @@ func endAction() -> void:
 	remove_child(CurrentAction)
 	CurrentAction = null
 	
+func OnEndGameAction() -> void:
+	endAction()

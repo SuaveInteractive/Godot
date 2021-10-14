@@ -10,15 +10,15 @@ func _ready():
 	Command_Name = "Build_Command"
 
 func execute() -> bool:
-	if Build_Info == null or Build_Country == null:
+	if Build_Info == null:
 		return false
 	
 	var siloInstance = siloScene.instance()
 	siloInstance.position = Position_Build
 	
 	# Remove cost from the country
-	Build_Country.reduceFinance(siloInstance.getBaseConstructionCost())
+	Build_Info.BuildCountry.reduceFinance(siloInstance.getBaseConstructionCost())
 	
-	Build_Country.add_child(siloInstance)
+	Build_Info.BuildCountry.add_child(siloInstance)
 	
 	return true

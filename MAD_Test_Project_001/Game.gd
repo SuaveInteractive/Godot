@@ -49,14 +49,6 @@ func _unhandled_input(event : InputEvent) -> void:
 				GameCommands.TargetCommand.execute()
 			$Targets.showTargets(SelectedEntities)
 			unitAction = Enums.UnitActions.NONE
-		elif gameAction == Enums.GameActions.BuildAction:		
-			GameCommands.BuildCommand.Position_Build = get_viewport().get_mouse_position()
-			GameCommands.BuildCommand.Build_Country = $Countries.get_child(0)
-			GameCommands.BuildCommand.Build_Info = actionInfo
-			GameCommands.BuildCommand.execute()
-			SetGameAction(Enums.GameActions.NONE)
-			get_tree().set_input_as_handled()
-			$GameActions.endAction()
 		elif unitAction == Enums.UnitActions.MoveAction:
 			if not SelectedEntities.empty():
 				GameCommands.MoveCommand.Navigation_Mesh = $"World/WorldMap/Navigation2D"
@@ -103,6 +95,7 @@ func OnBuildStructureEvent(buildInfo):
 	SetGameAction(Enums.GameActions.BuildAction)
 	actionInfo = buildInfo	
 	actionInfo.BuildArea = $Area2D/CollisionPolygon2D.polygon
+	actionInfo.BuildCountry = $Countries.get_child(0)
 	$GameActions.startAction(actionInfo)
 
 func OnTargetReached(target, hits):
