@@ -14,6 +14,7 @@ extents = Vector2( 63.0278, 5.50212 )
 "Targetor",
 ]]
 scale = Vector2( 0.75, 0.75 )
+z_index = 1
 script = ExtResource( 5 )
 StructureInformation = ExtResource( 6 )
 

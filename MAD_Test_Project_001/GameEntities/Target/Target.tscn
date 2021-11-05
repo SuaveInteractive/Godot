@@ -8,6 +8,6 @@
 "Target",
 ]]
 position = Vector2( 56.5919, 55.8805 )
-z_index = 1
+z_index = 2
 texture = ExtResource( 1 )
 script = ExtResource( 2 )

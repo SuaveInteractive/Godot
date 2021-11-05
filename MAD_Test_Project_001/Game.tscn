@@ -62,6 +62,9 @@ script = ExtResource( 10 )
 script = ExtResource( 13 )
 WorldInformation = SubResource( 2 )
 
+[node name="Countries" type="Node" parent="World"]
+script = ExtResource( 5 )
+
 [node name="WorldMap" type="Sprite" parent="World"]
 texture = ExtResource( 1 )
 centered = false
@@ -84,8 +87,15 @@ visible = false
 visible = false
 navpoly = SubResource( 4 )
 
-[node name="Countries" type="Node" parent="."]
-script = ExtResource( 5 )
+[node name="CountryBoarders" type="Area2D" parent="World/WorldMap"]
+visible = false
+
+[node name="Country1" type="CollisionPolygon2D" parent="World/WorldMap/CountryBoarders"]
+position = Vector2( -1.05957, 0 )
+polygon = PoolVector2Array( 48.9615, 114.3, 133.724, 89.606, 185.115, 79.5947, 233.836, 106.959, 293.904, 145.669, 306.585, 195.058, 321.936, 221.087, 145.737, 319.865, 101.02, 289.832, 93.6786, 247.784, 55.6357, 207.072, 26.2693, 158.35 )
+
+[node name="Country2" type="CollisionPolygon2D" parent="World/WorldMap/CountryBoarders"]
+polygon = PoolVector2Array( 523.248, 343.192, 523.997, 325.962, 613.896, 298.992, 616.143, 289.253, 704.543, 297.494, 737.506, 356.677, 759.231, 445.077, 744.248, 478.04, 706.791, 518.494, 679.821, 549.209, 625.133, 547.711, 504.519, 522.24, 425.109, 496.769, 405.631, 457.064, 459.57, 445.826, 512.011, 437.586, 545.723, 417.358, 521.75, 387.392, 513.509, 358.924 )
 
 [node name="UI Layer" type="CanvasLayer" parent="."]
 
@@ -234,12 +244,6 @@ text = "YOU XXX"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
-position = Vector2( -1.05957, 0 )
-polygon = PoolVector2Array( 48.9615, 114.3, 133.724, 89.606, 185.115, 79.5947, 233.836, 106.959, 293.904, 145.669, 306.585, 195.058, 321.936, 221.087, 145.737, 319.865, 101.02, 289.832, 93.6786, 247.784, 55.6357, 207.072, 26.2693, 158.35 )
 
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
 [connection signal="button_down" from="UI Layer/UI/LaunchButton" to="." method="_on_Button_button_down"]

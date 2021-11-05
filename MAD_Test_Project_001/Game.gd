@@ -23,12 +23,12 @@ func _ready():
 	
 	# Connect to signals
 	Signals.connect("NodeCreate", self, "OnNodeCreated")
-	Signals.connect("BuildStructure", self, "OnBuildStructureEvent")
+	Signals.connect("PlayerBuildStructure", self, "OnPlayerBuildStructureEvent")
 	Signals.connect("UnitSelected", self, "OnUnitSetlectedEvent")
 	Signals.connect("CountryWins", self, "OnCountryWins")
 		
 func _process(_delta):
-	$GameRules.checkRules($Countries.getCountries())
+	$GameRules.checkRules($"World/Countries".getCountries())
 		
 	if Input.is_action_pressed("ui_MoveAction"):
 		if not SelectedEntities.empty():
@@ -67,7 +67,7 @@ func _on_Button_button_down():
 	$LaunchStrike.launchStrikeOnTargets($Targets.getTargets())
 
 func OnUnitSetlectedEvent(selectedEntity):
-	if $Countries.isPlayerUnit(selectedEntity):
+	if $"World/Countries".isPlayerUnit(selectedEntity):
 			
 		SelectedEntities.append(selectedEntity);
 		
@@ -91,11 +91,11 @@ func OnMovePressed():
 func OnNodeCreated(_type, _obj) -> void:
 	_obj.connect("targetReached", self, "OnTargetReached")
 	
-func OnBuildStructureEvent(buildInfo):
+func OnPlayerBuildStructureEvent(buildInfo):
 	SetGameAction(Enums.GameActions.BuildAction)
 	actionInfo = buildInfo	
-	actionInfo.BuildArea = $Area2D/CollisionPolygon2D.polygon
-	actionInfo.BuildCountry = $Countries.get_child(0)
+	actionInfo.BuildArea = $World/WorldMap/CountryBoarders/Country1.polygon
+	actionInfo.BuildCountry = $"World/Countries".get_child(0)
 	$GameActions.startAction(actionInfo)
 
 func OnTargetReached(target, hits):

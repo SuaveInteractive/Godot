@@ -7,9 +7,14 @@ extends Node
 
 signal NodeCreate(name, obj)
 
-signal BuildStructure(build_Information)
+
 
 signal UnitSelected(unit)
+
+"""
+Player Actions
+"""
+signal PlayerBuildStructure(build_Information)
 
 """
 Emitted when one or more unit is selected

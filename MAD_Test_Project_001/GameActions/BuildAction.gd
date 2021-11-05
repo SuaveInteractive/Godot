@@ -33,7 +33,7 @@ func _init(parameters):
 	Params = parameters
 	BuildArea = parameters.BuildArea
 	MouseIcon = Sprite.new()
-	MouseIcon.z_index = 1
+	MouseIcon.z_index = 10
 	MouseIcon.texture = load(parameters.Texture)
 	MouseIcon.scale = parameters.Scale
 	add_child(MouseIcon)
