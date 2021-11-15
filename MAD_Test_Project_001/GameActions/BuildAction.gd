@@ -13,7 +13,6 @@ var debugPolyline : Node2D = null
 
 # Work out if the build position is within the country boundary
 # https://docs.godotengine.org/en/stable/classes/class_geometry.html
-#var ClipArray = Geometry.clip_polygons_2d($Area2D/CollisionPolygon2D.polygon, 
 
 func _ready():
 	"""
@@ -31,7 +30,7 @@ func _ready():
 
 func _init(parameters):
 	Params = parameters
-	BuildArea = parameters.BuildArea
+	BuildArea = parameters.BuildCountry.get_node("Boarder").polygon
 	MouseIcon = Sprite.new()
 	MouseIcon.z_index = 10
 	MouseIcon.texture = load(parameters.Texture)

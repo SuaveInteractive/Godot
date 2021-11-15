@@ -19,7 +19,7 @@ var gameAction = Enums.GameActions.NONE
 var actionInfo = null
 
 func _ready():
-	$CreateGame.createGame(self)
+	$CreateGame.createGame(self, $"World".WorldInformation)
 	
 	# Connect to signals
 	Signals.connect("NodeCreate", self, "OnNodeCreated")
@@ -94,8 +94,9 @@ func OnNodeCreated(_type, _obj) -> void:
 func OnPlayerBuildStructureEvent(buildInfo):
 	SetGameAction(Enums.GameActions.BuildAction)
 	actionInfo = buildInfo	
-	actionInfo.BuildArea = $World/WorldMap/CountryBoarders/Country1.polygon
-	actionInfo.BuildCountry = $"World/Countries".get_child(0)
+	var playerCountry = $"World/Countries".get_child(0)
+	actionInfo.BuildCountry = playerCountry
+	#actionInfo.BuildArea = $World/WorldMap/CountryBoarders/Country1.polygon
 	$GameActions.startAction(actionInfo)
 
 func OnTargetReached(target, hits):

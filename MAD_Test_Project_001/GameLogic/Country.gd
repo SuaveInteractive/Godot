@@ -7,10 +7,10 @@ var Control : int = 0 setget set_control, get_control
 var Finance : int = 0 setget set_finance, get_finance
 var Active : bool  = true setget , get_active
 
-func _init(_name, _player, r, g, b, a):
+func _init(_name, _player, color):
 	self.set_name(_name)
 	Player = _player
-	CountryColour = Color(r, g, b, a)
+	CountryColour = color
 	set_control(85)
 	set_finance(1000000)
 	
