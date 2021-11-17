@@ -1,8 +1,6 @@
 extends Area2D
 
 var selected : bool = false setget setSelected, getSelected
-#var targets : Array = [] setget , getTargets
-var PlayerCountry : bool = false
 
 func _ready():
 	Signals.connect("UnitsSelected", self, "OnUnitsSelected")
@@ -26,7 +24,6 @@ func _on_Submarine_input_event(_viewport, event, _shape_idx):
 
 func setCountry(country):
 	$SubmarineSprite.get_material().set_shader_param("colour", country.CountryColour)
-	self.PlayerCountry = country.Player
 	
 func OnUnitsSelected(units: Array) -> void:
 	if units.empty():

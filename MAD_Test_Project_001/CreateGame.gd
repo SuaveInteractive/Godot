@@ -6,35 +6,32 @@ var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
 var countryScript = load("res://GameLogic/Country.gd")
 var AIOpponentScript = load("res://AI/AIOpponent.gd")
 
+var DebugShowCountryBoardersScript = load("res://Debug/DebugShowCountryBoarders.gd")
+
 func createGame(gameObject, worldInformation):
 	# Countries
-	
+	var newCountries = Array()
 	for countryInfo in worldInformation.Countries:
 		if countryInfo != null:
 			var newCountry = _CreateCountry(countryInfo)
+			newCountries.append(newCountry)
 			gameObject.get_node("World/Countries").add_child(newCountry)
-
-	""" Hardcoded parameters """
-	# AI Player
-	var Country_2 = countryScript.new("Country_2", false, Color(0, 1, 0, 1))
-	gameObject.get_node("World/Countries").add_child(Country_2)
+			
 	
-	var cityInstance = cityScene.instance()
-	cityInstance.position = Vector2(639, 427)
-	cityInstance.set_name("city_2")
-	cityInstance.z_index = 1
-	Country_2.addCity(cityInstance)
-	
-	# Units
-	var submarineInstance = submarineScene.instance()
-	submarineInstance.position = Vector2(400, 550)
-	submarineInstance.set_name("submarine_1")
-	submarineInstance.z_index = 1
-	Country_2.addUnit(submarineInstance)
-	
+	""" HARDCODED AI SETUP - Countries shouldn't care about if they are AI or Player controlled """
+	var AICountry = newCountries[1]
+	AICountry.Player = false
+		
 	# AIPlayers
-	var AIPlayer_1 = AIOpponentScript.new("AIPlayer_1", Country_2)
+	var AIPlayer_1 = AIOpponentScript.new("AIPlayer_1", AICountry)
 	gameObject.add_child(AIPlayer_1)
+	
+	""" Debug """
+	var boarders : Array = []
+	for countryInfo in worldInformation.Countries:
+		boarders.append(countryInfo.CountryBoarder)
+	var debugShowCountryBoarders = DebugShowCountryBoardersScript.new(boarders)
+	DebugOverlay.add_child(debugShowCountryBoarders)
 
 func _CreateCountry(countryInfo):
 	var country = countryScript.new(countryInfo.CountryName, true, countryInfo.CountryColor)

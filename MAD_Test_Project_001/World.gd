@@ -6,4 +6,3 @@ export(Resource) var WorldInformation
 
 func _ready():
 	WorldInformation = WorldInformationScript.new()
-	pass

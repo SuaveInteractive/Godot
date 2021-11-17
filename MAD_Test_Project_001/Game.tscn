@@ -14,7 +14,7 @@
 [ext_resource path="res://CreateGame.gd" type="Script" id=12]
 [ext_resource path="res://World.gd" type="Script" id=13]
 [ext_resource path="res://GameLogic/WorldInformation.gd" type="Script" id=14]
-[ext_resource path="res://Country_1.tres" type="Resource" id=15]
+[ext_resource path="res://Data/Country_1.tres" type="Resource" id=15]
 [ext_resource path="res://GameActions.gd" type="Script" id=17]
 
 [sub_resource type="Resource" id=1]
@@ -22,6 +22,7 @@ script = ExtResource( 14 )
 NumberOfCountries = 0
 CountriesAllianceStatus = [  ]
 Countries = [ ExtResource( 15 ) ]
+Modifiers = [  ]
 
 [sub_resource type="NavigationPolygon" id=2]
 vertices = PoolVector2Array( 688.366, 292.328, 628.932, 286.272, 317.401, 246.272, 304.94, 198.272, 801.888, -2.99567, 801.888, 603.535, 759.775, 438.272, 734.853, 366.272, 722.392, 326.272, 753.545, 470.272, 585.318, 302.272, 547.934, 310.272, 510.55, 342.272, 709.93, 518.272, -0.361107, -1.72803, 199.019, 86.272, 547.934, 414.272, 423.322, 454.272, 273.786, 310.272, 666.316, 550.272, -0.361107, 598.272, 516.781, 518.272, 410.86, 478.272, 142.943, 326.272, 61.9452, 214.272, 286.248, 142.272, 30.792, 158.272, 86.8677, 94.272 )
@@ -85,12 +86,6 @@ visible = false
 [node name="LandNavigationPolygon" type="NavigationPolygonInstance" parent="World/WorldMap/LandNavigation"]
 visible = false
 navpoly = SubResource( 3 )
-
-[node name="CountryBoarders" type="Area2D" parent="World/WorldMap"]
-visible = false
-
-[node name="Country2" type="CollisionPolygon2D" parent="World/WorldMap/CountryBoarders"]
-polygon = PoolVector2Array( 523.248, 343.192, 523.997, 325.962, 613.896, 298.992, 616.143, 289.253, 704.543, 297.494, 737.506, 356.677, 759.231, 445.077, 744.248, 478.04, 706.791, 518.494, 679.821, 549.209, 625.133, 547.711, 504.519, 522.24, 425.109, 496.769, 405.631, 457.064, 459.57, 445.826, 512.011, 437.586, 545.723, 417.358, 521.75, 387.392, 513.509, 358.924 )
 
 [node name="UI Layer" type="CanvasLayer" parent="."]
 

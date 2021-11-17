@@ -96,7 +96,6 @@ func OnPlayerBuildStructureEvent(buildInfo):
 	actionInfo = buildInfo	
 	var playerCountry = $"World/Countries".get_child(0)
 	actionInfo.BuildCountry = playerCountry
-	#actionInfo.BuildArea = $World/WorldMap/CountryBoarders/Country1.polygon
 	$GameActions.startAction(actionInfo)
 
 func OnTargetReached(target, hits):

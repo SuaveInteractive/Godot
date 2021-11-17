@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://GameLogic/CountryData.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+CountryName = "Country_2"
+CountryColor = Color( 0, 1, 0, 1 )
+CountryBoarder = PoolVector2Array( 523.248, 343.192, 523.997, 325.962, 613.896, 298.992, 616.143, 289.253, 704.543, 297.494, 737.506, 356.677, 759.231, 445.077, 744.248, 478.04, 706.791, 518.494, 679.821, 549.209, 625.133, 547.711, 504.519, 522.24, 425.109, 496.769, 405.631, 457.064, 459.57, 445.826, 512.011, 437.586, 545.723, 417.358, 521.75, 387.392, 513.509, 358.924 )
+Cities = [ Vector2( 639, 427 ) ]
+Submarines = [ Vector2( 400, 550 ) ]
