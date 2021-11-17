@@ -31,7 +31,7 @@ func createGame(gameObject, worldInformation):
 	for countryInfo in worldInformation.Countries:
 		boarders.append(countryInfo.CountryBoarder)
 	var debugShowCountryBoarders = DebugShowCountryBoardersScript.new(boarders)
-	DebugOverlay.add_child(debugShowCountryBoarders)
+	DebugOverlay.addDebugControl(debugShowCountryBoarders)
 
 func _CreateCountry(countryInfo):
 	var country = countryScript.new(countryInfo.CountryName, true, countryInfo.CountryColor)

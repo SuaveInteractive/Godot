@@ -1,27 +1,29 @@
 extends CanvasLayer
 
 # http://kidscancode.org/godot_recipes/ui/debug_overlay/
+# var DebugShowCountryBoardersScript = load("res://Debug/DebugShowCountryBoarders.gd")
 
-var Root : Control = null
+var RootDebugControls : Control = null
 
 func _ready():
 	self.layer = 99
 	
-	Root = Control.new()
-	Root.name = "DebugRoot"
-	Root.visible = false
-	add_child(Root)
+	RootDebugControls = Control.new()
+	RootDebugControls.name = "DebugControls"
+	RootDebugControls.visible = false
+	add_child(RootDebugControls)
 	
-	var checkbutton = CheckButton.new()
-	checkbutton.text = "Show Boarders"	
-	Root.add_child(checkbutton)
+	#var checkbutton = CheckButton.new()
+	#checkbutton.text = "Show Boarders"	
+	#Root.add_child(checkbutton)
 
 func _process(_delta):
 	if Input.is_action_just_pressed("DebugMenuToggle"):
-		Root.visible = !Root.visible
+		RootDebugControls.visible = !RootDebugControls.visible
 
-func add_node(node):
-	Root.add_child(node)
+func addDebugControl(control):
+	RootDebugControls.add_child(control.getControl())
+	add_child(control)
 
 """ Add and remove Properties from the debug Menu """
 func add_property(object, property, display):
