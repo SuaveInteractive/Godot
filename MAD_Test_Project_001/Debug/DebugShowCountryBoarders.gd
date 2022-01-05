@@ -17,7 +17,7 @@ func _init(countriesBoarders):
 		debugPolyline.visible = false
 		add_child(debugPolyline)
 		
-func getControl():
+func getGUIControl():
 	var checkbutton = CheckButton.new()
 	checkbutton.name = "Show Boarders"
 	checkbutton.text = "Show Boarders"	

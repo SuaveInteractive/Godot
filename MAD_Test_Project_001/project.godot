@@ -70,6 +70,8 @@ DebugOverlay="*res://Debug/DebugOverlay.gd"
 [global]
 
 Layer=false
+styles=false
+style=false
 
 [input]
 
