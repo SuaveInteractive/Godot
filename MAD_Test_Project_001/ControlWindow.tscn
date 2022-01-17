@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ControlWindow.gd" type="Script" id=1]
+[ext_resource path="res://Debug/DebugTheme.theme" type="Theme" id=2]
+
+[node name="Window" type="Control"]
+margin_left = -0.594604
+margin_right = 99.4054
+margin_bottom = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_left = 0.594604
+margin_right = 100.595
+margin_bottom = 100.0
+mouse_filter = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CloseButton" type="Button" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -20.0
+margin_bottom = 20.0
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="gui_input" from="." to="." method="_on_Window_gui_input"]
+[connection signal="pressed" from="CloseButton" to="." method="_on_Button_pressed"]

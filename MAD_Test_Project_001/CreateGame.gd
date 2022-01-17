@@ -6,7 +6,9 @@ var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
 var countryScript = load("res://GameLogic/Country.gd")
 var AIOpponentScript = load("res://AI/AIOpponent.gd")
 
+""" DEBUG SETUP """
 var DebugShowCountryBoardersScript = load("res://Debug/DebugShowCountryBoarders.gd")
+var DebugShowAIStateScript = load("res://Debug/AIState/DebugShowAIState.gd")
 
 func createGame(gameObject, worldInformation):
 	# Countries
@@ -23,15 +25,21 @@ func createGame(gameObject, worldInformation):
 	AICountry.Player = false
 		
 	# AIPlayers
+	var AIList = []
 	var AIPlayer_1 = AIOpponentScript.new("AIPlayer_1", AICountry)
 	gameObject.add_child(AIPlayer_1)
+	AIList.push_back(AIPlayer_1)
 	
 	""" Debug """
 	var boarders : Array = []
 	for countryInfo in worldInformation.Countries:
 		boarders.append(countryInfo.CountryBoarder)
-	var debugShowCountryBoarders = DebugShowCountryBoardersScript.new(boarders)
-	DebugOverlay.addDebugControl(debugShowCountryBoarders)
+	var debugControl = DebugShowCountryBoardersScript.new(boarders)
+	DebugOverlay.addDebugControl(debugControl)
+	
+	debugControl = DebugShowAIStateScript.new(AIList)
+	DebugOverlay.addDebugControl(debugControl)
+	
 
 func _CreateCountry(countryInfo):
 	var country = countryScript.new(countryInfo.CountryName, true, countryInfo.CountryColor)

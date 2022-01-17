@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Debug/AIState/DebugAIState.gd" type="Script" id=1]
+[ext_resource path="res://ControlWindow.tscn" type="PackedScene" id=2]
+
+[node name="DebugAIStateWindow" type="Control"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AIStateWindow" parent="." instance=ExtResource( 2 )]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AIStateWindow"]
+margin_top = 25.0
+margin_right = 110.0
+margin_bottom = 63.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionButton" type="OptionButton" parent="AIStateWindow/VBoxContainer"]
+margin_right = 110.0
+margin_bottom = 14.0
+
+[node name="CurrentAction" type="Label" parent="AIStateWindow/VBoxContainer"]
+margin_top = 18.0
+margin_right = 110.0
+margin_bottom = 32.0
+text = "Current AI Action"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="item_selected" from="AIStateWindow/VBoxContainer/OptionButton" to="." method="_on_OptionButton_item_selected"]
