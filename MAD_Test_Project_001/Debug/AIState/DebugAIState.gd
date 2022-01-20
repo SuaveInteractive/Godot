@@ -4,21 +4,27 @@ extends Control
 
 signal WindowClosed()
 
+var AIList = null
+
 func _ready():
-	get_node("AIStateWindow/VBoxContainer/CurrentAction").visible = false
-	#$AIStateWindow.get_close_button().hide()
-	
-	$AIStateWindow/VBoxContainer/OptionButton.add_item("Country 1")
-	$AIStateWindow/VBoxContainer/OptionButton.add_item("Country 2")
-	$AIStateWindow/VBoxContainer/OptionButton.add_item("Country 3")
+	$AIStateWindow/AIStateInfoContainer/CurrentAction.visible = false
 	
 	$AIStateWindow.connect("WindowClosed", self, "OnWindowClosed")
 	
-func _on_OptionButton_item_selected(index):
-	$AIStateWindow/VBoxContainer/CurrentAction.visible = true
+	$AIStateWindow/AIStateInfoContainer.connect("AIStateInfoChanged", self, "OnAIStateInfoChanged")
+	
+func _init():
+	pass
+	
+func SetAIs(aiList):
+	AIList = aiList
+	for ai in AIList:
+		$AIStateWindow/AIStateInfoContainer/OptionButton.add_item(ai.get_name())
+	$AIStateWindow/AIStateInfoContainer.SetAIInformation(AIList[0])
 	
 func OnWindowClosed():
-	hide()
-	queue_free()
-	
+	hide()	
 	emit_signal("WindowClosed")
+	
+func OnAIStateInfoChanged(index):
+	$AIStateWindow/AIStateInfoContainer.SetAIInformation(AIList[index])

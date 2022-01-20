@@ -3,11 +3,13 @@ extends Node2D
 var debugAIStateScene = load("res://Debug/AIState/DebugAIState.tscn")
 
 var checkbutton : CheckButton = null
+var aiList : Array = []
 
 func _ready():
 	pass
 
 func _init(AIList):
+	aiList = AIList
 	self.name = "Debug Show AI State"
 			
 func getGUIControl():
@@ -22,6 +24,7 @@ func getGUIControl():
 func OnButtonToggle(toggle):
 	if toggle:
 		var debugAIStateInstance = debugAIStateScene.instance()
+		debugAIStateInstance.SetAIs(aiList)
 		add_child(debugAIStateInstance)
 	
 		debugAIStateInstance.connect("WindowClosed", self, "OnWindowClosed")
