@@ -1,0 +1,47 @@
+[gd_resource type="Resource" load_steps=6 format=2]
+
+[ext_resource path="res://ResourceDefinition/World/CountryInformation.gd" type="Script" id=1]
+[ext_resource path="res://Textures/WorldTexture.bmp" type="Texture" id=2]
+
+[sub_resource type="Resource" id=1]
+resource_name = "Country 1"
+script = ExtResource( 1 )
+CountryName = "Country_1"
+CountryColor = Color( 1, 0, 0, 1 )
+CountryBoarder = PoolVector2Array( 48.9615, 114.3, 133.724, 89.606, 185.115, 79.5947, 233.836, 106.959, 293.904, 145.669, 306.585, 195.058, 321.936, 221.087, 145.737, 319.865, 101.02, 289.832, 93.6786, 247.784, 55.6357, 207.072, 26.2693, 158.35 )
+Cities = [ Vector2( 190, 190 ) ]
+Submarines = [ Vector2( 630, 130 ) ]
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 1 )
+CountryName = "Country_2"
+CountryColor = Color( 0, 1, 0, 1 )
+CountryBoarder = PoolVector2Array( 523.248, 343.192, 523.997, 325.962, 613.896, 298.992, 616.143, 289.253, 704.543, 297.494, 737.506, 356.677, 759.231, 445.077, 744.248, 478.04, 706.791, 518.494, 679.821, 549.209, 625.133, 547.711, 504.519, 522.24, 425.109, 496.769, 405.631, 457.064, 459.57, 445.826, 512.011, 437.586, 545.723, 417.358, 521.75, 387.392, 513.509, 358.924 )
+Cities = [ Vector2( 639, 427 ) ]
+Submarines = [ Vector2( 400, 550 ) ]
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Resource
+class_name WorldInformation
+
+enum AllianceStatus {ALLIANCESTATUS_ALLIED, ALLIANCESTATUS_NOTALLIED, ALLIANCESTATUS_ATWAR}
+
+export(int) var NumberOfCountries = 0
+export(Array, AllianceStatus) var CountriesAllianceStatus
+export(Array, Resource) var Countries
+export(Array, Resource) var Modifiers # Modifers that apply to the entire world.
+
+export(Texture) var Map = null
+
+func _init():
+	pass
+	
+"
+
+[resource]
+script = SubResource( 3 )
+NumberOfCountries = 0
+CountriesAllianceStatus = [ 1, 1, 1 ]
+Countries = [ SubResource( 1 ), SubResource( 2 ) ]
+Modifiers = [  ]
+Map = ExtResource( 2 )

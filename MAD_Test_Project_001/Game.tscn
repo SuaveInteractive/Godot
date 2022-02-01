@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Textures/WorldTexture.bmp" type="Texture" id=1]
 [ext_resource path="res://GameSaver/GameSaver.gd" type="Script" id=2]
@@ -13,15 +13,14 @@
 [ext_resource path="res://Targets.gd" type="Script" id=11]
 [ext_resource path="res://CreateGame.gd" type="Script" id=12]
 [ext_resource path="res://World.gd" type="Script" id=13]
-[ext_resource path="res://GameLogic/WorldInformation.gd" type="Script" id=14]
-[ext_resource path="res://Data/Country_1.tres" type="Resource" id=15]
+[ext_resource path="res://ResourceDefinition/World/WorldInformation.gd" type="Script" id=14]
 [ext_resource path="res://GameActions.gd" type="Script" id=17]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 14 )
 NumberOfCountries = 0
 CountriesAllianceStatus = [  ]
-Countries = [ ExtResource( 15 ) ]
+Countries = [  ]
 Modifiers = [  ]
 
 [sub_resource type="NavigationPolygon" id=2]
@@ -75,7 +74,6 @@ __meta__ = {
 }
 
 [node name="WaterNavigation" type="Navigation2D" parent="World/WorldMap"]
-visible = false
 
 [node name="OceanNavigationPolygon" type="NavigationPolygonInstance" parent="World/WorldMap/WaterNavigation"]
 visible = false
@@ -83,7 +81,6 @@ position = Vector2( 0, -0.840881 )
 navpoly = SubResource( 2 )
 
 [node name="LandNavigation" type="Navigation2D" parent="World/WorldMap"]
-visible = false
 
 [node name="LandNavigationPolygon" type="NavigationPolygonInstance" parent="World/WorldMap/LandNavigation"]
 visible = false

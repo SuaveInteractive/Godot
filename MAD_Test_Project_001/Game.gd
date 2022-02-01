@@ -3,6 +3,7 @@ extends Node2D
 # https://www.youtube.com/watch?v=Ad6Us73smNs
 
 var nuclearExplosionScene = load("res://GameEntities/NuclearExplosion/NuclearExplosion.tscn")
+const worldInformation = preload("res://Data/World/WorldInformation_1.tres")
 
 var moveSpeed : float = 20.0
 
@@ -19,7 +20,7 @@ var gameAction = Enums.GameActions.NONE
 var actionInfo = null
 
 func _ready():
-	$CreateGame.createGame(self, $"World".WorldInformation)
+	$CreateGame.createGame(self, worldInformation)
 	
 	# Connect to signals
 	Signals.connect("NodeCreate", self, "OnNodeCreated")
