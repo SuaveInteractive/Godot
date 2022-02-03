@@ -11,6 +11,11 @@ var DebugShowCountryBoardersScript = load("res://Debug/DebugShowCountryBoarders.
 var DebugShowAIStateScript = load("res://Debug/AIState/DebugShowAIState.gd")
 
 func createGame(gameObject, worldInformation):
+	# Map
+	#gameObject.get_node("World/WorldMap").set_texture(worldInformation.Map)
+	
+	gameObject.get_node("World").add_child(worldInformation.MapScene.instance())
+	
 	# Countries
 	var newCountries = Array()
 	for countryInfo in worldInformation.Countries:

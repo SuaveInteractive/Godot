@@ -8,5 +8,7 @@ export(Array, AllianceStatus) var CountriesAllianceStatus
 export(Array, Resource) var Countries
 export(Array, Resource) var Modifiers # Modifers that apply to the entire world.
 
-export(Texture) var Map = null
+# Map Information
+export(PackedScene) var MapScene = null
+#export(Texture) var Map = null
 

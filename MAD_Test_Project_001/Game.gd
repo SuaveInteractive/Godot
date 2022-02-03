@@ -3,7 +3,7 @@ extends Node2D
 # https://www.youtube.com/watch?v=Ad6Us73smNs
 
 var nuclearExplosionScene = load("res://GameEntities/NuclearExplosion/NuclearExplosion.tscn")
-const worldInformation = preload("res://Data/World/WorldInformation_1.tres")
+const worldInformation = preload("res://Data/World/WorldInformation_001.tres")
 
 var moveSpeed : float = 20.0
 
