@@ -43,8 +43,6 @@ func createGame(gameObject, worldInformation):
 	DebugOverlay.addDebugControl(debugControl)
 	
 	debugControl = DebugShowAIStateScript.new(AIList)
-	DebugOverlay.addDebugControl(debugControl)
-	
 
 func _CreateCountry(countryInfo):
 	var country = countryScript.new(countryInfo.CountryName, true, countryInfo.CountryColor)

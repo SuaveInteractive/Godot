@@ -37,9 +37,15 @@ func _init(parameters):
 	MouseIcon.scale = parameters.Scale
 	add_child(MouseIcon)
 
+"""
+https://godotforums.org/d/21957-camera-messing-with-getting-the-mouse-position
+
+"""
+
 func _process(_delta):
-	MouseIcon.position = get_viewport().get_mouse_position()
-	
+	# Need to get the Mouse local position
+	MouseIcon.position = get_parent().get_parent().get_global_mouse_position() 
+		
 	var clipPoly : PoolVector2Array = PoolVector2Array()
 	var iconSize : Vector2 = MouseIcon.texture.get_size() * MouseIcon.scale
 	var iconPos : Vector2 = MouseIcon.position
@@ -52,7 +58,7 @@ func _process(_delta):
 	clipPoly.append(topleft)
 	clipPoly.append(topRight)
 	clipPoly.append(BottomRight)
-	clipPoly.append(Bottomleft)	
+	clipPoly.append(Bottomleft)
 	
 	"""
 	Debug

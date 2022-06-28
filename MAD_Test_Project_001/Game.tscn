@@ -1,5 +1,6 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
+[ext_resource path="res://WorldCamera.gd" type="Script" id=1]
 [ext_resource path="res://GameSaver/GameSaver.gd" type="Script" id=2]
 [ext_resource path="res://UI/BuildButton.gd" type="Script" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=4]
@@ -15,61 +16,67 @@
 [ext_resource path="res://ResourceDefinition/World/WorldInformation.gd" type="Script" id=14]
 [ext_resource path="res://GameActions.gd" type="Script" id=17]
 
-[sub_resource type="Resource" id=1]
+[sub_resource type="Theme" id=1]
+
+[sub_resource type="Resource" id=2]
 script = ExtResource( 14 )
 NumberOfCountries = 0
 CountriesAllianceStatus = [  ]
 Countries = [  ]
 Modifiers = [  ]
 
-[sub_resource type="Theme" id=4]
+[node name="ViewportContainer" type="ViewportContainer"]
+margin_right = 1024.0
+margin_bottom = 600.0
+mouse_filter = 2
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Game" type="Node2D"]
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 1024, 600 )
+usage = 0
+render_target_update_mode = 3
+
+[node name="Game" type="Node2D" parent="."]
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_horizontal_guides_": [ -66.4966 ]
 }
 
-[node name="GameSaver" type="Node" parent="."]
+[node name="GameSaver" type="Node" parent="Game"]
 script = ExtResource( 2 )
 
-[node name="CreateGame" type="Node" parent="."]
+[node name="CreateGame" type="Node" parent="Game"]
 script = ExtResource( 12 )
 
-[node name="GameRules" type="Node" parent="."]
+[node name="GameRules" type="Node" parent="Game"]
 script = ExtResource( 7 )
 
-[node name="GameActions" type="Node" parent="."]
+[node name="GameActions" type="Node" parent="Game"]
 script = ExtResource( 17 )
 
-[node name="Targets" type="Node" parent="."]
+[node name="Targets" type="Node" parent="Game"]
 script = ExtResource( 11 )
 
-[node name="LaunchStrike" type="Node" parent="."]
+[node name="LaunchStrike" type="Node" parent="Game"]
 script = ExtResource( 10 )
 
-[node name="World" type="Node" parent="."]
-script = ExtResource( 13 )
-WorldInformation = SubResource( 1 )
+[node name="UI Layer" type="CanvasLayer" parent="Game"]
 
-[node name="Countries" type="Node" parent="World"]
-script = ExtResource( 5 )
-
-[node name="UI Layer" type="CanvasLayer" parent="."]
-
-[node name="UI" type="Control" parent="UI Layer"]
+[node name="UI" type="Control" parent="Game/UI Layer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -3.36359
 margin_right = -3.36359
-mouse_filter = 2
-theme = SubResource( 4 )
+theme = SubResource( 1 )
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="LaunchButton" type="Button" parent="UI Layer/UI"]
+[node name="LaunchButton" type="Button" parent="Game/UI Layer/UI"]
 margin_left = 24.0
 margin_top = 15.0
 margin_right = 96.0
@@ -79,7 +86,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="UnitMenu" type="Control" parent="UI Layer/UI"]
+[node name="UnitMenu" type="Control" parent="Game/UI Layer/UI"]
 margin_left = 705.941
 margin_top = 506.932
 margin_right = 787.941
@@ -89,7 +96,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Move" type="Button" parent="UI Layer/UI/UnitMenu"]
+[node name="Move" type="Button" parent="Game/UI Layer/UI/UnitMenu"]
 visible = false
 margin_right = 50.0
 margin_bottom = 20.0
@@ -98,7 +105,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Target" type="Button" parent="UI Layer/UI/UnitMenu"]
+[node name="Target" type="Button" parent="Game/UI Layer/UI/UnitMenu"]
 visible = false
 margin_top = 25.0
 margin_right = 51.0
@@ -108,7 +115,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Build" type="Button" parent="UI Layer/UI"]
+[node name="Build" type="Button" parent="Game/UI Layer/UI"]
 margin_left = 12.0
 margin_top = 564.37
 margin_right = 98.0
@@ -121,7 +128,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BuildSiloButton" type="Button" parent="UI Layer/UI/Build"]
+[node name="BuildSiloButton" type="Button" parent="Game/UI Layer/UI/Build"]
 visible = false
 margin_left = 32.0
 margin_top = -28.0
@@ -132,7 +139,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PlayerInformation" type="Control" parent="UI Layer/UI"]
+[node name="PlayerInformation" type="Control" parent="Game/UI Layer/UI"]
 margin_left = 120.0
 margin_top = 15.0
 margin_right = 120.0
@@ -141,21 +148,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TopBarInfoContainer" type="HBoxContainer" parent="UI Layer/UI/PlayerInformation"]
+[node name="TopBarInfoContainer" type="HBoxContainer" parent="Game/UI Layer/UI/PlayerInformation"]
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ControlInfoContainer" type="HBoxContainer" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer"]
+[node name="ControlInfoContainer" type="HBoxContainer" parent="Game/UI Layer/UI/PlayerInformation/TopBarInfoContainer"]
 margin_right = 54.0
 margin_bottom = 40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ControlLabel" type="Label" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer"]
+[node name="ControlLabel" type="Label" parent="Game/UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer"]
 margin_top = 13.0
 margin_right = 50.0
 margin_bottom = 27.0
@@ -164,32 +171,32 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ControlValue" type="Label" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer"]
+[node name="ControlValue" type="Label" parent="Game/UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer"]
 margin_left = 54.0
 margin_top = 13.0
 margin_right = 54.0
 margin_bottom = 27.0
 script = ExtResource( 6 )
 
-[node name="FinanceInfoContainer" type="HBoxContainer" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer"]
+[node name="FinanceInfoContainer" type="HBoxContainer" parent="Game/UI Layer/UI/PlayerInformation/TopBarInfoContainer"]
 margin_left = 58.0
 margin_right = 105.0
 margin_bottom = 40.0
 
-[node name="FinanceLable" type="Label" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer"]
+[node name="FinanceLable" type="Label" parent="Game/UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer"]
 margin_top = 13.0
 margin_right = 43.0
 margin_bottom = 27.0
 text = "Money"
 
-[node name="FinanceValue" type="Label" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer"]
+[node name="FinanceValue" type="Label" parent="Game/UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer"]
 margin_left = 47.0
 margin_top = 13.0
 margin_right = 47.0
 margin_bottom = 27.0
 script = ExtResource( 9 )
 
-[node name="ResultLable" type="Label" parent="UI Layer/UI"]
+[node name="ResultLable" type="Label" parent="Game/UI Layer/UI"]
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5
@@ -204,9 +211,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
-[connection signal="button_down" from="UI Layer/UI/LaunchButton" to="." method="_on_Button_button_down"]
-[connection signal="pressed" from="UI Layer/UI/UnitMenu/Move" to="." method="OnMovePressed"]
-[connection signal="pressed" from="UI Layer/UI/UnitMenu/Target" to="." method="TargetPressed"]
-[connection signal="toggled" from="UI Layer/UI/Build" to="UI Layer/UI/Build" method="_on_Build_toggled"]
-[connection signal="pressed" from="UI Layer/UI/Build/BuildSiloButton" to="UI Layer/UI/Build" method="_on_BuildSiloButton_pressed"]
+[node name="World" type="Node" parent="Game"]
+script = ExtResource( 13 )
+WorldInformation = SubResource( 2 )
+
+[node name="Countries" type="Node" parent="Game/World"]
+script = ExtResource( 5 )
+
+[node name="WorldCamera" type="Camera2D" parent="Game"]
+anchor_mode = 0
+current = true
+zoom = Vector2( 0.5, 0.5 )
+limit_left = 0
+limit_top = 0
+limit_smoothed = true
+script = ExtResource( 1 )
+
+[connection signal="OnPostLoad" from="Game/GameSaver" to="Game" method="OnPostLoad"]
+[connection signal="button_down" from="Game/UI Layer/UI/LaunchButton" to="Game" method="_on_Button_button_down"]
+[connection signal="pressed" from="Game/UI Layer/UI/UnitMenu/Move" to="Game" method="OnMovePressed"]
+[connection signal="pressed" from="Game/UI Layer/UI/UnitMenu/Target" to="Game" method="TargetPressed"]
+[connection signal="toggled" from="Game/UI Layer/UI/Build" to="Game/UI Layer/UI/Build" method="_on_Build_toggled"]
+[connection signal="pressed" from="Game/UI Layer/UI/Build/BuildSiloButton" to="Game/UI Layer/UI/Build" method="_on_BuildSiloButton_pressed"]

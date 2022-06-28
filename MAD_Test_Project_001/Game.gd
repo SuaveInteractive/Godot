@@ -19,7 +19,7 @@ var gameAction = Enums.GameActions.NONE
 
 var actionInfo = null
 
-func _ready():
+func _ready():	
 	$CreateGame.createGame(self, worldInformation)
 	
 	# Connect to signals

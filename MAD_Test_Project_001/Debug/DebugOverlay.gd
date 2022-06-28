@@ -6,7 +6,9 @@ var RootDebugControls : Control = null
 var VBox : VBoxContainer = null
 
 func _ready():
-	self.layer = 99
+	self.layer = 99 # To ensure it is drawn on top of everything else.
+	
+	var testViewport = get_viewport()
 		
 	RootDebugControls = Control.new()
 	RootDebugControls.name = "DebugControls"
@@ -27,7 +29,7 @@ func _process(_delta):
 
 func addDebugControl(control):
 	VBox.add_child(control.getGUIControl())
-	add_child(control)
+	get_viewport().add_child(control)
 
 """ Add and remove Properties from the debug Menu """
 func add_property(object, property, display):
