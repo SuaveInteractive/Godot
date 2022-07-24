@@ -28,7 +28,7 @@ func calculateControl() -> int:
 		if child.is_class("City"):
 			var cityPop = child.getPopulation()
 			var per: float  = (float(cityPop)/100)
-			control = control * per
+			control = int(control * per)
 		
 	return control
 	

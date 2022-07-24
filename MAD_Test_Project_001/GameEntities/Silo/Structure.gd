@@ -35,7 +35,7 @@ func _processInfoUI() -> void:
 		$StructureInformationUI/BuildPercentage.visible = false
 		$StructureInformationUI/PauseConstruction.visible = false
 		
-func OnEntitySelected(entity):
+func OnEntitySelected(_entity):
 	Signals.emit_signal("UnitSelected", self)
 	
 func SetStructureState(var state):

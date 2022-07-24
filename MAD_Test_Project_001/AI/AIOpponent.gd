@@ -1,6 +1,7 @@
 extends Node
 
 var controllingCountry = null
+var worldMap = null
 var updateTick := 30
 var currentTick := 30
 
@@ -11,9 +12,10 @@ var heatMap : Array
 #TEMP
 var addedScriptedBehaviour := false
 
-func _init(name, country):
+func _init(name, country, worldMap):
 	self.set_name(name)
 	controllingCountry = country
+	self.worldMap = worldMap
 
 func _process(_delta):
 	currentTick = currentTick + 1
@@ -42,7 +44,7 @@ func runAI() -> void:
 	"""
 	if currentPlans.size() > 0:
 		var command = currentPlans.pop_front()
-		GameCommands.MoveCommand.Navigation_Mesh = get_tree().get_root().get_node("/root/Game/World/WorldMap/WaterNavigation")
+		GameCommands.MoveCommand.Navigation_Mesh = worldMap.get_node("WaterNavigation")
 		GameCommands.MoveCommand.Position_To = Vector2(500, 100)
 		GameCommands.MoveCommand.Selected_Units = [command.args.node]
 		GameCommands.MoveCommand.execute()

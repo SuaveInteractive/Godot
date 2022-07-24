@@ -9,7 +9,7 @@ func _process(_delta):
 	#	pass
 		
 	# Camera Position
-	var movementVec : Vector2
+	var movementVec : Vector2 = Vector2(0.0, 0.0)
 	
 	if Input.is_action_pressed("MoveCamera_Left"):
 		movementVec.x = -1;
@@ -20,6 +20,6 @@ func _process(_delta):
 	if Input.is_action_pressed("MoveCamera_Down"):
 		movementVec.y = 1;
 	
-	movementVec.normalized()
+	movementVec = movementVec.normalized()
 	
 	self.position  = self.position  + (movementVec * _delta) * 240

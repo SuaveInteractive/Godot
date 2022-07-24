@@ -31,7 +31,7 @@ func createGame(gameObject, worldInformation):
 		
 	# AIPlayers
 	var AIList = []
-	var AIPlayer_1 = AIOpponentScript.new("AIPlayer_1", AICountry)
+	var AIPlayer_1 = AIOpponentScript.new("AIPlayer_1", AICountry, gameObject.get_node("World/WorldMap"))
 	gameObject.add_child(AIPlayer_1)
 	AIList.push_back(AIPlayer_1)
 	

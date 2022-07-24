@@ -8,8 +8,6 @@ const worldInformation = preload("res://Data/World/WorldInformation_001.tres")
 var moveSpeed : float = 20.0
 
 var SelectedEntities = []
-var target : Vector2 = Vector2(-1, -1)
-
 
 #enum UnitActions {NONE, MoveAction, PatrolAction, TargetAction}
 var unitAction = Enums.UnitActions.NONE
