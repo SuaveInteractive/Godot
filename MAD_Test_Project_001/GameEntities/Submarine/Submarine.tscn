@@ -27,7 +27,7 @@ shader = SubResource( 1 )
 shader_param/colour = Color( 1, 0, 1, 1 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 2.54907, 11.8963 )
+extents = Vector2( 77.09, 19.0063 )
 
 [node name="Submarine" type="Area2D" groups=[
 "Persistent",
