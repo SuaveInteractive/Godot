@@ -32,7 +32,7 @@ func _process(_delta):
 	if Input.is_action_pressed("ui_MoveAction"):
 		if not SelectedEntities.empty():
 			GameCommands.MoveCommand.Navigation_Mesh = $"World/WorldMap/WaterNavigation"
-			GameCommands.MoveCommand.Position_To = get_viewport().get_mouse_position()
+			GameCommands.MoveCommand.Position_To = get_local_mouse_position()
 			GameCommands.MoveCommand.Selected_Units = SelectedEntities
 			GameCommands.MoveCommand.execute()
 
@@ -44,14 +44,14 @@ func _unhandled_input(event : InputEvent) -> void:
 			for unit in SelectedEntities:
 				var mouseEvent = event as InputEventMouse
 				GameCommands.TargetCommand.Unit_Targeting = SelectedEntities
-				GameCommands.TargetCommand.Target_Position = mouseEvent.position
+				GameCommands.TargetCommand.Target_Position = get_local_mouse_position()
 				GameCommands.TargetCommand.execute()
 			$Targets.showTargets(SelectedEntities)
 			unitAction = Enums.UnitActions.NONE
 		elif unitAction == Enums.UnitActions.MoveAction:
 			if not SelectedEntities.empty():
 				GameCommands.MoveCommand.Navigation_Mesh = $"World/WorldMap/Navigation2D"
-				GameCommands.MoveCommand.Position_To = get_viewport().get_mouse_position()
+				GameCommands.MoveCommand.Position_To = get_local_mouse_position()
 				GameCommands.MoveCommand.Selected_Units = SelectedEntities
 				GameCommands.MoveCommand.execute()
 			unitAction = Enums.UnitActions.NONE
