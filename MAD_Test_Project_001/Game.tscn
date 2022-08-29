@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://WorldCamera.gd" type="Script" id=1]
+[ext_resource path="res://RTSCamera.gd" type="Script" id=1]
 [ext_resource path="res://GameSaver/GameSaver.gd" type="Script" id=2]
 [ext_resource path="res://UI/BuildButton.gd" type="Script" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=4]
@@ -58,13 +58,13 @@ script = ExtResource( 5 )
 
 [node name="WorldCamera" type="Camera2D" parent="."]
 position = Vector2( -45.5566, 17.9797 )
-anchor_mode = 0
 current = true
 zoom = Vector2( 0.5, 0.5 )
 limit_left = 0
 limit_top = 0
 limit_smoothed = true
 script = ExtResource( 1 )
+ZoomLimit_speed = 2.0
 
 [node name="UI Layer" type="CanvasLayer" parent="."]
 
