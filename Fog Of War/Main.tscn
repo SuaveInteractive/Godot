@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://WorldTexture.bmp" type="Texture" id=1]
+[ext_resource path="res://Main.gd" type="Script" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+/* 
+	https://gdscript.com/solutions/shaders-in-godot/ 
+	https://docs.godotengine.org/en/3.3/tutorials/shading/shading_reference/shading_language.html
+	https://docs.godotengine.org/en/stable/classes/class_image.html?highlight=FORMAT_L8#enumerations
+*/
+
+uniform sampler2D mask;
+
+void fragment() 
+{
+	COLOR = texture(TEXTURE, UV);	
+	float grey = 0.21 * COLOR.r + 0.71 * COLOR.g + 0.07 * COLOR.b;
+	vec3 greyMultiplier = vec3(grey);
+	
+	COLOR.rgb = mix(COLOR.rgb, greyMultiplier, texture(mask, UV).r);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+
+[node name="Node2D" type="Sprite"]
+centered = false
+script = ExtResource( 2 )
+
+[node name="WorldTexture" type="Sprite" parent="."]
+material = SubResource( 2 )
+position = Vector2( 145, 10 )
+texture = ExtResource( 1 )
+centered = false
