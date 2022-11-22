@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://FogOfWar/FogOfWar.tscn" type="PackedScene" id=1]
+[ext_resource path="res://WorldTexture.bmp" type="Texture" id=2]
+[ext_resource path="res://Test.gd" type="Script" id=3]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Map" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 2 )
+
+[node name="TestFoW" parent="." instance=ExtResource( 1 )]
