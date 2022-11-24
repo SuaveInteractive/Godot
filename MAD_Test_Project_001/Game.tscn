@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://RTSCamera.gd" type="Script" id=1]
 [ext_resource path="res://GameSaver/GameSaver.gd" type="Script" id=2]
@@ -14,13 +14,14 @@
 [ext_resource path="res://CreateGame.gd" type="Script" id=12]
 [ext_resource path="res://World.gd" type="Script" id=13]
 [ext_resource path="res://ResourceDefinition/World/WorldInformation.gd" type="Script" id=14]
+[ext_resource path="res://World/World2.tscn" type="PackedScene" id=15]
 [ext_resource path="res://GameActions.gd" type="Script" id=17]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 14 )
-NumberOfCountries = 0
-CountriesAllianceStatus = [  ]
 Countries = [  ]
+Units = [  ]
+Buildings = [  ]
 Modifiers = [  ]
 
 [sub_resource type="Theme" id=2]
@@ -209,6 +210,8 @@ text = "YOU XXX"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="World2" parent="." instance=ExtResource( 15 )]
 
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
 [connection signal="button_down" from="UI Layer/UI/LaunchButton" to="." method="_on_Button_button_down"]

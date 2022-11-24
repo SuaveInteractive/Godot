@@ -7,6 +7,8 @@ signal PopulationChanged(population)
 var maxPopulation = 100 setget setPopulation, getPopulation
 var population = 100 setget setPopulation, getPopulation
 
+var CountryBelongsTo : String
+
 func _ready():
 	$DamagedCity.visible = false
 	# Duplicate the shader material so that it's uniforms can be set per object
@@ -35,8 +37,10 @@ func getPopulation():
 	return population
 	
 func setCountry(_country):
-	$CitySprite.get_material().set_shader_param("colour", _country.CountryColour)
-
+	#$CitySprite.get_material().set_shader_param("colour", _country.CountryColour)
+	CountryBelongsTo = _country
+	
+"""
 func save():
 	var save_dict = {
 		"filename" : get_filename(),
@@ -50,3 +54,4 @@ func save():
 func load(_dic):
 	position.x = _dic["pos_x"]
 	position.y = _dic["pos_y"]
+"""

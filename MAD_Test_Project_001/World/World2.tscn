@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://World/WorldModel.gd" type="Script" id=1]
+[ext_resource path="res://World/World2.gd" type="Script" id=2]
+[ext_resource path="res://World/World Controller.gd" type="Script" id=3]
+[ext_resource path="res://World/World View.gd" type="Script" id=4]
+
+[node name="World2" type="Node"]
+script = ExtResource( 2 )
+
+[node name="World View" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="WorldMap" type="Sprite" parent="World View"]
+centered = false
+
+[node name="World Controller" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="World Model" type="Node" parent="World Controller"]
+script = ExtResource( 1 )
+
+[connection signal="WorldBuildingsChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldBuildingsChanged"]
+[connection signal="WorldCountriesChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldCountriesChanged"]
+[connection signal="WorldMapTextureUpdates" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldMapTextureUpdates"]
+[connection signal="WorldUnitsChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldUnitsChanged"]
