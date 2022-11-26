@@ -12,8 +12,9 @@ func _on_World_Model_WorldMapTextureUpdates(texture):
 func _on_World_Model_WorldBuildingsChanged(buildings):
 	for building in buildings:
 		var buildingInstance = cityScene.instance()
-		buildingInstance.position = building.BuildingPosition
+		buildingInstance.position = building.position
 		buildingInstance.z_index = 1
+		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", building.color)
 		add_child(buildingInstance)
 		
 	_updateColours()

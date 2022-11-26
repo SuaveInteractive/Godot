@@ -21,15 +21,14 @@ void fragment()
  "
 
 [sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
 shader = SubResource( 1 )
 shader_param/colour = Color( 1, 0, 1, 1 )
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 27.4903, 15.0686 )
 
-[node name="City" type="Area2D" groups=[
-"Persistent",
-]]
+[node name="City" type="Area2D" groups=["Persistent"]]
 script = ExtResource( 2 )
 
 [node name="CitySprite" type="Sprite" parent="."]

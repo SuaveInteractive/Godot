@@ -14,6 +14,7 @@ var WorldModelResource : Resource = null
 
 var CountryColourDict : Dictionary
 var CountryUnitsArray : Array
+var CountryBuildingArray : Array
 
 class UnitModel:
 	var position : Vector2
@@ -28,7 +29,7 @@ func setWorldModel(worldModelRes : Resource) -> void:
 		
 		_updateCountry(WorldModelResource.Countries)
 		_updateUnits(WorldModelResource.Units)
-		_updateBuildings()
+		_updateBuildings(WorldModelResource.Buildings)
 		emit_signal("WorldMapTextureUpdates", WorldModelResource.Map)
 		
 func _updateCountry(countries):
@@ -47,5 +48,12 @@ func _updateUnits(units):
 					
 	emit_signal("WorldUnitsChanged", CountryUnitsArray)
 	
-func _updateBuildings():
-	emit_signal("WorldBuildingsChanged", WorldModelResource.Buildings)
+func _updateBuildings(buildings):
+	for building in buildings:
+		var buildingModel = UnitModel.new()
+		buildingModel.position = building.BuildingPosition
+		buildingModel.color = CountryColourDict[building.BuildingCountry]
+		
+		CountryBuildingArray.append(buildingModel)
+	
+	emit_signal("WorldBuildingsChanged", CountryBuildingArray)
