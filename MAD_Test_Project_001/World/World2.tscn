@@ -8,19 +8,22 @@
 [node name="World2" type="Node"]
 script = ExtResource( 2 )
 
-[node name="World View" type="Node" parent="."]
-script = ExtResource( 4 )
-
-[node name="WorldMap" type="Sprite" parent="World View"]
-centered = false
-
 [node name="World Controller" type="Node" parent="."]
 script = ExtResource( 3 )
 
 [node name="World Model" type="Node" parent="World Controller"]
 script = ExtResource( 1 )
 
+[node name="World View" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="WorldMap" type="Sprite" parent="World View"]
+centered = false
+
+[connection signal="SelectedEntitiesChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_SelectedEntitiesChanged"]
+[connection signal="UnselectedEntitiesChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_UnselectedEntitiesChanged"]
 [connection signal="WorldBuildingsChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldBuildingsChanged"]
 [connection signal="WorldCountriesChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldCountriesChanged"]
 [connection signal="WorldMapTextureUpdates" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldMapTextureUpdates"]
 [connection signal="WorldUnitsChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldUnitsChanged"]
+[connection signal="UnitSelected" from="World View" to="World Controller" method="_on_World_View_UnitSelected"]

@@ -3,6 +3,8 @@ extends Node
 var cityScene = load("res://GameEntities/City/City.tscn")
 var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
 
+signal UnitSelected(unit)
+
 func _ready():
 	pass
 	
@@ -25,6 +27,9 @@ func _on_World_Model_WorldUnitsChanged(units):
 		unitInstance.position = unit.position
 		unitInstance.z_index = 1
 		unitInstance.get_node("SubmarineSprite").get_material().set_shader_param("colour", unit.color)
+		
+		unitInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
+		
 		add_child(unitInstance)
 		
 	_updateColours()
@@ -39,3 +44,14 @@ func _updateColours():
 	for child in get_children():
 		pass
 		#child.get_material().set_shader_param("colour", country.CountryColour)
+		
+func OnUnitSelected(unit) -> void:
+	emit_signal("UnitSelected", unit)
+
+func _on_World_Model_SelectedEntitiesChanged(selectedEntities):
+	for entity in selectedEntities:
+		entity.setSelected(true)
+		
+func _on_World_Model_UnselectedEntitiesChanged(unselectedEntities):
+	for entity in unselectedEntities:
+		entity.setSelected(false)

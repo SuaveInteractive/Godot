@@ -32,6 +32,7 @@ extents = Vector2( 77.09, 19.0063 )
 
 [node name="Submarine" type="Area2D" groups=["Persistent", "Targetor"]]
 position = Vector2( 630, 130 )
+z_index = 1
 script = ExtResource( 3 )
 
 [node name="SubmarineSprite" type="Sprite" parent="."]
@@ -52,5 +53,3 @@ SelectionArea = Vector2( 38, 10 )
 [node name="MoveNode" parent="." instance=ExtResource( 2 )]
 
 [node name="TargetNode" parent="." instance=ExtResource( 5 )]
-
-[connection signal="input_event" from="." to="." method="_on_Submarine_input_event"]

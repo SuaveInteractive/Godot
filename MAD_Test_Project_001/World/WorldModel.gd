@@ -9,12 +9,16 @@ signal WorldMapTextureUpdates(texture)
 signal WorldCountriesChanged(countries)
 signal WorldUnitsChanged(units)
 signal WorldBuildingsChanged(buildings)
+signal SelectedEntitiesChanged(selectedEntities)
+signal UnselectedEntitiesChanged(unselectedEntities)
 
 var WorldModelResource : Resource = null
 
 var CountryColourDict : Dictionary
 var CountryUnitsArray : Array
 var CountryBuildingArray : Array
+
+var SelectedEntities : Array = []
 
 class UnitModel:
 	var position : Vector2
@@ -57,3 +61,23 @@ func _updateBuildings(buildings):
 		CountryBuildingArray.append(buildingModel)
 	
 	emit_signal("WorldBuildingsChanged", CountryBuildingArray)
+	
+func getSelectedEntities() -> Array:
+	return SelectedEntities
+	
+func setSelectedEntities(entities : Array) -> void:
+	var unselectedEnties = []
+	for selectedEntity in SelectedEntities:
+		var stillSelected = false
+		for entity in entities:	
+			if selectedEntity == entity:
+				 stillSelected = true
+		if not stillSelected:
+			unselectedEnties.append(selectedEntity)
+	
+	SelectedEntities = entities
+	
+	emit_signal("SelectedEntitiesChanged", SelectedEntities)
+	
+	if unselectedEnties.size() > 0:
+		emit_signal("UnselectedEntitiesChanged", unselectedEnties)		
