@@ -1,6 +1,6 @@
 extends Node2D
 
-var WorldScene = preload("res://World/World2.tscn")
+var WorldScene = preload("res://World/World.tscn")
 
 func _ready():
 	var world = WorldScene.instance()

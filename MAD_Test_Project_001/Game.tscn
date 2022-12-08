@@ -1,10 +1,9 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://RTSCamera.gd" type="Script" id=1]
 [ext_resource path="res://GameSaver/GameSaver.gd" type="Script" id=2]
 [ext_resource path="res://UI/BuildButton.gd" type="Script" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=4]
-[ext_resource path="res://Countries.gd" type="Script" id=5]
 [ext_resource path="res://ControlValue.gd" type="Script" id=6]
 [ext_resource path="res://GameRules.gd" type="Script" id=7]
 [ext_resource path="res://UnitMenu.gd" type="Script" id=8]
@@ -12,17 +11,8 @@
 [ext_resource path="res://Launch.gd" type="Script" id=10]
 [ext_resource path="res://Targets.gd" type="Script" id=11]
 [ext_resource path="res://CreateGame.gd" type="Script" id=12]
-[ext_resource path="res://World.gd" type="Script" id=13]
-[ext_resource path="res://ResourceDefinition/World/WorldInformation.gd" type="Script" id=14]
-[ext_resource path="res://World/World2.tscn" type="PackedScene" id=15]
+[ext_resource path="res://World/World.tscn" type="PackedScene" id=15]
 [ext_resource path="res://GameActions.gd" type="Script" id=17]
-
-[sub_resource type="Resource" id=1]
-script = ExtResource( 14 )
-Countries = [  ]
-Units = [  ]
-Buildings = [  ]
-Modifiers = [  ]
 
 [sub_resource type="Theme" id=2]
 
@@ -50,12 +40,7 @@ script = ExtResource( 11 )
 [node name="LaunchStrike" type="Node" parent="."]
 script = ExtResource( 10 )
 
-[node name="World" type="Node" parent="."]
-script = ExtResource( 13 )
-WorldInformation = SubResource( 1 )
-
-[node name="Countries" type="Node" parent="World"]
-script = ExtResource( 5 )
+[node name="World" parent="." instance=ExtResource( 15 )]
 
 [node name="WorldCamera" type="Camera2D" parent="."]
 position = Vector2( -45.5566, 17.9797 )

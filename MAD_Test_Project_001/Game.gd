@@ -27,7 +27,7 @@ func _ready():
 	Signals.connect("CountryWins", self, "OnCountryWins")
 		
 func _process(_delta):
-	$GameRules.checkRules($"World/Countries".getCountries())
+	$GameRules.checkRules($"World/World Controller".getCountries())
 		
 	if Input.is_action_pressed("ui_MoveAction"):
 		if not SelectedEntities.empty():

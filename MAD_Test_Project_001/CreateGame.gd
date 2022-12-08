@@ -12,29 +12,8 @@ var DebugShowAIStateScript = load("res://Debug/AIState/DebugShowAIState.gd")
 
 func createGame(gameObject, worldInformation):
 	# Map
-	#gameObject.get_node("World/WorldMap").set_texture(worldInformation.Map)
-	
-	gameObject.get_node("World").add_child(worldInformation.MapScene.instance())
-	
-	# Countries
-	var newCountries = Array()
-	for countryInfo in worldInformation.Countries:
-		if countryInfo != null:
-			var newCountry = _CreateCountry(countryInfo)
-			newCountries.append(newCountry)
-			gameObject.get_node("World/Countries").add_child(newCountry)
-			
-	
-	""" HARDCODED AI SETUP - Countries shouldn't care about if they are AI or Player controlled """
-	var AICountry = newCountries[1]
-	AICountry.Player = false
-		
-	# AIPlayers
-	var AIList = []
-	var AIPlayer_1 = AIOpponentScript.new("AIPlayer_1", AICountry, gameObject.get_node("World/WorldMap"))
-	gameObject.add_child(AIPlayer_1)
-	AIList.push_back(AIPlayer_1)
-	
+	gameObject.get_node("World/World Controller").loadWorldScene("res://Data/World/WorldInformation_002.tres")
+
 	""" Debug """
 	var boarders : Array = []
 	for countryInfo in worldInformation.Countries:
@@ -42,26 +21,26 @@ func createGame(gameObject, worldInformation):
 	var debugControl = DebugShowCountryBoardersScript.new(boarders)
 	DebugOverlay.addDebugControl(debugControl)
 	
-	debugControl = DebugShowAIStateScript.new(AIList)
+	#debugControl = DebugShowAIStateScript.new(AIList)
 
 func _CreateCountry(countryInfo):
-	var country = countryScript.new(countryInfo.CountryName, true, countryInfo.CountryColor)
+	var country = countryScript.new(countryInfo.CountryName, countryInfo.CountryColor)
 	
 	""" Create Country Boarders """
 	var countryBoarder = _CreateCountryBoarders(countryInfo.CountryBoarder)
 	country.add_child(countryBoarder)
 	
 	""" Create Country Structures """
-	for cityInfo in countryInfo.Cities:
-		if cityInfo != null:
-			var newCity = _CreateCity(cityInfo)
-			country.addCity(newCity)
+	#for cityInfo in countryInfo.Cities:
+	#	if cityInfo != null:
+	#		var newCity = _CreateCity(cityInfo)
+	#		country.addCity(newCity)
 			
 	""" Create Country Units """
-	for subInfo in countryInfo.Submarines:
-		if subInfo != null:
-			var newSub = _CreateSub(subInfo)
-			country.addUnit(newSub)
+	#for subInfo in countryInfo.Submarines:
+	#	if subInfo != null:
+	#		var newSub = _CreateSub(subInfo)
+	#		country.addUnit(newSub)
 	
 	return country
 	

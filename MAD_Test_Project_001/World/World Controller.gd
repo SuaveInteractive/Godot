@@ -1,7 +1,5 @@
 extends Node
 
-var WorldModel : Node = null
-
 func _ready():
 	pass
 	
@@ -9,14 +7,10 @@ func loadWorldScene(worldInformationPath : String) -> void:
 	$"World Model".setWorldModel(load(worldInformationPath))
 	
 func getCountries() -> Array:
-	var countries: Array = []
-	for country in WorldModel.WorldInformation.Countries():
-		countries.push_back(country)
-		
-	return countries
+	return $"World Model".getCountries()
 
 func isPlayerUnit(entity) -> bool:
-	for country in WorldModel.WorldInformation.Countries():
+	for country in $"World Model".getCountries():
 		if country.Player:
 			for countryNode in country.get_children():
 				if countryNode == entity:
@@ -27,7 +21,6 @@ func _unhandled_input(event : InputEvent) -> void:
 	if not event is InputEventMouseButton:
 		return
 	if Input.is_mouse_button_pressed(BUTTON_LEFT):
-		print ("World Controller - _unhandled_input")
 		$"World Model".setSelectedEntities([])
 
 func _on_World_View_UnitSelected(unit):

@@ -14,9 +14,9 @@ signal UnselectedEntitiesChanged(unselectedEntities)
 
 var WorldModelResource : Resource = null
 
-var CountryColourDict : Dictionary
-var CountryUnitsArray : Array
-var CountryBuildingArray : Array
+var CountriesArray : Array setget , getCountries
+var UnitsArray : Array
+var BuildingArray : Array
 
 var SelectedEntities : Array = []
 
@@ -38,7 +38,8 @@ func setWorldModel(worldModelRes : Resource) -> void:
 		
 func _updateCountry(countries):
 	for country in countries:
-		CountryColourDict[country.CountryName] = country.CountryColor
+		var newCountry : Country = Country.new(country.CountryName,  country.CountryColor)
+		CountriesArray.append(newCountry)
 		
 	emit_signal("WorldCountriesChanged", WorldModelResource.Countries)
 	
@@ -46,21 +47,21 @@ func _updateUnits(units):
 	for unit in units:
 		var unitModel = UnitModel.new()
 		unitModel.position = unit.UnitPosition
-		unitModel.color = CountryColourDict[unit.UnitCountry]
+		unitModel.color = getCountryColour(unit.UnitCountry)
 		
-		CountryUnitsArray.append(unitModel)
+		UnitsArray.append(unitModel)
 					
-	emit_signal("WorldUnitsChanged", CountryUnitsArray)
+	emit_signal("WorldUnitsChanged", UnitsArray)
 	
 func _updateBuildings(buildings):
 	for building in buildings:
 		var buildingModel = UnitModel.new()
 		buildingModel.position = building.BuildingPosition
-		buildingModel.color = CountryColourDict[building.BuildingCountry]
+		buildingModel.color = getCountryColour(building.BuildingCountry)
 		
-		CountryBuildingArray.append(buildingModel)
+		BuildingArray.append(buildingModel)
 	
-	emit_signal("WorldBuildingsChanged", CountryBuildingArray)
+	emit_signal("WorldBuildingsChanged", BuildingArray)
 	
 func getSelectedEntities() -> Array:
 	return SelectedEntities
@@ -81,3 +82,15 @@ func setSelectedEntities(entities : Array) -> void:
 	
 	if unselectedEnties.size() > 0:
 		emit_signal("UnselectedEntitiesChanged", unselectedEnties)		
+		
+func getCountries():
+	return CountriesArray
+		
+"""
+HELPER FUNCTIONS
+"""
+func getCountryColour(countryName : String) -> Color:
+	for country in CountriesArray:
+		if country.name == countryName:
+			return country.get_colour()
+	return Color(255)
