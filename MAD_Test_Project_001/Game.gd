@@ -7,8 +7,6 @@ const worldInformation = preload("res://Data/World/WorldInformation_001.tres")
 
 var moveSpeed : float = 20.0
 
-var SelectedEntities = []
-
 #enum UnitActions {NONE, MoveAction, PatrolAction, TargetAction}
 var unitAction = Enums.UnitActions.NONE
 
@@ -27,52 +25,57 @@ func _ready():
 	Signals.connect("CountryWins", self, "OnCountryWins")
 		
 func _process(_delta):
-	$GameRules.checkRules($"World/World Controller".getCountries())
+	var worldController = $"World/World Controller"
+	$GameRules.checkRules(worldController.getCountries())
 		
 	if Input.is_action_pressed("ui_MoveAction"):
-		if not SelectedEntities.empty():
+		var selectedEntities = worldController.getSelectedEntities()
+		if not selectedEntities.empty():
 			GameCommands.MoveCommand.Navigation_Mesh = $"World/WorldMap/WaterNavigation"
 			GameCommands.MoveCommand.Position_To = get_local_mouse_position()
-			GameCommands.MoveCommand.Selected_Units = SelectedEntities
+			GameCommands.MoveCommand.Selected_Units = selectedEntities
 			GameCommands.MoveCommand.execute()
 
 func _unhandled_input(event : InputEvent) -> void:	
 	if not event is InputEventMouseButton:
 		return
+		
+	var worldController = $"World/World Controller"
+	var selectedEntities = worldController.getSelectedEntities()
 	if Input.is_mouse_button_pressed(BUTTON_LEFT):
 		if unitAction == Enums.UnitActions.TargetAction:
-			for unit in SelectedEntities:
+			for unit in selectedEntities:
 				var mouseEvent = event as InputEventMouse
-				GameCommands.TargetCommand.Unit_Targeting = SelectedEntities
+				GameCommands.TargetCommand.Unit_Targeting = selectedEntities
 				GameCommands.TargetCommand.Target_Position = get_local_mouse_position()
 				GameCommands.TargetCommand.execute()
-			$Targets.showTargets(SelectedEntities)
+			$Targets.showTargets(selectedEntities)
 			unitAction = Enums.UnitActions.NONE
 		elif unitAction == Enums.UnitActions.MoveAction:
-			if not SelectedEntities.empty():
+			if not selectedEntities.empty():
 				GameCommands.MoveCommand.Navigation_Mesh = $"World/WorldMap/Navigation2D"
 				GameCommands.MoveCommand.Position_To = get_local_mouse_position()
-				GameCommands.MoveCommand.Selected_Units = SelectedEntities
+				GameCommands.MoveCommand.Selected_Units = selectedEntities
 				GameCommands.MoveCommand.execute()
 			unitAction = Enums.UnitActions.NONE
 		elif unitAction == Enums.UnitActions.NONE:
 			# Clear all the units that were selected
 			$Targets.hideTargets()
-			SelectedEntities = []
+			worldController.setSelectedEntities([])
 			
-			Signals.emit_signal("UnitsSelected", SelectedEntities)
+			Signals.emit_signal("UnitsSelected", selectedEntities)
 
 func _on_Button_button_down():
 	$LaunchStrike.launchStrikeOnTargets($Targets.getTargets())
 
 func OnUnitSetlectedEvent(selectedEntity):
 	if $"World/Countries".isPlayerUnit(selectedEntity):
-			
-		SelectedEntities.append(selectedEntity);
+		pass
+		#SelectedEntities.append(selectedEntity);
 		
-		$Targets.showTargets(SelectedEntities)
+		#$Targets.showTargets(SelectedEntities)
 	
-		Signals.emit_signal("UnitsSelected", SelectedEntities)
+		#Signals.emit_signal("UnitsSelected", SelectedEntities)
 
 func OnCountryWins(country) -> void:
 	get_node("UI Layer/UI/ResultLable").visible = true
@@ -112,7 +115,7 @@ func SetGameAction(gameAction) -> void:
 	self.gameAction = gameAction
 			
 func OnPostLoad():
-	SelectedEntities = []
+	#electedEntities = []
 	unitAction = Enums.UnitActions.NONE
 	$Targets.hideTargets()
 

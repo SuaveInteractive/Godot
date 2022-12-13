@@ -8,6 +8,12 @@ func loadWorldScene(worldInformationPath : String) -> void:
 	
 func getCountries() -> Array:
 	return $"World Model".getCountries()
+	
+func getSelectedEntities() -> Array:
+	return $"World Model".getSelectedEntities()
+	
+func setSelectedEntities(selectedEntities : Array) -> void:
+	$"World Model".setSelectedEntities(selectedEntities)
 
 func isPlayerUnit(entity) -> bool:
 	for country in $"World Model".getCountries():

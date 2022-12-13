@@ -196,8 +196,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="World2" parent="." instance=ExtResource( 15 )]
-
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
 [connection signal="button_down" from="UI Layer/UI/LaunchButton" to="." method="_on_Button_button_down"]
 [connection signal="pressed" from="UI Layer/UI/UnitMenu/Move" to="." method="OnMovePressed"]
