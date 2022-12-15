@@ -31,6 +31,17 @@ func setWorldModel(worldModelRes : Resource) -> void:
 	if WorldModelResource != worldModelRes:
 		WorldModelResource = worldModelRes
 		
+		var landNavInstance : NavigationPolygonInstance = NavigationPolygonInstance.new()
+		landNavInstance.name = "LandNavigation"
+		landNavInstance.set_navigation_polygon(WorldModelResource.LandNavigation)
+
+		var waterNavInstance : NavigationPolygonInstance = NavigationPolygonInstance.new()
+		waterNavInstance.name = "WaterNavigation"
+		waterNavInstance.set_navigation_polygon(WorldModelResource.WaterNavigation)
+				
+		$Navigation.add_child(landNavInstance)
+		$Navigation.add_child(waterNavInstance)
+		
 		_updateCountry(WorldModelResource.Countries)
 		_updateUnits(WorldModelResource.Units)
 		_updateBuildings(WorldModelResource.Buildings)
@@ -62,9 +73,16 @@ func _updateBuildings(buildings):
 		BuildingArray.append(buildingModel)
 	
 	emit_signal("WorldBuildingsChanged", BuildingArray)
-	
+
 func getSelectedEntities() -> Array:
 	return SelectedEntities
+
+func getSelectedUnits() -> Array:
+	var selectedUnits : Array = []
+	for entity in SelectedEntities:
+		selectedUnits.append(entity.owner)
+		
+	return selectedUnits
 	
 func setSelectedEntities(entities : Array) -> void:
 	var unselectedEnties = []
@@ -85,7 +103,10 @@ func setSelectedEntities(entities : Array) -> void:
 		
 func getCountries():
 	return CountriesArray
-		
+
+func getNavPolygon() -> Navigation2D:
+	return $Navigation as Navigation2D
+
 """
 HELPER FUNCTIONS
 """

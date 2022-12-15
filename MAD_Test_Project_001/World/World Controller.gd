@@ -3,17 +3,20 @@ extends Node
 func _ready():
 	pass
 	
-func loadWorldScene(worldInformationPath : String) -> void:
+func loadWorld(worldInformationPath : String) -> void:
 	$"World Model".setWorldModel(load(worldInformationPath))
 	
 func getCountries() -> Array:
 	return $"World Model".getCountries()
 	
-func getSelectedEntities() -> Array:
-	return $"World Model".getSelectedEntities()
+func getSelectedUnits() -> Array:
+	return $"World Model".getSelectedUnits()
 	
 func setSelectedEntities(selectedEntities : Array) -> void:
 	$"World Model".setSelectedEntities(selectedEntities)
+	
+func getNavPolygon() -> Navigation2D:
+	return $"World Model".getNavPolygon()
 
 func isPlayerUnit(entity) -> bool:
 	for country in $"World Model".getCountries():

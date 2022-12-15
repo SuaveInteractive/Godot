@@ -12,14 +12,14 @@ var DebugShowAIStateScript = load("res://Debug/AIState/DebugShowAIState.gd")
 
 func createGame(gameObject, worldInformation):
 	# Map
-	gameObject.get_node("World/World Controller").loadWorldScene("res://Data/World/WorldInformation_002.tres")
+	gameObject.get_node("World/World Controller").loadWorld(worldInformation)
 
 	""" Debug """
-	var boarders : Array = []
-	for countryInfo in worldInformation.Countries:
-		boarders.append(countryInfo.CountryBoarder)
-	var debugControl = DebugShowCountryBoardersScript.new(boarders)
-	DebugOverlay.addDebugControl(debugControl)
+	#var boarders : Array = []
+	#for countryInfo in worldInformation.Countries:
+	#	boarders.append(countryInfo.CountryBoarder)
+	#var debugControl = DebugShowCountryBoardersScript.new(boarders)
+	#DebugOverlay.addDebugControl(debugControl)
 	
 	#debugControl = DebugShowAIStateScript.new(AIList)
 

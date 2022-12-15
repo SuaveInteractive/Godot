@@ -21,6 +21,7 @@ Submarines = [ Vector2( 400, 550 ) ]
 
 [resource]
 script = ExtResource( 1 )
+Version = 0
 Countries = [ SubResource( 1 ), SubResource( 2 ) ]
 Units = [  ]
 Buildings = [  ]

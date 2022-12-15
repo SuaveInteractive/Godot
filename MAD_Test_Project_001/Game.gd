@@ -3,7 +3,7 @@ extends Node2D
 # https://www.youtube.com/watch?v=Ad6Us73smNs
 
 var nuclearExplosionScene = load("res://GameEntities/NuclearExplosion/NuclearExplosion.tscn")
-const worldInformation = preload("res://Data/World/WorldInformation_001.tres")
+var worldDefinition = "res://Data/World/WorldInformation_003.tres"
 
 var moveSpeed : float = 20.0
 
@@ -16,7 +16,7 @@ var gameAction = Enums.GameActions.NONE
 var actionInfo = null
 
 func _ready():	
-	$CreateGame.createGame(self, worldInformation)
+	$CreateGame.createGame(self, worldDefinition)
 	
 	# Connect to signals
 	Signals.connect("NodeCreate", self, "OnNodeCreated")
@@ -28,10 +28,10 @@ func _process(_delta):
 	var worldController = $"World/World Controller"
 	$GameRules.checkRules(worldController.getCountries())
 		
-	if Input.is_action_pressed("ui_MoveAction"):
-		var selectedEntities = worldController.getSelectedEntities()
+	if Input.is_action_just_pressed ("ui_MoveAction"):
+		var selectedEntities = worldController.getSelectedUnits()
 		if not selectedEntities.empty():
-			GameCommands.MoveCommand.Navigation_Mesh = $"World/WorldMap/WaterNavigation"
+			GameCommands.MoveCommand.Navigation_Mesh = worldController.getNavPolygon()
 			GameCommands.MoveCommand.Position_To = get_local_mouse_position()
 			GameCommands.MoveCommand.Selected_Units = selectedEntities
 			GameCommands.MoveCommand.execute()
@@ -41,7 +41,7 @@ func _unhandled_input(event : InputEvent) -> void:
 		return
 		
 	var worldController = $"World/World Controller"
-	var selectedEntities = worldController.getSelectedEntities()
+	var selectedEntities = worldController.getSelectedUnits()
 	if Input.is_mouse_button_pressed(BUTTON_LEFT):
 		if unitAction == Enums.UnitActions.TargetAction:
 			for unit in selectedEntities:
