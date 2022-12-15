@@ -21,20 +21,24 @@ func _ready():
 	# Connect to signals
 	Signals.connect("NodeCreate", self, "OnNodeCreated")
 	Signals.connect("PlayerBuildStructure", self, "OnPlayerBuildStructureEvent")
-	Signals.connect("UnitSelected", self, "OnUnitSetlectedEvent")
 	Signals.connect("CountryWins", self, "OnCountryWins")
 		
 func _process(_delta):
 	var worldController = $"World/World Controller"
-	$GameRules.checkRules(worldController.getCountries())
-		
+	var selectedUnits = worldController.getSelectedUnits()
+	
+	#TODO: Figure out a cleaner way to do this
+	$"UI Layer/UI/UnitMenu".OnUnitsSelected(selectedUnits)
+	
+	$GameRules.checkRules(worldController.getCountries())	
 	if Input.is_action_just_pressed ("ui_MoveAction"):
-		var selectedEntities = worldController.getSelectedUnits()
-		if not selectedEntities.empty():
+		if not selectedUnits.empty():
 			GameCommands.MoveCommand.Navigation_Mesh = worldController.getNavPolygon()
 			GameCommands.MoveCommand.Position_To = get_local_mouse_position()
-			GameCommands.MoveCommand.Selected_Units = selectedEntities
+			GameCommands.MoveCommand.Selected_Units = selectedUnits
 			GameCommands.MoveCommand.execute()
+			
+	
 
 func _unhandled_input(event : InputEvent) -> void:	
 	if not event is InputEventMouseButton:
@@ -67,15 +71,6 @@ func _unhandled_input(event : InputEvent) -> void:
 
 func _on_Button_button_down():
 	$LaunchStrike.launchStrikeOnTargets($Targets.getTargets())
-
-func OnUnitSetlectedEvent(selectedEntity):
-	if $"World/Countries".isPlayerUnit(selectedEntity):
-		pass
-		#SelectedEntities.append(selectedEntity);
-		
-		#$Targets.showTargets(SelectedEntities)
-	
-		#Signals.emit_signal("UnitsSelected", SelectedEntities)
 
 func OnCountryWins(country) -> void:
 	get_node("UI Layer/UI/ResultLable").visible = true

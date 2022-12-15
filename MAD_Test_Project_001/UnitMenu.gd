@@ -5,7 +5,7 @@ extends Control
 onready var selectedNode 
 
 func _ready():
-	Signals.connect("UnitsSelected", self, "OnUnitsSelected")
+	Signals.connect("UnitSelected", self, "OnUnitsSelected")
 
 func _unhandled_input(_event : InputEvent) -> void:	
 	pass
