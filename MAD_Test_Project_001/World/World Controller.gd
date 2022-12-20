@@ -25,6 +25,12 @@ func isPlayerUnit(entity) -> bool:
 				if countryNode == entity:
 					return true
 	return false
+	
+func getCountryBuildArea():
+	return getCountries()[0].Boarder
+	
+func addBuilding(type, position, country):
+	$"World Model".addBuilding(type, position, country)	
 
 func _unhandled_input(event : InputEvent) -> void:	
 	if not event is InputEventMouseButton:

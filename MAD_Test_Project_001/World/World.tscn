@@ -22,8 +22,7 @@ centered = false
 
 [connection signal="SelectedEntitiesChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_SelectedEntitiesChanged"]
 [connection signal="UnselectedEntitiesChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_UnselectedEntitiesChanged"]
-[connection signal="WorldBuildingsChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldBuildingsChanged"]
-[connection signal="WorldCountriesChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldCountriesChanged"]
+[connection signal="WorldBuildingChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldBuildingChanged"]
 [connection signal="WorldMapTextureUpdates" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldMapTextureUpdates"]
 [connection signal="WorldUnitsChanged" from="World Controller/World Model" to="World View" method="_on_World_Model_WorldUnitsChanged"]
 [connection signal="UnitSelected" from="World View" to="World Controller" method="_on_World_View_UnitSelected"]

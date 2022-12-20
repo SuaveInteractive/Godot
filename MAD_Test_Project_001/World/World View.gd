@@ -1,6 +1,7 @@
 extends Node
 
 var cityScene = load("res://GameEntities/City/City.tscn")
+var siloScene = load("res://GameEntities/Silo/Silo.tscn")
 var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
 
 signal UnitSelected(unit)
@@ -11,15 +12,18 @@ func _ready():
 func _on_World_Model_WorldMapTextureUpdates(texture):
 	$WorldMap.texture = texture
 	
-func _on_World_Model_WorldBuildingsChanged(buildings):
-	for building in buildings:
-		var buildingInstance = cityScene.instance()
-		buildingInstance.position = building.position
-		buildingInstance.z_index = 1
+func _on_World_Model_WorldBuildingChanged(building):
+	var buildingInstance = null 
+	if building.type == "silo":
+		buildingInstance = siloScene.instance()
+	else:
+		buildingInstance = cityScene.instance()
+	
+	buildingInstance.position = building.position
+	buildingInstance.z_index = 1
+	if buildingInstance.has_node("CitySprite"):
 		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", building.color)
-		add_child(buildingInstance)
-		
-	_updateColours()
+	add_child(buildingInstance)
 
 func _on_World_Model_WorldUnitsChanged(units):
 	for unit in units:

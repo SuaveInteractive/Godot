@@ -8,7 +8,7 @@ https://miro.com/app/board/uXjVPBx20R0=/
 signal WorldMapTextureUpdates(texture)
 signal WorldCountriesChanged(countries)
 signal WorldUnitsChanged(units)
-signal WorldBuildingsChanged(buildings)
+signal WorldBuildingChanged(building)
 signal SelectedEntitiesChanged(selectedEntities)
 signal UnselectedEntitiesChanged(unselectedEntities)
 
@@ -21,6 +21,7 @@ var BuildingArray : Array
 var SelectedEntities : Array = []
 
 class UnitModel:
+	var type : String
 	var position : Vector2
 	var color : Color
 
@@ -49,7 +50,7 @@ func setWorldModel(worldModelRes : Resource) -> void:
 		
 func _updateCountry(countries):
 	for country in countries:
-		var newCountry : Country = Country.new(country.CountryName,  country.CountryColor)
+		var newCountry : Country = Country.new(country.CountryName,  country.CountryColor, country.CountryBoarder)
 		CountriesArray.append(newCountry)
 		
 	emit_signal("WorldCountriesChanged", WorldModelResource.Countries)
@@ -66,13 +67,18 @@ func _updateUnits(units):
 	
 func _updateBuildings(buildings):
 	for building in buildings:
-		var buildingModel = UnitModel.new()
-		buildingModel.position = building.BuildingPosition
-		buildingModel.color = getCountryColour(building.BuildingCountry)
-		
-		BuildingArray.append(buildingModel)
+		addBuilding("Blah", building.BuildingPosition, building.BuildingCountry)
 	
-	emit_signal("WorldBuildingsChanged", BuildingArray)
+	
+func addBuilding(buildingType, buildingPosition, buildingCountry):
+	var buildingModel = UnitModel.new()
+	buildingModel.type = buildingType
+	buildingModel.position = buildingPosition
+	buildingModel.color = getCountryColour(buildingCountry)
+	
+	BuildingArray.append(buildingModel)
+	
+	emit_signal("WorldBuildingChanged", buildingModel)
 
 func getSelectedEntities() -> Array:
 	return SelectedEntities

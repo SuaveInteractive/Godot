@@ -30,7 +30,8 @@ func _ready():
 
 func _init(parameters):
 	Params = parameters
-	BuildArea = parameters.BuildCountry.get_node("Boarder").polygon
+	Params.BuildCountry = parameters.BuildCountry
+	BuildArea = parameters.BuildArea
 	MouseIcon = Sprite.new()
 	MouseIcon.z_index = 10
 	MouseIcon.texture = load(parameters.Texture)

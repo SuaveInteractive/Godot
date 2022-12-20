@@ -91,8 +91,11 @@ func OnNodeCreated(_type, _obj) -> void:
 func OnPlayerBuildStructureEvent(buildInfo):
 	SetGameAction(Enums.GameActions.BuildAction)
 	actionInfo = buildInfo	
-	var playerCountry = $"World/Countries".get_child(0)
-	actionInfo.BuildCountry = playerCountry
+	
+	var worldController = $"World/World Controller"
+	actionInfo.BuildCountry = worldController.getCountries()[0]
+	actionInfo.BuildArea = worldController.getCountryBuildArea()
+	actionInfo.WorldController = worldController
 	$GameActions.startAction(actionInfo)
 
 func OnTargetReached(target, hits):
