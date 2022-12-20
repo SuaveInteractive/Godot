@@ -67,8 +67,7 @@ func _updateUnits(units):
 	
 func _updateBuildings(buildings):
 	for building in buildings:
-		addBuilding("Blah", building.BuildingPosition, building.BuildingCountry)
-	
+		addBuilding(building.BuildingType, building.BuildingPosition, building.BuildingCountry)
 	
 func addBuilding(buildingType, buildingPosition, buildingCountry):
 	var buildingModel = UnitModel.new()

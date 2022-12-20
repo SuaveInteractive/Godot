@@ -10,9 +10,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 63.0278, 5.50212 )
 
-[node name="Silo" type="Area2D" groups=[
-"Targetor",
-]]
+[node name="Silo" type="Area2D" groups=["Targetor"]]
 scale = Vector2( 0.75, 0.75 )
 z_index = 1
 script = ExtResource( 5 )

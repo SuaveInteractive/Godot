@@ -14,16 +14,20 @@ func _on_World_Model_WorldMapTextureUpdates(texture):
 	
 func _on_World_Model_WorldBuildingChanged(building):
 	var buildingInstance = null 
-	if building.type == "silo":
+	if building.type == "Silo":
 		buildingInstance = siloScene.instance()
 	else:
 		buildingInstance = cityScene.instance()
 	
 	buildingInstance.position = building.position
 	buildingInstance.z_index = 1
+	add_child(buildingInstance)
+	
+	if buildingInstance.has_node("Selection"):
+		buildingInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
+	
 	if buildingInstance.has_node("CitySprite"):
 		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", building.color)
-	add_child(buildingInstance)
 
 func _on_World_Model_WorldUnitsChanged(units):
 	for unit in units:
