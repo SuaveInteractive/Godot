@@ -16,6 +16,7 @@ export(ImageTexture) var SelectionSprite setget setSelectionSprite
 export(Vector2) var SelectionArea = Vector2(1, 1) setget setSelectionArea
 
 signal EntitySelected(entity)
+signal EntityDeselected(entity)
 
 var SelectionImageSize : Vector2 = Vector2(100, 100)
 var DefaultSelectionSize : Vector2 = Vector2(1, 1) * 2
@@ -29,6 +30,9 @@ func _ready():
 					
 func setSelected(selected: bool) -> void:
 	$SelectedSprite.visible = selected
+	
+	if selected == false:
+		emit_signal("EntityDeselected", self)
 	
 func _unhandled_input(event : InputEvent) -> void:	
 	if not event is InputEventMouseButton:

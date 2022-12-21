@@ -9,9 +9,6 @@ var _structureState = StructureStateEnum.STRUCTURE_CONSTRUCTING setget SetStruct
 var _elapsedContructionTime : float = 0
 
 func _ready():
-	Signals.connect("UnitsSelected", self, "OnUnitsSelected")
-	$Selection.connect("EntitySelected", self, "OnEntitySelected")
-	
 	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTING:
 		$Sprite.visible = false
 		$Construction.visible = true
@@ -35,9 +32,6 @@ func _processInfoUI() -> void:
 		$StructureInformationUI/BuildPercentage.visible = false
 		$StructureInformationUI/PauseConstruction.visible = false
 		
-func OnEntitySelected(_entity):
-	Signals.emit_signal("UnitSelected", self)
-	
 func SetStructureState(var state):
 	_structureState = state
 	
@@ -54,19 +48,16 @@ func setShowInfoUI(show: bool) -> void:
 	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTING:
 		$StructureInformationUI/BuildPercentage.visible = show
 		$StructureInformationUI/PauseConstruction.visible = show
-	
-func OnUnitsSelected(units: Array) -> void:
-	if units.empty():
-		$Selection.setSelected(false)
-		setShowInfoUI(false)
-	else:
-		for unit in units:
-			if unit == self:
-				$Selection.setSelected(true)
-				setShowInfoUI(true)
-				
+		
 func onPauseConstructionPressed():
 	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTION_PAUSED:
 		_structureState = StructureStateEnum.STRUCTURE_CONSTRUCTING
 	else:
 		_structureState = StructureStateEnum.STRUCTURE_CONSTRUCTION_PAUSED
+
+
+func _on_Selection_EntitySelected(entity):
+	setShowInfoUI(true)
+
+func _on_Selection_EntityDeselected(entity):
+	setShowInfoUI(false)
