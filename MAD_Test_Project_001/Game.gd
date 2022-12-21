@@ -7,7 +7,6 @@ var worldDefinition = "res://Data/World/WorldInformation_003.tres"
 
 var moveSpeed : float = 20.0
 
-#enum UnitActions {NONE, MoveAction, PatrolAction, TargetAction}
 var unitAction = Enums.UnitActions.NONE
 
 #enum GameActions {NONE, BuildAction}
@@ -80,7 +79,14 @@ func OnCountryWins(country) -> void:
 		get_node("UI Layer/UI/ResultLable").text = "YOU LOSE"
 		
 func TargetPressed():
-	unitAction = Enums.UnitActions.TargetAction
+	var worldController = $"World/World Controller"
+	var selectedUnits = worldController.getSelectedUnits()
+	
+	var actionInfo = {"ActionName": "Target", "Targetors": selectedUnits}
+	
+	actionInfo.WorldController = worldController
+	actionInfo.Targetor = null
+	$GameActions.startAction(actionInfo)
 	
 func OnMovePressed():
 	unitAction = Enums.UnitActions.MoveAction

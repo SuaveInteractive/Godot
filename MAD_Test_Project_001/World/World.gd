@@ -10,5 +10,4 @@ func _input_event(viewport, event, shape_idx):
 		return
 		
 	if event.button_index == BUTTON_LEFT:
-		print ("World - _input_event")
 		emit_signal("EntitySelected", self)
