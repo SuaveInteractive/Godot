@@ -12,10 +12,10 @@ var heatMap : Array
 #TEMP
 var addedScriptedBehaviour := false
 
-func _init(name, country, worldMap):
+func _init(name, country, _worldMap):
 	self.set_name(name)
 	controllingCountry = country
-	self.worldMap = worldMap
+	self.worldMap = _worldMap
 
 func _process(_delta):
 	currentTick = currentTick + 1

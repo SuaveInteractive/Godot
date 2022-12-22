@@ -35,6 +35,7 @@ func _on_World_Model_WorldBuildingChanged(building):
 func _on_World_Model_WorldUnitsChanged(units):
 	for unit in units:
 		var unitInstance = submarineScene.instance()
+		unit.node = unitInstance
 		unit.instanceID = unitInstance.get_instance_id ()
 		
 		unitInstance.position = unit.position

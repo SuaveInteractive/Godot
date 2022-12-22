@@ -10,11 +10,11 @@ func _init(parameters):
 func _process(_delta):
 	pass
 
-func launchStrikeOnTargets(_targetList : Dictionary):
-	for instanceID in _targetList:
-		var targets = _targetList[instanceID]
+func launchStrikeOnTargets(targetors : Array):
+	for targetor in targetors:
+		var targets = targetor.targets
 		for target in targets:
-			var from = worldController.getPosition(instanceID)
+			var from = worldController.getPosition(targetor.node)
 			worldController.launchMissile(from, target)
 			
 			

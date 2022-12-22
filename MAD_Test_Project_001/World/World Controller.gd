@@ -43,11 +43,11 @@ func addBuilding(type, position, country):
 func addTarget(targetorID, targetPos):
 	WorldModel.addTarget(targetorID, targetPos)
 	
-func getTargets():
+func getTargets() -> Array:
 	return WorldModel.getTargets()
 	
-func getPosition(instanceID):
-	return WorldModel.getPosition(instanceID)
+func getPosition(node2D : Node2D) -> Vector2:
+	return WorldModel.getPosition(node2D)
 	
 func launchMissile(from, target):
 	WorldModel.launchMissile(from, target)

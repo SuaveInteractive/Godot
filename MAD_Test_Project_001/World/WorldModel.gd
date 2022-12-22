@@ -27,6 +27,7 @@ var SelectedEntities : Array = []
 
 class UnitModel:
 	var instanceID : int
+	var node : Node2D
 	var type : String
 	var position : Vector2
 	var color : Color
@@ -97,16 +98,16 @@ func addTarget(targetorID, targetPos):
 		targetor.targets.append(targetPos)
 		emit_signal("TargetAdded", targetorID, targetPos)
 		
-func getTargets():
-	var targets : Dictionary 
+func getTargets() -> Array:
+	var targets : Array 
 	
 	for unit in UnitsArray:
 		if unit.targets.size() > 0:
-			targets[String(unit.instanceID)] = unit.targets
+			targets.append(unit)
 	
 	for building in BuildingArray:
 		if building.targets.size() > 0:
-			targets[String(building.instanceID)] = building.targets	
+			targets.append(building)
 	
 	return targets
 
@@ -121,18 +122,8 @@ func getEntity(objectID):
 	
 	return null
 	
-func getPosition(instanceID):
-	var pos : Vector2
-	
-	for unit in UnitsArray:
-		if unit.instanceID == instanceID.to_int():
-			pos = unit.position
-	
-	for building in BuildingArray:
-		if building.instanceID == instanceID.to_int():
-			pos = building.position
-	
-	return pos
+func getPosition(node2D : Node2D) -> Vector2:
+	return node2D.position
 	
 func launchMissile(source, target):
 	var missileModel = MissileModel.new()
