@@ -1,6 +1,6 @@
 extends "res://GameCommand/GameCommand.gd"
 
-var TargetorIDs : Array
+var SelectedUnits : Array
 var Target_Position : Vector2
 var WorldController : Node
 
@@ -8,10 +8,10 @@ func _ready():
 	Command_Name = "Target_Command"
 	
 func execute() -> bool:
-	if TargetorIDs.empty():
+	if SelectedUnits.empty():
 		return false
 	
-	for targetorID in TargetorIDs:
-		WorldController.addTarget(targetorID, Target_Position)
+	for selectedUnit in SelectedUnits:
+		WorldController.addTarget(selectedUnit, Target_Position)
 		
 	return false

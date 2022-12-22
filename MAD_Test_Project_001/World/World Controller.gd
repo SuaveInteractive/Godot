@@ -13,13 +13,7 @@ func getCountries() -> Array:
 	
 func getSelectedUnits() -> Array:
 	return $"World Model".getSelectedUnits()
-	
-func getSelectedIDs() -> Array:
-	var selectedIDs = []
-	for unit in WorldModel.getSelectedUnits():
-		selectedIDs.append(unit.get_instance_id())
-	return selectedIDs
-	
+		
 func setSelectedEntities(selectedEntities : Array) -> void:
 	$"World Model".setSelectedEntities(selectedEntities)
 	
@@ -40,8 +34,8 @@ func getCountryBuildArea():
 func addBuilding(type, position, country):
 	$"World Model".addBuilding(type, position, country)	
 	
-func addTarget(targetorID, targetPos):
-	WorldModel.addTarget(targetorID, targetPos)
+func addTarget(selectedUnit, targetPos):
+	WorldModel.addTarget(selectedUnit, targetPos)
 	
 func getTargets() -> Array:
 	return WorldModel.getTargets()

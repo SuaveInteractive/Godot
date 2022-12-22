@@ -71,18 +71,16 @@ func _on_World_Model_UnselectedEntitiesChanged(unselectedEntities):
 	for entity in unselectedEntities:
 		entity.setSelected(false)
 
-func _on_World_Model_TargetAdded(instanceID, position):
-	for child in get_children():
-		if child.get_instance_id() == instanceID:
-			var targetInstance = targetScene.instance()
-			targetInstance.position = position
-			targetInstance.set_name("target")
-			
-			var targetNode = child.get_node("TargetNode")
-			if targetNode != null:
-				targetNode.add_child(targetInstance)
-			else:
-				child.add_child(targetInstance)
+func _on_World_Model_TargetAdded(selectedUnit, position):
+	var targetInstance = targetScene.instance()
+	targetInstance.position = position
+	targetInstance.set_name("target")
+	
+	var targetNode = selectedUnit.get_node("TargetNode")
+	if targetNode != null:
+		targetNode.add_child(targetInstance)
+	else:
+		selectedUnit.add_child(targetInstance)
 
 func _on_World_Model_WorldMissilesChanged(missiles):
 	for missile in missiles:

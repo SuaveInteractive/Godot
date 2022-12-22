@@ -87,12 +87,11 @@ func OnCountryWins(country) -> void:
 		
 func TargetPressed():
 	var worldController = $"World/World Controller"
-	var selectedIDs = worldController.getSelectedIDs()
+	var selectedUnits = worldController.getSelectedUnits()
 	
-	var actionInfo = {"ActionName": "TargetAction", "TargetorIDs": selectedIDs}
+	var actionInfo = {"ActionName": "TargetAction", "SelectedUnits": selectedUnits}
 	
 	actionInfo.WorldController = worldController
-	actionInfo.Targetor = null
 	$GameActions.startAction(actionInfo)
 	
 func OnMovePressed():

@@ -13,7 +13,7 @@ signal WorldMissilesChanged(missiles)
 
 signal SelectedEntitiesChanged(selectedEntities)
 signal UnselectedEntitiesChanged(unselectedEntities)
-signal TargetAdded(instance, position)
+signal TargetAdded(selectedUnit, position)
 
 
 var WorldModelResource : Resource = null
@@ -26,17 +26,22 @@ var MissileArray : Array
 var SelectedEntities : Array = []
 
 class UnitModel:
-	var instanceID : int
-	var node : Node2D
 	var type : String
 	var position : Vector2
 	var color : Color
 	var targets : Array
 	
-class MissileModel:
+	# The following data gets filled out once thers is a Node2D created for this object
 	var instanceID : int
+	var node : Node2D
+	
+class MissileModel:
 	var source : Vector2
 	var target : Vector2
+	
+	# The following data gets filled out once thers is a Node2D created for this object
+	var instanceID : int
+	var node : Node2D
 	
 func _ready():
 	pass
@@ -92,11 +97,10 @@ func addBuilding(buildingType, buildingPosition, buildingCountry):
 	
 	emit_signal("WorldBuildingChanged", buildingModel)
 	
-func addTarget(targetorID, targetPos):
-	var targetor = getEntity(targetorID)
-	if targetor != null:
-		targetor.targets.append(targetPos)
-		emit_signal("TargetAdded", targetorID, targetPos)
+func addTarget(selectedUnit, targetPos):
+	var modelData = getModelDataFromNode(selectedUnit)
+	modelData.targets.append(targetPos)
+	emit_signal("TargetAdded", selectedUnit, targetPos)
 		
 func getTargets() -> Array:
 	var targets : Array 
@@ -111,13 +115,13 @@ func getTargets() -> Array:
 	
 	return targets
 
-func getEntity(objectID):
+func getModelDataFromNode(node):
 	for unit in UnitsArray:
-		if unit.instanceID == objectID:
+		if unit.node == node:
 			return unit
 	
 	for building in BuildingArray:
-		if building.instanceID == objectID:
+		if building.node == node:
 			return building
 	
 	return null
