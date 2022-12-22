@@ -14,7 +14,11 @@ var gameAction = Enums.GameActions.NONE
 
 var actionInfo = null
 
+var WorldController
+
 func _ready():	
+	WorldController = $"World/World Controller"
+	
 	$CreateGame.createGame(self, worldDefinition)
 	
 	# Connect to signals
@@ -47,13 +51,14 @@ func _unhandled_input(event : InputEvent) -> void:
 	var selectedEntities = worldController.getSelectedUnits()
 	if Input.is_mouse_button_pressed(BUTTON_LEFT):
 		if unitAction == Enums.UnitActions.TargetAction:
-			for unit in selectedEntities:
-				var mouseEvent = event as InputEventMouse
-				GameCommands.TargetCommand.Unit_Targeting = selectedEntities
-				GameCommands.TargetCommand.Target_Position = get_local_mouse_position()
-				GameCommands.TargetCommand.execute()
-			$Targets.showTargets(selectedEntities)
-			unitAction = Enums.UnitActions.NONE
+			pass
+		#	for unit in selectedEntities:
+		#		var mouseEvent = event as InputEventMouse
+		#		GameCommands.TargetCommand.Unit_Targeting = selectedEntities
+		#		GameCommands.TargetCommand.Target_Position = get_local_mouse_position()
+		#		GameCommands.TargetCommand.execute()
+		#	$Targets.showTargets(selectedEntities)
+		#	unitAction = Enums.UnitActions.NONE
 		elif unitAction == Enums.UnitActions.MoveAction:
 			if not selectedEntities.empty():
 				GameCommands.MoveCommand.Navigation_Mesh = $"World/WorldMap/Navigation2D"
@@ -63,13 +68,15 @@ func _unhandled_input(event : InputEvent) -> void:
 			unitAction = Enums.UnitActions.NONE
 		elif unitAction == Enums.UnitActions.NONE:
 			# Clear all the units that were selected
-			$Targets.hideTargets()
+			#$Targets.hideTargets()
 			worldController.setSelectedEntities([])
 			
 			Signals.emit_signal("UnitsSelected", selectedEntities)
 
 func _on_Button_button_down():
-	$LaunchStrike.launchStrikeOnTargets($Targets.getTargets())
+	var targets = WorldController.getTargets()
+	
+	$LaunchStrike.launchStrikeOnTargets(targets)
 
 func OnCountryWins(country) -> void:
 	get_node("UI Layer/UI/ResultLable").visible = true
@@ -80,9 +87,9 @@ func OnCountryWins(country) -> void:
 		
 func TargetPressed():
 	var worldController = $"World/World Controller"
-	var selectedUnits = worldController.getSelectedUnits()
+	var selectedIDs = worldController.getSelectedIDs()
 	
-	var actionInfo = {"ActionName": "Target", "Targetors": selectedUnits}
+	var actionInfo = {"ActionName": "Target", "TargetorIDs": selectedIDs}
 	
 	actionInfo.WorldController = worldController
 	actionInfo.Targetor = null
@@ -121,7 +128,7 @@ func SetGameAction(gameAction) -> void:
 func OnPostLoad():
 	#electedEntities = []
 	unitAction = Enums.UnitActions.NONE
-	$Targets.hideTargets()
+	#$Targets.hideTargets()
 
 # https://docs.godotengine.org/en/3.1/tutorials/io/saving_games.html
 # C:\Users\Manix\AppData\Roaming\Godot\app_userdata\MAD_Test_Project_001

@@ -31,9 +31,6 @@ script = ExtResource( 12 )
 [node name="GameRules" type="Node" parent="."]
 script = ExtResource( 7 )
 
-[node name="GameActions" type="Node" parent="."]
-script = ExtResource( 17 )
-
 [node name="Targets" type="Node" parent="."]
 script = ExtResource( 11 )
 
@@ -51,6 +48,9 @@ limit_top = 0
 limit_smoothed = true
 script = ExtResource( 1 )
 ZoomLimit_speed = 2.0
+
+[node name="GameActions" type="Node" parent="."]
+script = ExtResource( 17 )
 
 [node name="UI Layer" type="CanvasLayer" parent="."]
 

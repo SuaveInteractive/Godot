@@ -1,13 +1,13 @@
 extends Node
 
-var targetors : Array 
+var targetorIDs : Array 
 var worldController : Node
 
 func _ready():
 	pass
 
 func _init(parameters):
-	targetors = parameters.Targetors
+	targetorIDs = parameters.TargetorIDs
 	worldController = parameters.WorldController
 	
 func _process(_delta):
@@ -18,7 +18,8 @@ func _unhandled_input(event : InputEvent) -> void:
 		return
 	if Input.is_action_just_pressed ("Mouse_Select") == true:
 		GameCommands.TargetCommand.Target_Position = get_parent().get_parent().get_global_mouse_position() 
-		GameCommands.TargetCommand.Units_Targeting = targetors
+		GameCommands.TargetCommand.WorldController = worldController
+		GameCommands.TargetCommand.TargetorIDs = targetorIDs
 		GameCommands.TargetCommand.execute()
 			
 		get_tree().set_input_as_handled()

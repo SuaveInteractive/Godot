@@ -11,6 +11,7 @@ signal WorldUnitsChanged(units)
 signal WorldBuildingChanged(building)
 signal SelectedEntitiesChanged(selectedEntities)
 signal UnselectedEntitiesChanged(unselectedEntities)
+signal TargetAdded(instance, position)
 
 var WorldModelResource : Resource = null
 
@@ -21,9 +22,11 @@ var BuildingArray : Array
 var SelectedEntities : Array = []
 
 class UnitModel:
+	var instanceID : int
 	var type : String
 	var position : Vector2
 	var color : Color
+	var targets : Array
 
 func _ready():
 	pass
@@ -78,6 +81,36 @@ func addBuilding(buildingType, buildingPosition, buildingCountry):
 	BuildingArray.append(buildingModel)
 	
 	emit_signal("WorldBuildingChanged", buildingModel)
+	
+func addTarget(targetorID, targetPos):
+	var targetor = getEntity(targetorID)
+	if targetor != null:
+		targetor.targets.append(targetPos)
+		emit_signal("TargetAdded", targetorID, targetPos)
+		
+func getTargets():
+	var targets : Dictionary 
+	
+	for unit in UnitsArray:
+		if unit.targets.size() > 0:
+			targets[String(unit.instanceID)] = unit.targets
+	
+	for building in BuildingArray:
+		if building.targets.size() > 0:
+			targets[String(building.instanceID)] = building.targets	
+	
+	return targets
+
+func getEntity(objectID):
+	for unit in UnitsArray:
+		if unit.instanceID == objectID:
+			return unit
+	
+	for building in BuildingArray:
+		if building.instanceID == objectID:
+			return building
+	
+	return null
 
 func getSelectedEntities() -> Array:
 	return SelectedEntities
@@ -101,7 +134,8 @@ func setSelectedEntities(entities : Array) -> void:
 	
 	SelectedEntities = entities
 	
-	emit_signal("SelectedEntitiesChanged", SelectedEntities)
+	if SelectedEntities.size() > 0:
+		emit_signal("SelectedEntitiesChanged", SelectedEntities)
 	
 	if unselectedEnties.size() > 0:
 		emit_signal("UnselectedEntitiesChanged", unselectedEnties)		

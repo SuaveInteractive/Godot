@@ -1,7 +1,9 @@
 extends Node
 
+var WorldModel : Node = null
+
 func _ready():
-	pass
+	WorldModel = $"World Model"
 	
 func loadWorld(worldInformationPath : String) -> void:
 	$"World Model".setWorldModel(load(worldInformationPath))
@@ -11,6 +13,12 @@ func getCountries() -> Array:
 	
 func getSelectedUnits() -> Array:
 	return $"World Model".getSelectedUnits()
+	
+func getSelectedIDs() -> Array:
+	var selectedIDs = []
+	for unit in WorldModel.getSelectedUnits():
+		selectedIDs.append(unit.get_instance_id())
+	return selectedIDs
 	
 func setSelectedEntities(selectedEntities : Array) -> void:
 	$"World Model".setSelectedEntities(selectedEntities)
@@ -31,6 +39,12 @@ func getCountryBuildArea():
 	
 func addBuilding(type, position, country):
 	$"World Model".addBuilding(type, position, country)	
+	
+func addTarget(targetorID, targetPos):
+	WorldModel.addTarget(targetorID, targetPos)
+	
+func getTargets():
+	return WorldModel.getTargets()
 
 func _unhandled_input(event : InputEvent) -> void:	
 	if not event is InputEventMouseButton:

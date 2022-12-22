@@ -53,3 +53,6 @@ SelectionArea = Vector2( 38, 10 )
 [node name="MoveNode" parent="." instance=ExtResource( 2 )]
 
 [node name="TargetNode" parent="." instance=ExtResource( 5 )]
+
+[connection signal="EntityDeselected" from="Selection" to="TargetNode" method="_on_Selection_EntityDeselected"]
+[connection signal="EntitySelected" from="Selection" to="TargetNode" method="_on_Selection_EntitySelected"]
