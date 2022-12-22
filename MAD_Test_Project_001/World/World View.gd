@@ -4,6 +4,7 @@ var cityScene = load("res://GameEntities/City/City.tscn")
 var siloScene = load("res://GameEntities/Silo/Silo.tscn")
 var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
 var targetScene = load("res://GameEntities/Target/Target.tscn")
+var missileScene = load("res://GameEntities/Missile/Missile.tscn")
 
 signal UnitSelected(unit)
 
@@ -81,3 +82,11 @@ func _on_World_Model_TargetAdded(instanceID, position):
 				targetNode.add_child(targetInstance)
 			else:
 				child.add_child(targetInstance)
+
+func _on_World_Model_WorldMissilesChanged(missiles):
+	for missile in missiles:
+		var missileInstance = missileScene.instance()
+		missileInstance.set_name("missile")
+		missileInstance.setTarget(missile.target)
+		missileInstance.position = missile.source
+		add_child(missileInstance)

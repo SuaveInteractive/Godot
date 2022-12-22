@@ -7,7 +7,8 @@ var CurrentAction = null
 func _ready():
 	ActionDic["BuildAction"] = preload("res://GameActions/BuildAction.gd")
 	ActionDic["MoveUnitAction"] = preload("res://GameActions/MoveUnitAction.gd")
-	ActionDic["Target"] = preload("res://GameActions/TargetAction.gd")
+	ActionDic["TargetAction"] = preload("res://GameActions/TargetAction.gd")
+	ActionDic["LaunchStrikeAction"] = preload("res://GameActions/LaunchStrikeAction.gd")
 
 	Signals.connect("EndGameAction", self, "OnEndGameAction")
 	

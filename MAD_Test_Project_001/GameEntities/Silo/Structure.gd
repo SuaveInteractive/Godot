@@ -56,8 +56,8 @@ func onPauseConstructionPressed():
 		_structureState = StructureStateEnum.STRUCTURE_CONSTRUCTION_PAUSED
 
 
-func _on_Selection_EntitySelected(entity):
+func _on_Selection_EntitySelected(_entity):
 	setShowInfoUI(true)
 
-func _on_Selection_EntityDeselected(entity):
+func _on_Selection_EntityDeselected(_entity):
 	setShowInfoUI(false)

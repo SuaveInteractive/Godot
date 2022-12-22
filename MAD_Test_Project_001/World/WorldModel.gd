@@ -9,15 +9,19 @@ signal WorldMapTextureUpdates(texture)
 signal WorldCountriesChanged(countries)
 signal WorldUnitsChanged(units)
 signal WorldBuildingChanged(building)
+signal WorldMissilesChanged(missiles)
+
 signal SelectedEntitiesChanged(selectedEntities)
 signal UnselectedEntitiesChanged(unselectedEntities)
 signal TargetAdded(instance, position)
+
 
 var WorldModelResource : Resource = null
 
 var CountriesArray : Array setget , getCountries
 var UnitsArray : Array
 var BuildingArray : Array
+var MissileArray : Array
 
 var SelectedEntities : Array = []
 
@@ -27,7 +31,12 @@ class UnitModel:
 	var position : Vector2
 	var color : Color
 	var targets : Array
-
+	
+class MissileModel:
+	var instanceID : int
+	var source : Vector2
+	var target : Vector2
+	
 func _ready():
 	pass
 
@@ -111,7 +120,31 @@ func getEntity(objectID):
 			return building
 	
 	return null
+	
+func getPosition(instanceID):
+	var pos : Vector2
+	
+	for unit in UnitsArray:
+		if unit.instanceID == instanceID.to_int():
+			pos = unit.position
+	
+	for building in BuildingArray:
+		if building.instanceID == instanceID.to_int():
+			pos = building.position
+	
+	return pos
+	
+func launchMissile(source, target):
+	var missileModel = MissileModel.new()
+	missileModel.source = source
+	missileModel.target = target
+	MissileArray.append(missileModel)
+	
+	emit_signal("WorldMissilesChanged", MissileArray)
 
+"""
+	Selection Helpers
+"""
 func getSelectedEntities() -> Array:
 	return SelectedEntities
 
@@ -138,7 +171,9 @@ func setSelectedEntities(entities : Array) -> void:
 		emit_signal("SelectedEntitiesChanged", SelectedEntities)
 	
 	if unselectedEnties.size() > 0:
-		emit_signal("UnselectedEntitiesChanged", unselectedEnties)		
+		emit_signal("UnselectedEntitiesChanged", unselectedEnties)
+		
+
 		
 func getCountries():
 	return CountriesArray

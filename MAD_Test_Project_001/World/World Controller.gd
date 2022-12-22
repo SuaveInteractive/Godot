@@ -45,6 +45,12 @@ func addTarget(targetorID, targetPos):
 	
 func getTargets():
 	return WorldModel.getTargets()
+	
+func getPosition(instanceID):
+	return WorldModel.getPosition(instanceID)
+	
+func launchMissile(from, target):
+	WorldModel.launchMissile(from, target)
 
 func _unhandled_input(event : InputEvent) -> void:	
 	if not event is InputEventMouseButton:

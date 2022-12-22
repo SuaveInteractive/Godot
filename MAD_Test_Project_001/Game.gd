@@ -74,9 +74,9 @@ func _unhandled_input(event : InputEvent) -> void:
 			Signals.emit_signal("UnitsSelected", selectedEntities)
 
 func _on_Button_button_down():
-	var targets = WorldController.getTargets()
-	
-	$LaunchStrike.launchStrikeOnTargets(targets)
+	var actionInfo = {"ActionName": "LaunchStrikeAction"}	
+	actionInfo.WorldController = WorldController
+	$GameActions.startAction(actionInfo)
 
 func OnCountryWins(country) -> void:
 	get_node("UI Layer/UI/ResultLable").visible = true
@@ -89,7 +89,7 @@ func TargetPressed():
 	var worldController = $"World/World Controller"
 	var selectedIDs = worldController.getSelectedIDs()
 	
-	var actionInfo = {"ActionName": "Target", "TargetorIDs": selectedIDs}
+	var actionInfo = {"ActionName": "TargetAction", "TargetorIDs": selectedIDs}
 	
 	actionInfo.WorldController = worldController
 	actionInfo.Targetor = null
