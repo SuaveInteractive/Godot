@@ -24,8 +24,4 @@ func OnUnitsSelected(units: Array) -> void:
 					
 				if unit.has_node("MoveNode"):
 					$Move.visible = true
-					
-				
-					
-	
 

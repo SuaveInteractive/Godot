@@ -17,14 +17,14 @@ func _init():
 func _on_World_Model_WorldMapTextureUpdates(texture):
 	$WorldMap.texture = texture
 	
-func addBuilding(building):
+func addBuilding(type, pos, colour):
 	var buildingInstance = null 
-	if building.type == "Silo":
+	if type == "Silo":
 		buildingInstance = siloScene.instance()
 	else:
 		buildingInstance = cityScene.instance()
 	
-	buildingInstance.position = building.position
+	buildingInstance.position = pos
 	buildingInstance.z_index = 1
 	buildingInstance.set_name("building")
 	$Buildings.add_child(buildingInstance)
@@ -33,7 +33,7 @@ func addBuilding(building):
 		buildingInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
 	
 	if buildingInstance.has_node("CitySprite"):
-		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", building.color)
+		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", colour)
 		
 func getBuildings():
 	return $Buildings.get_children()

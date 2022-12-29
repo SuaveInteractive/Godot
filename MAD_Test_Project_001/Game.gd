@@ -15,11 +15,17 @@ var gameAction = Enums.GameActions.NONE
 var actionInfo = null
 
 var WorldController
+var ControllingCountry = null
 
 func _ready():	
 	WorldController = $"World/World Controller"
 	
 	$CreateGame.createGame(self, worldDefinition)
+	
+	var worldController = $"World/World Controller"
+	
+	var countrollingCountry = worldController.getCountries()[0]
+	SetControllingCountry(countrollingCountry)
 	
 	# Connect to signals
 	Signals.connect("NodeCreate", self, "OnNodeCreated")
@@ -128,7 +134,16 @@ func OnPostLoad():
 	#electedEntities = []
 	unitAction = Enums.UnitActions.NONE
 	#$Targets.hideTargets()
-
+	
+func SetControllingCountry(country):
+	ControllingCountry = country
+	
+	$"UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer/FinanceValue".text = str(country.get_finance())
+	$"UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer/ControlValue".text = str(country.get_control())
+	
+	ControllingCountry.connect("CountryFinanceChange", $"UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer/FinanceValue", "OnCountryFinanceChange")
+	ControllingCountry.connect("CountryControlChange", $"UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer/ControlValue", "OnCountryControlChange")
+	
 # https://docs.godotengine.org/en/3.1/tutorials/io/saving_games.html
 # C:\Users\Manix\AppData\Roaming\Godot\app_userdata\MAD_Test_Project_001
 func save_game():

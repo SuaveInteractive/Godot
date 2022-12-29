@@ -13,15 +13,8 @@ signal UnselectedEntitiesChanged(unselectedEntities)
 var WorldModelResource : Resource = null
 var WorldView : Node = null
 
-var CountriesArray : Array setget , getCountries
-
 var SelectedEntities : Array = []
 
-class UnitModel:
-	var type : String
-	var position : Vector2
-	var color : Color
-	
 class TargetorTargets:
 	var targetor : Node
 	var targets : Array
@@ -55,7 +48,7 @@ func setWorldModel(worldModelRes : Resource) -> void:
 func _updateCountry(countries):
 	for country in countries:
 		var newCountry : Country = Country.new(country.CountryName,  country.CountryColor, country.CountryBoarder)
-		CountriesArray.append(newCountry)
+		$Countries.add_child(newCountry)
 	
 func _updateUnits(units):
 	for unit in units:
@@ -66,12 +59,7 @@ func _updateBuildings(buildings):
 		addBuilding(building.BuildingType, building.BuildingPosition, building.BuildingCountry)
 	
 func addBuilding(buildingType, buildingPosition, buildingCountry):
-	var buildingModel = UnitModel.new()
-	buildingModel.type = buildingType
-	buildingModel.position = buildingPosition
-	buildingModel.color = getCountryColour(buildingCountry)
-		
-	WorldView.addBuilding(buildingModel)
+	WorldView.addBuilding(buildingType, buildingPosition, getCountryColour(buildingCountry))
 		
 func addTarget(selectedUnit, targetPos):
 	WorldView.addTarget(selectedUnit, targetPos)
@@ -102,10 +90,7 @@ func _getNodeTargets(node) -> Array:
 		targets.append(targetorTargets)
 	
 	return targets
-		
-func getPosition(node2D : Node2D) -> Vector2:
-	return node2D.position
-	
+			
 func launchMissile(source, target):
 	WorldView.addMissile(source, target)
 
@@ -143,7 +128,7 @@ func setSelectedEntities(entities : Array) -> void:
 
 		
 func getCountries():
-	return CountriesArray
+	return $Countries.get_children()
 
 func getNavPolygon() -> Navigation2D:
 	return $Navigation as Navigation2D
@@ -152,7 +137,7 @@ func getNavPolygon() -> Navigation2D:
 HELPER FUNCTIONS
 """
 func getCountryColour(countryName : String) -> Color:
-	for country in CountriesArray:
+	for country in $Countries.get_children():
 		if country.name == countryName:
 			return country.get_colour()
 	return Color(255)

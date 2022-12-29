@@ -95,7 +95,6 @@ script = ExtResource( 17 )
 [node name="UI" type="Control" parent="UI Layer"]
 theme = SubResource( 2 )
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -167,16 +166,10 @@ margin_left = 120.0
 margin_top = 15.0
 margin_right = 120.0
 margin_bottom = 15.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TopBarInfoContainer" type="HBoxContainer" parent="UI Layer/UI/PlayerInformation"]
 margin_right = 40.0
 margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ControlInfoContainer" type="HBoxContainer" parent="UI Layer/UI/PlayerInformation/TopBarInfoContainer"]
 margin_right = 54.0

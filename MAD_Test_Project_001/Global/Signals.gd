@@ -24,8 +24,8 @@ signal UnitsSelected(units)
 """
 Game State Changes
 """
-signal CountryControlChange(country, oldControl, newControl)
-signal CountryFinanceChange(country, oldFinance, newFinance)
+#signal CountryControlChange(country, oldControl, newControl)
+#signal CountryFinanceChange(country, oldFinance, newFinance)
 signal SetCountryActive(country, active)
 signal CountryWins(country)
 

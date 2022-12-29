@@ -13,6 +13,8 @@ script = ExtResource( 3 )
 [node name="World Model" type="Node" parent="World Controller"]
 script = ExtResource( 1 )
 
+[node name="Countries" type="Node" parent="World Controller/World Model"]
+
 [node name="Navigation" type="Navigation2D" parent="World Controller/World Model"]
 
 [node name="World View" type="Node" parent="World Controller/World Model"]
