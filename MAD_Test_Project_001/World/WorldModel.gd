@@ -6,22 +6,14 @@ https://miro.com/app/board/uXjVPBx20R0=/
 """
 
 signal WorldMapTextureUpdates(texture)
-signal WorldCountriesChanged(countries)
-signal WorldUnitsChanged(units)
-signal WorldBuildingChanged(building)
-signal WorldMissilesChanged(missiles)
 
 signal SelectedEntitiesChanged(selectedEntities)
 signal UnselectedEntitiesChanged(unselectedEntities)
-signal TargetAdded(selectedUnit, position)
-
 
 var WorldModelResource : Resource = null
+var WorldView : Node = null
 
 var CountriesArray : Array setget , getCountries
-var UnitsArray : Array
-var BuildingArray : Array
-var MissileArray : Array
 
 var SelectedEntities : Array = []
 
@@ -29,21 +21,15 @@ class UnitModel:
 	var type : String
 	var position : Vector2
 	var color : Color
+	
+class TargetorTargets:
+	var targetor : Node
 	var targets : Array
 	
-	# The following data gets filled out once thers is a Node2D created for this object
-	var instanceID : int
-	var node : Node2D
-	
-class MissileModel:
-	var source : Vector2
-	var target : Vector2
-	
-	# The following data gets filled out once thers is a Node2D created for this object
-	var instanceID : int
-	var node : Node2D
-	
 func _ready():
+	WorldView = get_node("World View")
+	
+func _init():
 	pass
 
 func setWorldModel(worldModelRes : Resource) -> void:
@@ -70,18 +56,10 @@ func _updateCountry(countries):
 	for country in countries:
 		var newCountry : Country = Country.new(country.CountryName,  country.CountryColor, country.CountryBoarder)
 		CountriesArray.append(newCountry)
-		
-	emit_signal("WorldCountriesChanged", WorldModelResource.Countries)
 	
 func _updateUnits(units):
 	for unit in units:
-		var unitModel = UnitModel.new()
-		unitModel.position = unit.UnitPosition
-		unitModel.color = getCountryColour(unit.UnitCountry)
-		
-		UnitsArray.append(unitModel)
-					
-	emit_signal("WorldUnitsChanged", UnitsArray)
+		WorldView.addUnit(unit, getCountryColour(unit.UnitCountry))
 	
 func _updateBuildings(buildings):
 	for building in buildings:
@@ -92,50 +70,44 @@ func addBuilding(buildingType, buildingPosition, buildingCountry):
 	buildingModel.type = buildingType
 	buildingModel.position = buildingPosition
 	buildingModel.color = getCountryColour(buildingCountry)
-	
-	BuildingArray.append(buildingModel)
-	
-	emit_signal("WorldBuildingChanged", buildingModel)
-	
+		
+	WorldView.addBuilding(buildingModel)
+		
 func addTarget(selectedUnit, targetPos):
-	var modelData = getModelDataFromNode(selectedUnit)
-	modelData.targets.append(targetPos)
-	emit_signal("TargetAdded", selectedUnit, targetPos)
+	WorldView.addTarget(selectedUnit, targetPos)
 		
 func getTargets() -> Array:
 	var targets : Array 
 	
-	for unit in UnitsArray:
-		if unit.targets.size() > 0:
-			targets.append(unit)
+	var units = WorldView.getUnits()
+	for unit in units:
+		targets.append_array(_getNodeTargets(unit))
 	
-	for building in BuildingArray:
-		if building.targets.size() > 0:
-			targets.append(building)
+	for building in WorldView.getBuildings():
+		targets.append_array(_getNodeTargets(building))
+		
+	return targets
+	
+func _getNodeTargets(node) -> Array:
+	var targets : Array
+	
+	var targetorTargets = TargetorTargets.new()
+	targetorTargets.targetor = node
+		
+	if node.has_node("TargetNode"):
+		for target in node.get_node("TargetNode").get_children():
+			targetorTargets.targets.append(target.position)
+			
+	if targetorTargets.targets.size() > 0:
+		targets.append(targetorTargets)
 	
 	return targets
-
-func getModelDataFromNode(node):
-	for unit in UnitsArray:
-		if unit.node == node:
-			return unit
-	
-	for building in BuildingArray:
-		if building.node == node:
-			return building
-	
-	return null
-	
+		
 func getPosition(node2D : Node2D) -> Vector2:
 	return node2D.position
 	
 func launchMissile(source, target):
-	var missileModel = MissileModel.new()
-	missileModel.source = source
-	missileModel.target = target
-	MissileArray.append(missileModel)
-	
-	emit_signal("WorldMissilesChanged", MissileArray)
+	WorldView.addMissile(source, target)
 
 """
 	Selection Helpers

@@ -11,10 +11,13 @@ signal UnitSelected(unit)
 func _ready():
 	pass
 	
+func _init():
+	pass
+	
 func _on_World_Model_WorldMapTextureUpdates(texture):
 	$WorldMap.texture = texture
 	
-func _on_World_Model_WorldBuildingChanged(building):
+func addBuilding(building):
 	var buildingInstance = null 
 	if building.type == "Silo":
 		buildingInstance = siloScene.instance()
@@ -24,41 +27,30 @@ func _on_World_Model_WorldBuildingChanged(building):
 	buildingInstance.position = building.position
 	buildingInstance.z_index = 1
 	buildingInstance.set_name("building")
-	add_child(buildingInstance)
+	$Buildings.add_child(buildingInstance)
 	
 	if buildingInstance.has_node("Selection"):
 		buildingInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
 	
 	if buildingInstance.has_node("CitySprite"):
 		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", building.color)
+		
+func getBuildings():
+	return $Buildings.get_children()
 
-func _on_World_Model_WorldUnitsChanged(units):
-	for unit in units:
-		var unitInstance = submarineScene.instance()
-		unit.node = unitInstance
-		unit.instanceID = unitInstance.get_instance_id ()
-		
-		unitInstance.position = unit.position
-		unitInstance.z_index = 1
-		unitInstance.get_node("SubmarineSprite").get_material().set_shader_param("colour", unit.color)
-		
-		unitInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
-		
-		unitInstance.set_name("unit")
-		add_child(unitInstance)
-		
-	_updateColours()
+func addUnit(unit, colour):
+	var unitInstance = submarineScene.instance()
+	unitInstance.position = unit.UnitPosition
+	unitInstance.z_index = 1
+	unitInstance.get_node("SubmarineSprite").get_material().set_shader_param("colour", colour)
 	
-func _on_World_Model_WorldCountriesChanged(countries):
-	#for country in countries:
-	#	CountryColourDict[country.CountryName] = country.CountryColor
-	#_updateColours()
-	pass
-
-func _updateColours():
-	for child in get_children():
-		pass
-		#child.get_material().set_shader_param("colour", country.CountryColour)
+	unitInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
+	
+	unitInstance.set_name("unit")
+	$Units.add_child(unitInstance)
+	
+func getUnits():
+	return $Units.get_children()
 		
 func OnUnitSelected(unit) -> void:
 	emit_signal("UnitSelected", unit)
@@ -71,7 +63,7 @@ func _on_World_Model_UnselectedEntitiesChanged(unselectedEntities):
 	for entity in unselectedEntities:
 		entity.setSelected(false)
 
-func _on_World_Model_TargetAdded(selectedUnit, position):
+func addTarget(selectedUnit, position):
 	var targetInstance = targetScene.instance()
 	targetInstance.position = position
 	targetInstance.set_name("target")
@@ -82,10 +74,9 @@ func _on_World_Model_TargetAdded(selectedUnit, position):
 	else:
 		selectedUnit.add_child(targetInstance)
 
-func _on_World_Model_WorldMissilesChanged(missiles):
-	for missile in missiles:
-		var missileInstance = missileScene.instance()
-		missileInstance.set_name("missile")
-		missileInstance.setTarget(missile.target)
-		missileInstance.position = missile.source
-		add_child(missileInstance)
+func addMissile(source, target) -> void:
+	var missileInstance = missileScene.instance()
+	missileInstance.set_name("missile")
+	missileInstance.setTarget(target)
+	missileInstance.position = source
+	$Missiles.add_child(missileInstance)

@@ -14,7 +14,7 @@ func launchStrikeOnTargets(targetors : Array):
 	for targetor in targetors:
 		var targets = targetor.targets
 		for target in targets:
-			var from = worldController.getPosition(targetor.node)
+			var from = targetor.targetor.position
 			worldController.launchMissile(from, target)
 			
 			
