@@ -61,5 +61,7 @@ margin_bottom = 40.0
 text = "Pause"
 
 [connection signal="EntityDeselected" from="Selection" to="." method="_on_Selection_EntityDeselected"]
+[connection signal="EntityDeselected" from="Selection" to="TargetNode" method="_on_Selection_EntityDeselected"]
 [connection signal="EntitySelected" from="Selection" to="." method="_on_Selection_EntitySelected"]
+[connection signal="EntitySelected" from="Selection" to="TargetNode" method="_on_Selection_EntitySelected"]
 [connection signal="pressed" from="StructureInformationUI/PauseConstruction" to="." method="onPauseConstructionPressed"]

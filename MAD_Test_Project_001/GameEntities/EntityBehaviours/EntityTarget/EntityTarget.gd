@@ -12,7 +12,6 @@ func _on_Selection_EntityDeselected(entity):
 	for child in get_children():
 		child.visible = false
 
-
 func _on_Selection_EntitySelected(entity):
 	for child in get_children():
 		child.visible = true

@@ -19,12 +19,13 @@ func OnUnitsSelected(units: Array) -> void:
 			if unit.has_method("isStructureConstructing") and unit.isStructureConstructing():
 				pass
 			else:
-				var targetNode = unit.get_node("TargetNode")
-				if targetNode != null:
+				if unit.has_node("TargetNode"):
 					$Target.visible = true
 					
-				var moveNode = unit.get_node("MoveNode")
-				if moveNode != null:
+				if unit.has_node("MoveNode"):
 					$Move.visible = true
+					
+				
+					
 	
 
