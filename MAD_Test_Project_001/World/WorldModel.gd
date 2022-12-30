@@ -58,8 +58,9 @@ func _updateCountry(countries):
 		newCountry.connect("UnitSelected", self, "OnCountryUnitSelected")
 	
 func _updateUnits(units):
-	for unit in units:
-		WorldView.addUnit(unit, getCountryColour(unit.UnitCountry))
+	for unit in units:	
+		var country = getCountry(unit.UnitCountry)
+		country.addUnit(unit)
 
 """
 	Building Functions
@@ -71,9 +72,11 @@ func _updateBuildings(buildings):
 func addBuilding(buildingType, buildingPosition, buildingCountry):
 	var country = getCountry(buildingCountry)
 	country.addBuilding(buildingType, buildingPosition)
-		
-func getBuildings(country, buildingType):
-	pass
+
+"""
+	Weapons Functions
+"""	
+
 		
 func addTarget(selectedUnit, targetPos):
 	WorldView.addTarget(selectedUnit, targetPos)
@@ -81,8 +84,7 @@ func addTarget(selectedUnit, targetPos):
 func getTargetsForCountry(countryObj) -> Array:
 	var targets : Array 
 	
-	var units = WorldView.getUnits()
-	for unit in units:
+	for unit in countryObj.get_node("Units").get_children():
 		targets.append_array(_getNodeTargets(unit))
 	
 	for building in countryObj.get_node("Buildings").get_children():
@@ -105,8 +107,8 @@ func _getNodeTargets(node) -> Array:
 	
 	return targets
 			
-func launchMissile(source, target):
-	WorldView.addMissile(source, target)
+func launchMissile(country, source, target):
+	country.addMissile(source, target)
 
 """
 	Selection Helpers

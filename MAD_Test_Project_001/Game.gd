@@ -154,4 +154,5 @@ func _on_GameRules_CountryWins(country):
 
 
 func _on_World_WorldEntitySelected(country, entity):
-	WorldController.setSelectedEntities([entity])
+	if ControllingCountry == country:
+		WorldController.setSelectedEntities([entity])

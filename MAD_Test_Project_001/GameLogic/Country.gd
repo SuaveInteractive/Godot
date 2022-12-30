@@ -1,9 +1,14 @@
 extends Node
 class_name Country
 
+# Buildings
 var cityScene = load("res://GameEntities/City/City.tscn")
 var siloScene = load("res://GameEntities/Silo/Silo.tscn")
+
+# Units
 var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
+
+# Missiles
 var targetScene = load("res://GameEntities/Target/Target.tscn")
 var missileScene = load("res://GameEntities/Missile/Missile.tscn")
 
@@ -64,7 +69,10 @@ func reduceFinance(var reduction: int) -> void:
 	
 func get_colour() -> Color:
 	return CountryColour
-	
+
+"""
+	Buildings
+"""
 func addBuilding(type, pos):
 	var buildingInstance = null 
 	if type == "Silo":
@@ -82,6 +90,31 @@ func addBuilding(type, pos):
 	
 	if buildingInstance.has_node("CitySprite"):
 		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", CountryColour)
+		
+"""
+	Units
+"""
+func addUnit(unit):
+	var unitInstance = submarineScene.instance()
+	unitInstance.position = unit.UnitPosition
+	unitInstance.z_index = 1
+	unitInstance.get_node("SubmarineSprite").get_material().set_shader_param("colour", CountryColour)
+	
+	unitInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
+	
+	unitInstance.set_name("unit")
+	$Units.add_child(unitInstance)
+
+"""
+	Weapons
+"""
+func addMissile(source, target) -> void:
+	var missileInstance = missileScene.instance()
+	missileInstance.set_name("missile")
+	missileInstance.setTarget(target)
+	missileInstance.position = source
+	$Missiles.add_child(missileInstance)
+	
 """
 	Callbacks
 """

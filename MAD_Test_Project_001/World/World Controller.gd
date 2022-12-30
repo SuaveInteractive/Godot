@@ -5,10 +5,6 @@ var WorldModel : Node = null
 func _ready():
 	WorldModel = $"World Model"
 	
-func _process(delta):
-	for country in getCountries():
-		var cities = WorldModel.getBuildings(country, "city")
-	
 func loadWorld(worldInformationPath : String) -> void:
 	$"World Model".setWorldModel(load(worldInformationPath))
 	
@@ -47,8 +43,8 @@ func getTargetsForCountry(country) -> Array:
 func getPosition(node2D : Node2D) -> Vector2:
 	return WorldModel.getPosition(node2D)
 	
-func launchMissile(from, target):
-	WorldModel.launchMissile(from, target)
+func launchMissile(country, from, target):
+	country.addMissile(from, target)
 
 func _unhandled_input(event : InputEvent) -> void:	
 	if not event is InputEventMouseButton:

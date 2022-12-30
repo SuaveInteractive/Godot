@@ -6,3 +6,7 @@
 script = ExtResource( 1 )
 
 [node name="Buildings" type="Node" parent="."]
+
+[node name="Units" type="Node" parent="."]
+
+[node name="Missiles" type="Node" parent="."]
