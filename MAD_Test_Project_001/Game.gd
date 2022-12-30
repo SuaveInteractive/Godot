@@ -7,14 +7,7 @@ var worldDefinition = "res://Data/World/WorldInformation_003.tres"
 
 var moveSpeed : float = 20.0
 
-var unitAction = Enums.UnitActions.NONE
-
-#enum GameActions {NONE, BuildAction}
-var gameAction = Enums.GameActions.NONE
-
-var actionInfo = null
-
-var WorldController
+var WorldController = null
 var ControllingCountry = null
 
 func _ready():	
@@ -44,36 +37,7 @@ func _process(_delta):
 			GameCommands.MoveCommand.Position_To = get_local_mouse_position()
 			GameCommands.MoveCommand.Selected_Units = selectedUnits
 			GameCommands.MoveCommand.execute()
-			
-	
-
-func _unhandled_input(event : InputEvent) -> void:	
-	if not event is InputEventMouseButton:
-		return
 		
-	var worldController = $"World/World Controller"
-	var selectedEntities = worldController.getSelectedUnits()
-	if Input.is_mouse_button_pressed(BUTTON_LEFT):
-		if unitAction == Enums.UnitActions.TargetAction:
-			pass
-		#	for unit in selectedEntities:
-		#		var mouseEvent = event as InputEventMouse
-		#		GameCommands.TargetCommand.Unit_Targeting = selectedEntities
-		#		GameCommands.TargetCommand.Target_Position = get_local_mouse_position()
-		#		GameCommands.TargetCommand.execute()
-		#	$Targets.showTargets(selectedEntities)
-		#	unitAction = Enums.UnitActions.NONE
-		elif unitAction == Enums.UnitActions.MoveAction:
-			if not selectedEntities.empty():
-				GameCommands.MoveCommand.Navigation_Mesh = $"World/WorldMap/Navigation2D"
-				GameCommands.MoveCommand.Position_To = get_local_mouse_position()
-				GameCommands.MoveCommand.Selected_Units = selectedEntities
-				GameCommands.MoveCommand.execute()
-			unitAction = Enums.UnitActions.NONE
-		elif unitAction == Enums.UnitActions.NONE:
-			# Clear all the units that were selected
-			worldController.setSelectedEntities([])
-
 func _on_Button_button_down():
 	var actionInfo = {"ActionName": "LaunchStrikeAction"}	
 	actionInfo.WorldController = WorldController
@@ -90,7 +54,13 @@ func TargetPressed():
 	$GameActions.startAction(actionInfo)
 	
 func OnMovePressed():
-	unitAction = Enums.UnitActions.MoveAction
+	var worldController = $"World/World Controller"
+	var selectedUnits = worldController.getSelectedUnits()
+	
+	var actionInfo = {"ActionName": "MoveUnitAction", "SelectedUnits": selectedUnits}
+	actionInfo.WorldController = worldController
+	
+	$GameActions.startAction(actionInfo)
 
 func OnNodeCreated(_type, _obj) -> void:
 	_obj.connect("targetReached", self, "OnTargetReached")
@@ -106,14 +76,6 @@ func OnTargetReached(target, hits):
 		if hit.is_class("City"):
 			hit.setPopulation(49)
 			
-func SetGameAction(gameAction) -> void:
-	self.gameAction = gameAction
-			
-func OnPostLoad():
-	#electedEntities = []
-	unitAction = Enums.UnitActions.NONE
-	#$Targets.hideTargets()
-	
 func SetControllingCountry(country):
 	ControllingCountry = country
 	
@@ -135,15 +97,13 @@ func save_game():
 	save_game.close()
 
 func _on_Build_UIBuildStructure(buildInfo):
-	SetGameAction(Enums.GameActions.BuildAction)
-	actionInfo = buildInfo	
+	var actionInfo = buildInfo	
 	
 	var worldController = $"World/World Controller"
 	actionInfo.BuildCountry = worldController.getCountries()[0]
 	actionInfo.BuildArea = worldController.getCountryBuildArea()
 	actionInfo.WorldController = worldController
 	$GameActions.startAction(actionInfo)
-
 
 func _on_GameRules_CountryWins(country):
 	get_node("UI Layer/UI/ResultLable").visible = true

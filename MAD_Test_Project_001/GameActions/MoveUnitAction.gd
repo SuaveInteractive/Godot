@@ -1,5 +1,12 @@
 extends "res://GameActions/GameAction.gd"
 
+var selectedUnits = null
+var worldController : Node = null
+
+func _init(parameters):
+	selectedUnits = parameters.SelectedUnits
+	worldController = parameters.WorldController
+	
 func _ready():
 	pass
 
@@ -11,9 +18,11 @@ func _unhandled_input(event : InputEvent) -> void:
 		return
 		
 	if Input.is_mouse_button_pressed(BUTTON_LEFT):
-		#GameCommands.BuildCommand.Position_Build = MouseIcon.position
-		#GameCommands.BuildCommand.Build_Info = Params
-		#GameCommands.BuildCommand.execute()
-		#get_tree().set_input_as_handled()
+		GameCommands.MoveCommand.Navigation_Mesh = worldController.getNavPolygon()
+		GameCommands.MoveCommand.Position_To = get_parent().get_parent().get_global_mouse_position() 
+		GameCommands.MoveCommand.Selected_Units = selectedUnits
+		GameCommands.MoveCommand.execute()
+		
+		get_tree().set_input_as_handled()
 		
 		EndAction()
