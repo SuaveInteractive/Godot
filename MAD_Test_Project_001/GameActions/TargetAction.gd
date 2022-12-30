@@ -1,4 +1,4 @@
-extends Node
+extends "res://GameActions/GameAction.gd"
 
 var selectedUnits : Array 
 var worldController : Node
@@ -23,4 +23,5 @@ func _unhandled_input(event : InputEvent) -> void:
 		GameCommands.TargetCommand.execute()
 			
 		get_tree().set_input_as_handled()
-		Signals.emit_signal("EndGameAction")
+		
+		EndAction()

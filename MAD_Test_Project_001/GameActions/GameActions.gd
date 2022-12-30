@@ -5,17 +5,17 @@ var ActionDic : Dictionary = {}
 var CurrentAction = null
 
 func _ready():
-	ActionDic["BuildAction"] = preload("res://GameActions/BuildAction.gd")
-	ActionDic["MoveUnitAction"] = preload("res://GameActions/MoveUnitAction.gd")
-	ActionDic["TargetAction"] = preload("res://GameActions/TargetAction.gd")
-	ActionDic["LaunchStrikeAction"] = preload("res://GameActions/LaunchStrikeAction.gd")
-
-	Signals.connect("EndGameAction", self, "OnEndGameAction")
+	ActionDic["BuildAction"] = load("res://GameActions/BuildAction.gd")
+	ActionDic["MoveUnitAction"] = load("res://GameActions/MoveUnitAction.gd")
+	ActionDic["TargetAction"] = load("res://GameActions/TargetAction.gd")
+	ActionDic["LaunchStrikeAction"] = load("res://GameActions/LaunchStrikeAction.gd")
 	
 func startAction(actionInfo) -> void:
 	if ActionDic.has(actionInfo.ActionName):
 		CurrentAction = ActionDic[actionInfo.ActionName].new(actionInfo)
 		add_child(CurrentAction, true)
+		
+		CurrentAction.connect("EndGameAction", self, "OnEndGameAction")
 	else:
 		push_error("No action named: %s" % actionInfo.ActionName)
 	

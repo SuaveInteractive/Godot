@@ -7,30 +7,8 @@ extends Node
 
 signal NodeCreate(name, obj)
 
-
-
-signal UnitSelected(unit)
-
-"""
-Player Actions
-"""
-signal PlayerBuildStructure(build_Information)
-
-"""
-Emitted when one or more unit is selected
-"""
-signal UnitsSelected(units)
-
 """
 Game State Changes
 """
-#signal CountryControlChange(country, oldControl, newControl)
-#signal CountryFinanceChange(country, oldFinance, newFinance)
 signal SetCountryActive(country, active)
-signal CountryWins(country)
-
-"""
-Game Actions
-"""
-signal EndGameAction()
 

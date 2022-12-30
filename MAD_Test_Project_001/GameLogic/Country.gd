@@ -1,6 +1,14 @@
 extends Node
 class_name Country
 
+var cityScene = load("res://GameEntities/City/City.tscn")
+var siloScene = load("res://GameEntities/Silo/Silo.tscn")
+var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
+var targetScene = load("res://GameEntities/Target/Target.tscn")
+var missileScene = load("res://GameEntities/Missile/Missile.tscn")
+
+signal UnitSelected(country, unit)
+
 signal CountryControlChange(oldControl, newControl)
 signal CountryFinanceChange(oldFinance, newFinance)
 
@@ -10,7 +18,7 @@ var Boarder : PoolVector2Array
 var Control : int = 0 setget set_control, get_control
 var Finance : int = 0 setget set_finance, get_finance
 
-func _init(name, color, boarder):
+func initialize(name, color, boarder):
 	self.set_name(name) 
 	CountryColour = color
 	Boarder = boarder
@@ -26,7 +34,7 @@ func _process(_delta):
 func calculateControl() -> int:
 	var control: int = 85
 	
-	for child in get_children():
+	for child in $Buildings.get_children():
 		if child.is_class("City"):
 			var cityPop = child.getPopulation()
 			var per: float  = (float(cityPop)/100)
@@ -56,3 +64,26 @@ func reduceFinance(var reduction: int) -> void:
 	
 func get_colour() -> Color:
 	return CountryColour
+	
+func addBuilding(type, pos):
+	var buildingInstance = null 
+	if type == "Silo":
+		buildingInstance = siloScene.instance()
+	else:
+		buildingInstance = cityScene.instance()
+	
+	buildingInstance.position = pos
+	buildingInstance.z_index = 1
+	buildingInstance.set_name("building")
+	$Buildings.add_child(buildingInstance)
+	
+	if buildingInstance.has_node("Selection"):
+		buildingInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
+	
+	if buildingInstance.has_node("CitySprite"):
+		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", CountryColour)
+"""
+	Callbacks
+"""
+func OnUnitSelected(entity) -> void:
+	emit_signal("UnitSelected", self, entity)

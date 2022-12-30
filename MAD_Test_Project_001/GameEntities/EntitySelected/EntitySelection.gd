@@ -23,13 +23,22 @@ var DefaultSelectionSize : Vector2 = Vector2(1, 1) * 2
 var Scale : Vector2 = DefaultSelectionSize / SelectionImageSize
 var mouse_entered : bool = false
 
+""" A function ref that is called when setSelected is set """
+var Callback : FuncRef = null
+
 func _ready():	
 	set_process_unhandled_input(true)
 	if not Engine.editor_hint:
 		$SelectedSprite.visible = false
+		
+func setCallback(callback : FuncRef):
+	Callback = callback
 					
 func setSelected(selected: bool) -> void:
 	$SelectedSprite.visible = selected
+	
+	if Callback != null and Callback.is_valid():
+		Callback.call_func(selected)
 	
 	if selected == false:
 		emit_signal("EntityDeselected", self)

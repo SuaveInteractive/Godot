@@ -13,6 +13,7 @@ func _ready():
 		$Sprite.visible = false
 		$Construction.visible = true
 		setShowInfoUI(false)
+	$Selection.setCallback(funcref(self, "setShowInfoUI"))
 
 func _process(delta):
 	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTING:

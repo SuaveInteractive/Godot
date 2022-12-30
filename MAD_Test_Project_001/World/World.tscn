@@ -1,11 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://World/WorldModel.gd" type="Script" id=1]
 [ext_resource path="res://Textures/WorldTexture.bmp" type="Texture" id=2]
 [ext_resource path="res://World/World Controller.gd" type="Script" id=3]
 [ext_resource path="res://World/World View.gd" type="Script" id=4]
+[ext_resource path="res://World/World.gd" type="Script" id=5]
 
 [node name="World" type="Node"]
+script = ExtResource( 5 )
 
 [node name="World Controller" type="Node" parent="."]
 script = ExtResource( 3 )
@@ -26,10 +28,9 @@ centered = false
 
 [node name="Missiles" type="Node" parent="World Controller/World Model/World View"]
 
-[node name="Buildings" type="Node" parent="World Controller/World Model/World View"]
-
 [node name="Units" type="Node" parent="World Controller/World Model/World View"]
 
 [connection signal="SelectedEntitiesChanged" from="World Controller/World Model" to="World Controller/World Model/World View" method="_on_World_Model_SelectedEntitiesChanged"]
 [connection signal="UnselectedEntitiesChanged" from="World Controller/World Model" to="World Controller/World Model/World View" method="_on_World_Model_UnselectedEntitiesChanged"]
+[connection signal="WorldEntitySelected" from="World Controller/World Model" to="." method="_on_World_Model_WorldEntitySelected"]
 [connection signal="UnitSelected" from="World Controller/World Model/World View" to="World Controller" method="_on_World_View_UnitSelected"]

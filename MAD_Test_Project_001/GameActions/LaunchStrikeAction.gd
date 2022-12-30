@@ -1,11 +1,11 @@
-extends Node
+extends "res://GameActions/GameAction.gd"
 
 var worldController : Node
 
 func _init(parameters):
 	worldController = parameters.WorldController
 	
-	launchStrikeOnTargets(worldController.getTargets())
+	launchStrikeOnTargets(worldController.getTargetsForCountry(parameters.ControllingCountry))
 
 func _process(_delta):
 	pass
@@ -17,6 +17,5 @@ func launchStrikeOnTargets(targetors : Array):
 			var from = targetor.targetor.position
 			worldController.launchMissile(from, target)
 			
-			
-			
+	EndAction()
 	

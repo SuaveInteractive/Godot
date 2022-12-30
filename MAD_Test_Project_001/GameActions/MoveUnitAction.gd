@@ -1,4 +1,4 @@
-extends Node
+extends "res://GameActions/GameAction.gd"
 
 func _ready():
 	pass
@@ -16,4 +16,4 @@ func _unhandled_input(event : InputEvent) -> void:
 		#GameCommands.BuildCommand.execute()
 		#get_tree().set_input_as_handled()
 		
-		Signals.emit_signal("EndGameAction")
+		EndAction()

@@ -29,15 +29,13 @@ func _ready():
 	
 	# Connect to signals
 	Signals.connect("NodeCreate", self, "OnNodeCreated")
-	Signals.connect("PlayerBuildStructure", self, "OnPlayerBuildStructureEvent")
-	Signals.connect("CountryWins", self, "OnCountryWins")
 		
 func _process(_delta):
 	var worldController = $"World/World Controller"
 	var selectedUnits = worldController.getSelectedUnits()
 	
 	#TODO: Figure out a cleaner way to do this
-	$"UI Layer/UI/UnitMenu".OnUnitsSelected(selectedUnits)
+	$"UI Layer/UI/UnitMenu".ProcessUnitsSelection(selectedUnits)
 	
 	$GameRules.checkRules(worldController.getCountries())	
 	if Input.is_action_just_pressed ("ui_MoveAction"):
@@ -74,22 +72,13 @@ func _unhandled_input(event : InputEvent) -> void:
 			unitAction = Enums.UnitActions.NONE
 		elif unitAction == Enums.UnitActions.NONE:
 			# Clear all the units that were selected
-			#$Targets.hideTargets()
 			worldController.setSelectedEntities([])
-			
-			Signals.emit_signal("UnitsSelected", selectedEntities)
 
 func _on_Button_button_down():
 	var actionInfo = {"ActionName": "LaunchStrikeAction"}	
 	actionInfo.WorldController = WorldController
+	actionInfo.ControllingCountry = ControllingCountry
 	$GameActions.startAction(actionInfo)
-
-func OnCountryWins(country) -> void:
-	get_node("UI Layer/UI/ResultLable").visible = true
-	if country.get_player():
-		get_node("UI Layer/UI/ResultLable").text = "YOU WIN"
-	else:
-		get_node("UI Layer/UI/ResultLable").text = "YOU LOSE"
 		
 func TargetPressed():
 	var worldController = $"World/World Controller"
@@ -106,16 +95,6 @@ func OnMovePressed():
 func OnNodeCreated(_type, _obj) -> void:
 	_obj.connect("targetReached", self, "OnTargetReached")
 	
-func OnPlayerBuildStructureEvent(buildInfo):
-	SetGameAction(Enums.GameActions.BuildAction)
-	actionInfo = buildInfo	
-	
-	var worldController = $"World/World Controller"
-	actionInfo.BuildCountry = worldController.getCountries()[0]
-	actionInfo.BuildArea = worldController.getCountryBuildArea()
-	actionInfo.WorldController = worldController
-	$GameActions.startAction(actionInfo)
-
 func OnTargetReached(target, hits):
 	var nuclearExplosionInstance = nuclearExplosionScene.instance()
 	nuclearExplosionInstance.position = target
@@ -155,4 +134,24 @@ func save_game():
 		save_game.store_line(to_json(node_data))
 	save_game.close()
 
+func _on_Build_UIBuildStructure(buildInfo):
+	SetGameAction(Enums.GameActions.BuildAction)
+	actionInfo = buildInfo	
+	
+	var worldController = $"World/World Controller"
+	actionInfo.BuildCountry = worldController.getCountries()[0]
+	actionInfo.BuildArea = worldController.getCountryBuildArea()
+	actionInfo.WorldController = worldController
+	$GameActions.startAction(actionInfo)
 
+
+func _on_GameRules_CountryWins(country):
+	get_node("UI Layer/UI/ResultLable").visible = true
+	if country == ControllingCountry:
+		get_node("UI Layer/UI/ResultLable").text = "YOU WIN"
+	else:
+		get_node("UI Layer/UI/ResultLable").text = "YOU LOSE"
+
+
+func _on_World_WorldEntitySelected(country, entity):
+	WorldController.setSelectedEntities([entity])

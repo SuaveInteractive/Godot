@@ -5,11 +5,15 @@ var WorldModel : Node = null
 func _ready():
 	WorldModel = $"World Model"
 	
+func _process(delta):
+	for country in getCountries():
+		var cities = WorldModel.getBuildings(country, "city")
+	
 func loadWorld(worldInformationPath : String) -> void:
 	$"World Model".setWorldModel(load(worldInformationPath))
 	
 func getCountries() -> Array:
-	return $"World Model".getCountries()
+	return WorldModel.getCountries()
 	
 func getSelectedUnits() -> Array:
 	return $"World Model".getSelectedUnits()
@@ -37,8 +41,8 @@ func addBuilding(type, position, country):
 func addTarget(selectedUnit, targetPos):
 	WorldModel.addTarget(selectedUnit, targetPos)
 	
-func getTargets() -> Array:
-	return WorldModel.getTargets()
+func getTargetsForCountry(country) -> Array:
+	return WorldModel.getTargetsForCountry(country)
 	
 func getPosition(node2D : Node2D) -> Vector2:
 	return WorldModel.getPosition(node2D)

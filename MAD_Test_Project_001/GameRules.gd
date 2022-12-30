@@ -1,5 +1,7 @@
 extends Node
 
+signal CountryWins(country)
+
 func checkRules(countries):
 	var activeCountries: int = 0
 	var ActiveCountry = null
@@ -12,4 +14,4 @@ func checkRules(countries):
 			activeCountries = activeCountries + 1
 	
 	if activeCountries == 1:
-		Signals.emit_signal("CountryWins", ActiveCountry)
+		emit_signal("CountryWins", ActiveCountry)

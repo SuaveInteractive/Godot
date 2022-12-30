@@ -1,13 +1,6 @@
-extends Area2D
+extends Node
 
-func _ready():
-	pass
-	
-func _input_event(viewport, event, shape_idx):
-	if not event is InputEventMouseButton:
-		return
-	if not Input.is_mouse_button_pressed(BUTTON_LEFT):
-		return
-		
-	if event.button_index == BUTTON_LEFT:
-		emit_signal("EntitySelected", self)
+signal WorldEntitySelected(country, entity)
+
+func _on_World_Model_WorldEntitySelected(country, entity):
+	emit_signal("WorldEntitySelected", country, entity)

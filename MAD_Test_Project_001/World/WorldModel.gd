@@ -5,6 +5,10 @@ Documentation:
 https://miro.com/app/board/uXjVPBx20R0=/ 
 """
 
+var countryScene = load("res://GameLogic/Country.tscn")
+
+signal WorldEntitySelected(country, entity)
+
 signal WorldMapTextureUpdates(texture)
 
 signal SelectedEntitiesChanged(selectedEntities)
@@ -47,31 +51,41 @@ func setWorldModel(worldModelRes : Resource) -> void:
 		
 func _updateCountry(countries):
 	for country in countries:
-		var newCountry : Country = Country.new(country.CountryName,  country.CountryColor, country.CountryBoarder)
+		var newCountry  = countryScene.instance()
+		newCountry.initialize(country.CountryName,  country.CountryColor, country.CountryBoarder)	
 		$Countries.add_child(newCountry)
+		
+		newCountry.connect("UnitSelected", self, "OnCountryUnitSelected")
 	
 func _updateUnits(units):
 	for unit in units:
 		WorldView.addUnit(unit, getCountryColour(unit.UnitCountry))
-	
+
+"""
+	Building Functions
+"""
 func _updateBuildings(buildings):
 	for building in buildings:
 		addBuilding(building.BuildingType, building.BuildingPosition, building.BuildingCountry)
 	
 func addBuilding(buildingType, buildingPosition, buildingCountry):
-	WorldView.addBuilding(buildingType, buildingPosition, getCountryColour(buildingCountry))
+	var country = getCountry(buildingCountry)
+	country.addBuilding(buildingType, buildingPosition)
+		
+func getBuildings(country, buildingType):
+	pass
 		
 func addTarget(selectedUnit, targetPos):
 	WorldView.addTarget(selectedUnit, targetPos)
 		
-func getTargets() -> Array:
+func getTargetsForCountry(countryObj) -> Array:
 	var targets : Array 
 	
 	var units = WorldView.getUnits()
 	for unit in units:
 		targets.append_array(_getNodeTargets(unit))
 	
-	for building in WorldView.getBuildings():
+	for building in countryObj.get_node("Buildings").get_children():
 		targets.append_array(_getNodeTargets(building))
 		
 	return targets
@@ -125,19 +139,33 @@ func setSelectedEntities(entities : Array) -> void:
 	if unselectedEnties.size() > 0:
 		emit_signal("UnselectedEntitiesChanged", unselectedEnties)
 		
-
-		
+"""
+	Country Functions
+"""	
 func getCountries():
 	return $Countries.get_children()
+	
+func getCountry(countryName : String):
+	for country in $Countries.get_children():
+		if country.name == countryName:
+			return country
+	return null
 
-func getNavPolygon() -> Navigation2D:
-	return $Navigation as Navigation2D
+func getCountryColour(countryName : String) -> Color:
+	var country = getCountry(countryName)
+	if country != null:
+		return country.get_colour()
+	return Color(255)
 
 """
 HELPER FUNCTIONS
 """
-func getCountryColour(countryName : String) -> Color:
-	for country in $Countries.get_children():
-		if country.name == countryName:
-			return country.get_colour()
-	return Color(255)
+func getNavPolygon() -> Navigation2D:
+	return $Navigation as Navigation2D
+
+"""
+	Callbacks
+"""	
+func OnCountryUnitSelected(country, entity):
+	emit_signal("WorldEntitySelected", country, entity)
+

@@ -93,10 +93,10 @@ script = ExtResource( 17 )
 [node name="UI Layer" type="CanvasLayer" parent="."]
 
 [node name="UI" type="Control" parent="UI Layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 theme = SubResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="LaunchButton" type="Button" parent="UI Layer/UI"]
 margin_left = 24.0
@@ -146,9 +146,6 @@ toggle_mode = true
 action_mode = 0
 text = "Build"
 script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="BuildSiloButton" type="Button" parent="UI Layer/UI/Build"]
 visible = false
@@ -223,13 +220,13 @@ margin_top = -7.0
 margin_right = 28.0
 margin_bottom = 7.0
 text = "YOU XXX"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
+[connection signal="CountryWins" from="GameRules" to="." method="_on_GameRules_CountryWins"]
+[connection signal="WorldEntitySelected" from="World" to="." method="_on_World_WorldEntitySelected"]
 [connection signal="button_down" from="UI Layer/UI/LaunchButton" to="." method="_on_Button_button_down"]
 [connection signal="pressed" from="UI Layer/UI/UnitMenu/Move" to="." method="OnMovePressed"]
 [connection signal="pressed" from="UI Layer/UI/UnitMenu/Target" to="." method="TargetPressed"]
+[connection signal="UIBuildStructure" from="UI Layer/UI/Build" to="." method="_on_Build_UIBuildStructure"]
 [connection signal="toggled" from="UI Layer/UI/Build" to="UI Layer/UI/Build" method="_on_Build_toggled"]
 [connection signal="pressed" from="UI Layer/UI/Build/BuildSiloButton" to="UI Layer/UI/Build" method="_on_BuildSiloButton_pressed"]
