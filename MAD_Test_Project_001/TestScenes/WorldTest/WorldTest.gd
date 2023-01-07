@@ -10,9 +10,8 @@ func _ready():
 	worldController.loadWorld("res://Data/World/WorldInformation_003.tres")
 	
 	
-	var selectedUnit = $"/root/TestWorld/World/World Controller/World Model/World View/Units/unit"
-	
+	var selectedUnit = $"/root/TestWorld/World/World Controller/World Model/Countries/Country_1/Units/unit"
 	worldController.addTarget(selectedUnit, Vector2(450, 300))
-	worldController.launchMissile(Vector2(100, 100), Vector2(200, 500))
+	worldController.launchMissile($"/root/TestWorld/World/World Controller/World Model/Countries/Country_1", Vector2(100, 100), Vector2(200, 500))
 	
-	worldController.getTargets()
+	worldController.getTargetsForCountry(worldController.getCountries()[0])

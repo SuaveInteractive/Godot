@@ -69,6 +69,11 @@ func reduceFinance(var reduction: int) -> void:
 	
 func get_colour() -> Color:
 	return CountryColour
+	
+func getDetectionArea():
+	for unit in $Units.get_children():
+		if unit.has_node("DetectNode"):
+			pass
 
 """
 	Buildings
@@ -90,7 +95,6 @@ func addBuilding(type, pos):
 	
 	if buildingInstance.has_node("CitySprite"):
 		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", CountryColour)
-		
 """
 	Units
 """

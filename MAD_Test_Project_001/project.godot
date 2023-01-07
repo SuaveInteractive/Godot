@@ -39,6 +39,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Debug/DebugRectangle2D.gd"
 }, {
+"base": "Node",
+"class": "DetectNode",
+"language": "GDScript",
+"path": "res://GameEntities/EntityBehaviours/EntityDetect/EntityDetect.gd"
+}, {
+"base": "Node",
+"class": "Matrix",
+"language": "GDScript",
+"path": "res://Utils/Matrix.gd"
+}, {
 "base": "Resource",
 "class": "StructureInformation",
 "language": "GDScript",
@@ -61,6 +71,8 @@ _global_script_class_icons={
 "CountryInformation": "",
 "DebugMultiLine2D": "",
 "DebugRectangle2D": "",
+"DetectNode": "",
+"Matrix": "",
 "StructureInformation": "",
 "UnitInformation": "",
 "WorldInformation": ""

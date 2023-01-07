@@ -15,11 +15,11 @@ func createGame(gameObject, worldInformation):
 	gameObject.get_node("World/World Controller").loadWorld(worldInformation)
 
 	""" Debug """
-	#var boarders : Array = []
-	#for countryInfo in worldInformation.Countries:
-	#	boarders.append(countryInfo.CountryBoarder)
-	#var debugControl = DebugShowCountryBoardersScript.new(boarders)
-	#DebugOverlay.addDebugControl(debugControl)
+	var boarders : Array = []
+	for country in gameObject.WorldController.getCountries():
+		boarders.append(country.Boarder)
+	var debugControl = DebugShowCountryBoardersScript.new(boarders)
+	DebugOverlay.addDebugControl(debugControl)
 	
 	#debugControl = DebugShowAIStateScript.new(AIList)
 

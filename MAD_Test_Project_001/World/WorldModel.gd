@@ -6,6 +6,7 @@ https://miro.com/app/board/uXjVPBx20R0=/
 """
 
 var countryScene = load("res://GameLogic/Country.tscn")
+var targetScene = load("res://GameEntities/Target/Target.tscn")
 
 signal WorldEntitySelected(country, entity)
 
@@ -61,6 +62,11 @@ func _updateUnits(units):
 	for unit in units:	
 		var country = getCountry(unit.UnitCountry)
 		country.addUnit(unit)
+"""
+	Accessors
+"""
+func getWorldSize() -> Vector2:
+	return WorldModelResource.Size
 
 """
 	Building Functions
@@ -76,13 +82,19 @@ func addBuilding(buildingType, buildingPosition, buildingCountry):
 """
 	Weapons Functions
 """	
-
-		
 func addTarget(selectedUnit, targetPos):
-	WorldView.addTarget(selectedUnit, targetPos)
+	var targetInstance = targetScene.instance()
+	targetInstance.position = targetPos
+	targetInstance.set_name("target")
+	
+	var targetNode = selectedUnit.get_node("TargetNode")
+	if targetNode != null:
+		targetNode.add_child(targetInstance)
+	else:
+		selectedUnit.add_child(targetInstance)
 		
 func getTargetsForCountry(countryObj) -> Array:
-	var targets : Array 
+	var targets : Array = []
 	
 	for unit in countryObj.get_node("Units").get_children():
 		targets.append_array(_getNodeTargets(unit))
@@ -93,7 +105,7 @@ func getTargetsForCountry(countryObj) -> Array:
 	return targets
 	
 func _getNodeTargets(node) -> Array:
-	var targets : Array
+	var targets : Array = []
 	
 	var targetorTargets = TargetorTargets.new()
 	targetorTargets.targetor = node

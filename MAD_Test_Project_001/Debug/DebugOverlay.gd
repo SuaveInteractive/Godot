@@ -27,8 +27,6 @@ func _process(_delta):
 
 func addDebugControl(control):
 	VBox.add_child(control.getGUIControl())
-	#var viewport = get_viewport()
-	#get_viewport().add_child(control)
 	call_deferred("add_child", control)
 
 """ Add and remove Properties from the debug Menu """

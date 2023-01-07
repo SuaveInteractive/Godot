@@ -60,5 +60,6 @@ Units = [ SubResource( 4 ), SubResource( 5 ) ]
 Buildings = [ SubResource( 7 ), SubResource( 8 ) ]
 Modifiers = [  ]
 Map = ExtResource( 5 )
+Size = Vector2( 800, 600 )
 LandNavigation = SubResource( 3 )
 WaterNavigation = SubResource( 6 )
