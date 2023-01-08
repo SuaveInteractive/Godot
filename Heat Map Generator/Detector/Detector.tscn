@@ -10,8 +10,6 @@ hdr = false
 usage = 0
 render_target_v_flip = true
 script = ExtResource( 1 )
-DetectionShapes = null
 
 [node name="DetectorArea" type="Area2D" parent="."]
-position = Vector2( 96, 53 )
 script = ExtResource( 2 )

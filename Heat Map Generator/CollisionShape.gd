@@ -5,18 +5,18 @@ extends Sprite
 # var a = 2
 # var b = "text"
 
-var DetectionShape : Node2D = null
+#var DetectionShape : Node2D = null
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	DetectionShape = Node2D.new()
+#func _ready():
+#	DetectionShape = Node2D.new()
 	
 	#connect("draw", self, "OnDraw")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+#func _process(delta):
+#	pass
 	
 #func _draw():
 	#draw_circle(Vector2(300, 300), 10, Color(0, 1, 0))
