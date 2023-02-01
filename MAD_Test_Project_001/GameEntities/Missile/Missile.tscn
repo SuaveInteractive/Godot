@@ -5,9 +5,7 @@
 
 [sub_resource type="CircleShape2D" id=1]
 
-[node name="Missile" type="Area2D" groups=[
-"Persistent",
-]]
+[node name="Missile" type="Area2D" groups=["Persistent"]]
 z_index = 2
 collision_layer = 4
 collision_mask = 3

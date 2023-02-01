@@ -38,7 +38,6 @@ radius = 100.0
 viewport_path = NodePath("DetectorTexture")
 
 [node name="Submarine" type="Area2D" groups=["Persistent", "Targetor"]]
-position = Vector2( 630, 130 )
 z_index = 1
 script = ExtResource( 3 )
 
@@ -65,7 +64,6 @@ SelectionArea = Vector2( 38, 10 )
 DetectionShapes = [ SubResource( 4 ) ]
 
 [node name="DebugDetectorArea" type="Sprite" parent="."]
-visible = false
 texture = SubResource( 5 )
 
 [connection signal="EntityDeselected" from="Selection" to="TargetNode" method="_on_Selection_EntityDeselected"]

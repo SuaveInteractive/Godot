@@ -1,14 +1,18 @@
 extends Node
 # https://godotengine.org/qa/19862/how-to-use-blend_rect_mask
 
+#var DebugShowDetectionZonesScript = load("res://Debug/DebugShowDetectionZones.gd")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#implementation_2()
+	#var debugControl = DebugShowDetectionZonesScript.new()
+	#DebugOverlay.addDebugControl(debugControl)
 	pass
 
-func _process(delta):
-	implementation_4()
-	
+func _process(_delta):
+	#implementation_4()
+	pass
+	"""
 func implementation_1():
 	var combImage = Image.new()
 	combImage.load("res://Dest.png")
@@ -26,11 +30,11 @@ func implementation_2():
 	var sourceImg = $Source.texture.get_data()
 	var maskImg = $Mask.texture.get_data()
 	
-	var scrFormat = sourceImg.get_format()
-	var srcAlphaFormat = sourceImg.detect_alpha()
+	var _scrFormat = sourceImg.get_format()
+	var _srcAlphaFormat = sourceImg.detect_alpha()
 	
-	var maskFormat = maskImg.get_format()
-	var maskAlphaFormat = maskImg.detect_alpha()
+	var _maskFormat = maskImg.get_format()
+	var _maskAlphaFormat = maskImg.detect_alpha()
 	
 	combImage.create($Source.texture.get_width(), $Source.texture.get_height(), false, Image.FORMAT_RGBA8)
 	combImage.fill(Color(0, 0, 0, 0))
@@ -47,11 +51,11 @@ func implementation_3():
 	var sourceImg = $Source.texture.get_data()
 	var maskImg = $"Object 1/Viewport1".get_texture().get_data() # MAKE SURE THE VIEWPORT HAS TRANSPARENT BACKGROUND SET TO TRUE
 	
-	var scrFormat = sourceImg.get_format()
-	var srcAlphaFormat = sourceImg.detect_alpha()
+	var _scrFormat = sourceImg.get_format()
+	var _srcAlphaFormat = sourceImg.detect_alpha()
 	
-	var maskFormat = maskImg.get_format()
-	var maskAlphaFormat = maskImg.detect_alpha()
+	var _maskFormat = maskImg.get_format()
+	var _maskAlphaFormat = maskImg.detect_alpha()
 	
 	combImage.create($Source.texture.get_width(), $Source.texture.get_height(), false, Image.FORMAT_RGBA8)
 	combImage.fill(Color(0, 0, 0, 0))
@@ -74,8 +78,8 @@ func implementation_4():
 	sourceImg.create(viewport1MaskImg.get_width(), viewport1MaskImg.get_height(), false, Image.FORMAT_RGBA8)
 	sourceImg.fill(Color(0, 0, 0, 1))
 	
-	var scrFormat = sourceImg.get_format()
-	var srcAlphaFormat = sourceImg.detect_alpha()
+	var _scrFormat = sourceImg.get_format()
+	var _srcAlphaFormat = sourceImg.detect_alpha()
 
 	combImage.create($Source.texture.get_width(), $Source.texture.get_height(), false, Image.FORMAT_RGBA8)
 	combImage.fill(Color(0, 0, 0, 0))
@@ -87,3 +91,4 @@ func implementation_4():
 	
 	combTexture.create_from_image(combImage)
 	$HeatMap.texture = combTexture
+"""

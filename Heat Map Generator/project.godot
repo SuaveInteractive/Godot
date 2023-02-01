@@ -9,12 +9,24 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Viewport",
+"base": "Node2D",
+"class": "DebugMultiLine2D",
+"language": "GDScript",
+"path": "res://Debug/DebugPolyline2D.gd"
+}, {
+"base": "Node2D",
+"class": "DebugRectangle2D",
+"language": "GDScript",
+"path": "res://Debug/DebugRectangle2D.gd"
+}, {
+"base": "Node2D",
 "class": "DetectNode",
 "language": "GDScript",
-"path": "res://Detector/Detector.gd"
+"path": "res://EntityDetector/EntityDetector.gd"
 } ]
 _global_script_class_icons={
+"DebugMultiLine2D": "",
+"DebugRectangle2D": "",
 "DetectNode": ""
 }
 
@@ -24,9 +36,21 @@ config/name="Heat Map Generator"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+DebugOverlay="*res://Debug/DebugOverlay.gd"
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
+
+[input]
+
+DebugMenuToggle={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":96,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [physics]
 

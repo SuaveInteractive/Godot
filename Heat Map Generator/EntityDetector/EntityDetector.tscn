@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://EntityDetector/DetectorArea.gd" type="Script" id=1]
+[ext_resource path="res://EntityDetector/EntityDetector.gd" type="Script" id=2]
+
+[node name="DetectorNode" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="DetectorArea" type="Area2D" parent="."]
+collision_mask = 2
+script = ExtResource( 1 )
+drawColour = Color( 1, 0, 1, 0.196078 )
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 2
+
+[connection signal="area_entered" from="DetectorArea" to="." method="_on_DetectorArea_area_entered"]
+[connection signal="area_exited" from="DetectorArea" to="." method="_on_DetectorArea_area_exited"]
