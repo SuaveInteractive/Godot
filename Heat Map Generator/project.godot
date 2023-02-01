@@ -32,7 +32,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Heat Map Generator"
+config/name="Entity Detector Node"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 

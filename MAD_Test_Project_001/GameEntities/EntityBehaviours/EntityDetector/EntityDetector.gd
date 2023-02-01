@@ -1,17 +1,43 @@
-extends Viewport
+extends Node2D
 class_name DetectNode
 
+## The area where this node can detect other detection shapes
+export (Array, Shape2D) var DetectorArea = []
+## The shape that this object can be detected (think rader cross-section)
 export (Array, Shape2D) var DetectionShapes = []
+
+export (int) var DetectorLayer = 31
+export (int) var DetectionLayer = 32
+
+signal EnitityDetected(Entity)
+signal EnitityUndetected(Entity)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	for shape2D in DetectionShapes:
-		addCollisionShape(shape2D)
+	$DetectorArea.collision_layer = DetectorLayer
+	$DetectorArea.collision_mask = DetectionLayer
 	
-func addCollisionShape(shape2D : Shape2D) -> void:
+	$DetectionArea.collision_layer = DetectionLayer
+	$DetectionArea.collision_mask = DetectorLayer	
+	
+	for shape2D in DetectorArea:
+		addCollisionShape(shape2D, $DetectorArea)
+		
+	for shape2D in DetectionShapes:
+		addCollisionShape(shape2D, $DetectionArea)
+
+func _process(_delta):
+	pass
+		
+func addCollisionShape(shape2D : Shape2D, child : Node) -> void:
 	var newCollisionShape = CollisionShape2D.new()
 	newCollisionShape.set_shape(shape2D)
-	$DetectorArea.add_child(newCollisionShape)
+	child.add_child(newCollisionShape)
 
-
-
+func _on_DetectorArea_area_entered(area):
+	if area != $DetectionArea:
+		emit_signal("EnitityDetected", area.get_parent())
+	
+func _on_DetectorArea_area_exited(area):
+	if area != $DetectionArea:
+		emit_signal("EnitityUndetected", area.get_parent())

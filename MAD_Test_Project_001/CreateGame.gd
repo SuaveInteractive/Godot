@@ -1,9 +1,6 @@
 extends Node
 
-var cityScene = load("res://GameEntities/City/City.tscn")
-var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
-
-var countryScript = load("res://GameLogic/Country.gd")
+#var countryScript = load("res://GameLogic/Country.gd")
 var AIOpponentScript = load("res://AI/AIOpponent.gd")
 
 """ DEBUG SETUP """
@@ -12,7 +9,7 @@ var DebugShowAIStateScript = load("res://Debug/AIState/DebugShowAIState.gd")
 
 func createGame(gameObject, worldInformation):
 	# world
-	gameObject.get_node("World/World Controller").loadWorld(worldInformation)
+	gameObject.get_node("World/ViewportContainer/WorldViewport/World Controller").loadWorld(worldInformation)
 
 	""" Debug """
 	var boarders : Array = []
@@ -22,19 +19,19 @@ func createGame(gameObject, worldInformation):
 	DebugOverlay.addDebugControl(debugControl)
 	
 	#debugControl = DebugShowAIStateScript.new(AIList)
-
-func _CreateCountry(countryInfo):
-	var country = countryScript.new(countryInfo.CountryName, countryInfo.CountryColor)
-	
-	""" Create Country Boarders """
-	var countryBoarder = _CreateCountryBoarders(countryInfo.CountryBoarder)
-	country.add_child(countryBoarder)
-		
-	return country
-	
-func _CreateCountryBoarders(countryBoarderInfo):
-	var collisionPoly = CollisionPolygon2D.new()
-	collisionPoly.name = "Boarder"
-	collisionPoly.polygon = countryBoarderInfo
-	return collisionPoly
+#
+#func _CreateCountry(countryInfo):
+#	var country = countryScript.new(countryInfo.CountryName, countryInfo.CountryColor)
+#
+#	""" Create Country Boarders """
+#	var countryBoarder = _CreateCountryBoarders(countryInfo.CountryBoarder)
+#	country.add_child(countryBoarder)
+#
+#	return country
+#
+#func _CreateCountryBoarders(countryBoarderInfo):
+#	var collisionPoly = CollisionPolygon2D.new()
+#	collisionPoly.name = "Boarder"
+#	collisionPoly.polygon = countryBoarderInfo
+#	return collisionPoly
 

@@ -11,29 +11,26 @@ var WorldController = null
 var ControllingCountry = null
 
 func _ready():	
-	WorldController = $"World/World Controller"
+	WorldController = $"World/ViewportContainer/WorldViewport/World Controller"
 	
 	$CreateGame.createGame(self, worldDefinition)
-	
-	var worldController = $"World/World Controller"
-	
-	var countrollingCountry = worldController.getCountries()[0]
+		
+	var countrollingCountry = WorldController.getCountries()[0]
 	SetControllingCountry(countrollingCountry)
 	
 	# Connect to signals
 	Signals.connect("NodeCreate", self, "OnNodeCreated")
 		
 func _process(_delta):
-	var worldController = $"World/World Controller"
-	var selectedUnits = worldController.getSelectedUnits()
+	var selectedUnits = WorldController.getSelectedUnits()
 	
 	#TODO: Figure out a cleaner way to do this
 	$"UI Layer/UI/UnitMenu".ProcessUnitsSelection(selectedUnits)
 	
-	$GameRules.checkRules(worldController.getCountries())	
+	$GameRules.checkRules(WorldController.getCountries())	
 	if Input.is_action_just_pressed ("ui_MoveAction"):
 		if not selectedUnits.empty():
-			GameCommands.MoveCommand.Navigation_Mesh = worldController.getNavPolygon()
+			GameCommands.MoveCommand.Navigation_Mesh = WorldController.getNavPolygon()
 			GameCommands.MoveCommand.Position_To = get_local_mouse_position()
 			GameCommands.MoveCommand.Selected_Units = selectedUnits
 			GameCommands.MoveCommand.execute()
@@ -45,20 +42,18 @@ func _on_Button_button_down():
 	$GameActions.startAction(actionInfo)
 		
 func TargetPressed():
-	var worldController = $"World/World Controller"
-	var selectedUnits = worldController.getSelectedUnits()
+	var selectedUnits = WorldController.getSelectedUnits()
 	
 	var actionInfo = {"ActionName": "TargetAction", "SelectedUnits": selectedUnits}
 	
-	actionInfo.WorldController = worldController
+	actionInfo.WorldController = WorldController
 	$GameActions.startAction(actionInfo)
 	
 func OnMovePressed():
-	var worldController = $"World/World Controller"
-	var selectedUnits = worldController.getSelectedUnits()
+	var selectedUnits = WorldController.getSelectedUnits()
 	
 	var actionInfo = {"ActionName": "MoveUnitAction", "SelectedUnits": selectedUnits}
-	actionInfo.WorldController = worldController
+	actionInfo.WorldController = WorldController
 	
 	$GameActions.startAction(actionInfo)
 
@@ -99,10 +94,9 @@ func save_game():
 func _on_Build_UIBuildStructure(buildInfo):
 	var actionInfo = buildInfo	
 	
-	var worldController = $"World/World Controller"
-	actionInfo.BuildCountry = worldController.getCountries()[0]
-	actionInfo.BuildArea = worldController.getCountryBuildArea()
-	actionInfo.WorldController = worldController
+	actionInfo.BuildCountry = WorldController.getCountries()[0]
+	actionInfo.BuildArea = WorldController.getCountryBuildArea()
+	actionInfo.WorldController = WorldController
 	$GameActions.startAction(actionInfo)
 
 func _on_GameRules_CountryWins(country):
