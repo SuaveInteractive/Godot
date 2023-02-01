@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://World/WorldModel.gd" type="Script" id=1]
 [ext_resource path="res://Textures/WorldTexture.bmp" type="Texture" id=2]
@@ -6,14 +6,21 @@
 [ext_resource path="res://World/World View.gd" type="Script" id=4]
 [ext_resource path="res://World/World.gd" type="Script" id=5]
 [ext_resource path="res://World/WorldViewport.gd" type="Script" id=6]
+[ext_resource path="res://Fog of War/FogOfWar.gdshader" type="Shader" id=7]
+[ext_resource path="res://World/ViewportContainer.gd" type="Script" id=8]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 7 )
 
 [node name="World" type="Node"]
 script = ExtResource( 5 )
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
+material = SubResource( 1 )
 margin_right = 1024.0
 margin_bottom = 600.0
 mouse_filter = 2
+script = ExtResource( 8 )
 
 [node name="WorldViewport" type="Viewport" parent="ViewportContainer"]
 size = Vector2( 1024, 600 )
