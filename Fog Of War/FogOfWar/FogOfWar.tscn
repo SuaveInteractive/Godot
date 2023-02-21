@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://FogOfWar/FogOfWar.gd" type="Script" id=1]
-[ext_resource path="res://FogOfWar/FogOfWar.gdshader" type="Shader" id=2]
+[ext_resource path="res://FogOfWar/FogOfWar_V1.gdshader" type="Shader" id=2]
 
 [sub_resource type="ShaderMaterial" id=3]
 shader = ExtResource( 2 )

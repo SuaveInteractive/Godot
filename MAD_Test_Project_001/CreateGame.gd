@@ -9,7 +9,7 @@ var DebugShowAIStateScript = load("res://Debug/AIState/DebugShowAIState.gd")
 
 func createGame(gameObject, worldInformation):
 	# world
-	gameObject.get_node("World/ViewportContainer/WorldViewport/World Controller").loadWorld(worldInformation)
+	gameObject.get_node("ViewportContainer/Viewport/World/World Controller").loadWorld(worldInformation)
 
 	""" Debug """
 	var boarders : Array = []

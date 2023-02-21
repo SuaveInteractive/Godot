@@ -7,11 +7,11 @@ export(Color) var drawColour = Color(1, 0, 1, 1)
 func _draw():
 	#for child in get_children():
 	#	child.shape.draw(get_canvas_item(), drawColour)
+	#draw_circle (position, 20.0, Color(1.0, 0.0, 0.0) )
 	pass
 	
 func _on_DetectorArea_area_entered(area):
 	emit_signal("EnitityDetected", area)
-
 
 func _on_DetectorArea_area_exited(_area):
 	pass # Replace with function body.

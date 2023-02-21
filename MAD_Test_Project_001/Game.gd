@@ -11,7 +11,7 @@ var WorldController = null
 var ControllingCountry = null
 
 func _ready():	
-	WorldController = $"World/ViewportContainer/WorldViewport/World Controller"
+	WorldController = $"ViewportContainer/Viewport/World/World Controller"
 	
 	$CreateGame.createGame(self, worldDefinition)
 		

@@ -1,11 +1,18 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://FogOfWar/FogOfWar.gdshader" type="Shader" id=1]
+[ext_resource path="res://MaskImage.png" type="Texture" id=1]
 [ext_resource path="res://WorldTexture.bmp" type="Texture" id=2]
+[ext_resource path="res://GreyImage.gd" type="Script" id=3]
 [ext_resource path="res://ViewportContainer.gd" type="Script" id=4]
+[ext_resource path="res://Test.gd" type="Script" id=5]
+[ext_resource path="res://GreyScale.png" type="Texture" id=6]
+[ext_resource path="res://NoiseImage.png" type="Texture" id=7]
+[ext_resource path="res://Light.png" type="Texture" id=8]
+[ext_resource path="res://FogOfWar/FogOfWar.gdshader" type="Shader" id=9]
 
-[sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 1 )
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 9 )
+shader_param/maskTexture = ExtResource( 1 )
 
 [sub_resource type="OpenSimplexNoise" id=2]
 
@@ -14,21 +21,55 @@ width = 1024
 height = 600
 noise = SubResource( 2 )
 
-[node name="ViewportContainer" type="ViewportContainer"]
-material = SubResource( 1 )
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 4 )
+[node name="Node" type="Node"]
+script = ExtResource( 5 )
 
-[node name="Viewport" type="Viewport" parent="."]
+[node name="maskTexture" type="Sprite" parent="."]
+position = Vector2( 1172.75, 185.253 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 1 )
+
+[node name="TestHeatMap" type="Sprite" parent="."]
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+material = SubResource( 4 )
+margin_right = 1029.0
+margin_bottom = 606.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
 size = Vector2( 1024, 600 )
 handle_input_locally = false
 render_target_update_mode = 3
 
-[node name="Map" type="Sprite" parent="Viewport"]
+[node name="Map" type="Sprite" parent="ViewportContainer/Viewport"]
 texture = ExtResource( 2 )
 centered = false
 
-[node name="Intelligence" type="Sprite" parent="Viewport"]
-visible = false
+[node name="GreyImage" type="Sprite" parent="."]
+position = Vector2( 812, 320 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 6 )
+centered = false
+script = ExtResource( 3 )
+
+[node name="Intelligence" type="Sprite" parent="."]
+position = Vector2( 913, 519 )
+scale = Vector2( 0.2, 0.2 )
 texture = SubResource( 3 )
+
+[node name="Intelligence2" type="Sprite" parent="."]
+position = Vector2( 913, 240 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 7 )
+
+[node name="Light2D" type="Light2D" parent="."]
+visible = false
+position = Vector2( 520.664, 282.574 )
+scale = Vector2( 1.23837, 1.23837 )
+texture = ExtResource( 8 )
+shadow_enabled = true
+shadow_color = Color( 0, 0, 0, 1 )

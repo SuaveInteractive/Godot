@@ -25,9 +25,11 @@ func _ready():
 		
 	for shape2D in DetectionShapes:
 		addCollisionShape(shape2D, $DetectionArea)
-
-func _process(_delta):
-	pass
+	
+	add_to_group("Detectors")
+	
+#func _draw():
+#	draw_circle (position, 20.0, Color(1.0, 0.0, 0.0) )
 		
 func addCollisionShape(shape2D : Shape2D, child : Node) -> void:
 	var newCollisionShape = CollisionShape2D.new()

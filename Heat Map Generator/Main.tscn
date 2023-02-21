@@ -1,7 +1,18 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://TestObject.tscn" type="PackedScene" id=1]
+[ext_resource path="res://DetectorRendering/DetectorRendering.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Main.gd" type="Script" id=5]
+
+[sub_resource type="ViewportTexture" id=5]
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="Environment" id=2]
+background_mode = 1
+
+[sub_resource type="World" id=6]
+resource_local_to_scene = true
+environment = SubResource( 2 )
 
 [node name="Main" type="Node"]
 script = ExtResource( 5 )
@@ -13,3 +24,11 @@ Velocity = Vector2( -20, 0 )
 [node name="TestObject2" parent="." instance=ExtResource( 1 )]
 position = Vector2( 111, 168 )
 Velocity = Vector2( 20, 0 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 797, 454 )
+scale = Vector2( 0.4, 0.4 )
+texture = SubResource( 5 )
+
+[node name="Viewport" parent="." instance=ExtResource( 2 )]
+world = SubResource( 6 )

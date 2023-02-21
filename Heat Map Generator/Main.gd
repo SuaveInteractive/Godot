@@ -10,8 +10,8 @@ func _ready():
 	pass
 
 func _process(_delta):
-	#implementation_4()
 	pass
+
 	"""
 func implementation_1():
 	var combImage = Image.new()
