@@ -61,7 +61,7 @@ lossy_quality = 0.0
 flags = 0
 size = Vector2( 1024, 600 )
 
-[node name="Viewport" type="Viewport"]
+[node name="DetectionMap" type="Viewport"]
 size = Vector2( 1024, 600 )
 own_world = true
 world = SubResource( 3 )

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://RTSCamera.gd" type="Script" id=1]
 [ext_resource path="res://GameSaver/GameSaver.gd" type="Script" id=2]
@@ -10,7 +10,7 @@
 [ext_resource path="res://UnitMenu.gd" type="Script" id=8]
 [ext_resource path="res://FinanceValue.gd" type="Script" id=9]
 [ext_resource path="res://GameActions/LaunchStrikeAction.gd" type="Script" id=10]
-[ext_resource path="res://Fog of War/FogOfWar.gdshader" type="Shader" id=11]
+[ext_resource path="res://Shaders/Fog of War/FogOfWar.gdshader" type="Shader" id=11]
 [ext_resource path="res://CreateGame.gd" type="Script" id=12]
 [ext_resource path="res://World/World.tscn" type="PackedScene" id=15]
 [ext_resource path="res://GameActions/GameActions.gd" type="Script" id=17]
@@ -57,10 +57,14 @@ func getTargets() -> Dictionary:
 [sub_resource type="ShaderMaterial" id=8]
 shader = ExtResource( 11 )
 
-[sub_resource type="Theme" id=5]
+[sub_resource type="Environment" id=2]
+background_mode = 1
 
-[sub_resource type="ViewportTexture" id=7]
-viewport_path = NodePath("Viewport2")
+[sub_resource type="World" id=9]
+resource_local_to_scene = true
+environment = SubResource( 2 )
+
+[sub_resource type="Theme" id=5]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 4 )
@@ -112,7 +116,8 @@ ZoomLimit_speed = 2.0
 [node name="GameActions" type="Node" parent="."]
 script = ExtResource( 17 )
 
-[node name="Viewport2" parent="." instance=ExtResource( 5 )]
+[node name="DetectionMap" parent="." instance=ExtResource( 5 )]
+world = SubResource( 9 )
 handle_input_locally = false
 render_target_update_mode = 3
 
@@ -123,11 +128,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 theme = SubResource( 5 )
-
-[node name="Sprite" type="Sprite" parent="UI Layer/UI"]
-position = Vector2( 694.24, 58.5 )
-scale = Vector2( 0.145, 0.145 )
-texture = SubResource( 7 )
 
 [node name="LaunchButton" type="Button" parent="UI Layer/UI"]
 margin_left = 24.0

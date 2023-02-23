@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/TestImage.png-5c15e65dcf307a720056aef76db4792e.stex"
+path="res://.import/TestImage.png-be860cab5ace8baea526f48b1f24da83.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Fog of War/TestImage.png"
-dest_files=[ "res://.import/TestImage.png-5c15e65dcf307a720056aef76db4792e.stex" ]
+source_file="res://Shaders/Fog of War/TestImage.png"
+dest_files=[ "res://.import/TestImage.png-be860cab5ace8baea526f48b1f24da83.stex" ]
 
 [params]
 

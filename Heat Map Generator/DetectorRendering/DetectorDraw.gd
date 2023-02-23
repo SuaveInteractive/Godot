@@ -5,6 +5,8 @@ func _process(_delta):
 	update()
 
 func _draw():
+	draw_rect(get_viewport_rect(), Color.white)
+	
 	var detectors = get_tree().get_nodes_in_group("Detectors")
 	for dector in detectors:
 		drawDetectionArea(dector.global_position, dector.DetectorArea)
