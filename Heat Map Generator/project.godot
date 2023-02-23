@@ -34,7 +34,7 @@ _global_script_class_icons={
 
 config/name="Entity Detector Node"
 run/main_scene="res://Main.tscn"
-config/icon="res://icon.png"
+config/icon="res://Images/icon.png"
 
 [autoload]
 
