@@ -6,13 +6,25 @@ shader_type canvas_item;
 	https://docs.godotengine.org/en/stable/classes/class_image.html?highlight=FORMAT_L8#enumerations
 */
 
-uniform sampler2D mask;
+uniform sampler2D previousTexture;
+uniform sampler2D maskTexture;
+
 
 void fragment() 
 {
-	COLOR = texture(TEXTURE, UV);	
-	float grey = 0.21 * COLOR.r + 0.71 * COLOR.g + 0.07 * COLOR.b;
-	vec3 greyMultiplier = vec3(grey);
+	// Start with base shade
+	vec4 baseShade = vec4(0.5, 0.5, 0.5, 1);
 	
-	COLOR.rgb = mix(COLOR.rgb, greyMultiplier, texture(mask, UV).r);
+	// Get the previous grey colour
+	vec4 previousGrey = texture(previousTexture, UV);
+
+	// Get the mask value
+	vec4 maskValue = texture(maskTexture, UV);
+	
+	// Color of the map
+	vec4 textureColor = texture(TEXTURE, UV);	
+	
+	// Calculate what the value should be
+	
+	COLOR = mix(textureColor, baseShade, maskValue*0.75);
 }

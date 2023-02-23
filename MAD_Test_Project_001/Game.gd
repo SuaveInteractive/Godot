@@ -18,6 +18,8 @@ func _ready():
 	var countrollingCountry = WorldController.getCountries()[0]
 	SetControllingCountry(countrollingCountry)
 	
+	$ViewportContainer.material.set_shader_param("maskTexture", $Viewport2.get_texture())
+	
 	# Connect to signals
 	Signals.connect("NodeCreate", self, "OnNodeCreated")
 		
@@ -34,6 +36,8 @@ func _process(_delta):
 			GameCommands.MoveCommand.Position_To = get_local_mouse_position()
 			GameCommands.MoveCommand.Selected_Units = selectedUnits
 			GameCommands.MoveCommand.execute()
+			
+	$ViewportContainer.material.set_shader_param("maskTexture", $Viewport2.get_texture())
 		
 func _on_Button_button_down():
 	var actionInfo = {"ActionName": "LaunchStrikeAction"}	

@@ -67,7 +67,6 @@ own_world = true
 world = SubResource( 3 )
 hdr = false
 usage = 0
-render_target_v_flip = true
 
 [node name="BackgroundRender" type="Sprite" parent="."]
 material = SubResource( 6 )
