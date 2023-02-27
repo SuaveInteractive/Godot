@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://ControlWindow.gd" type="Script" id=1]
+[ext_resource path="res://Debug/DebugWindow/ControlWindow.gd" type="Script" id=1]
 [ext_resource path="res://Debug/DebugTheme.theme" type="Theme" id=2]
 
 [node name="Window" type="Control"]

@@ -62,4 +62,5 @@ func _createHeatMap():
 	heatMap.resize(worldSize.x, worldSize.y)
 
 func _updateHeatMap() -> void:
-	var detectionArea = ControllingCountry.getDetectionArea()
+	#var detectionArea = ControllingCountry.getDetectionArea()
+	pass

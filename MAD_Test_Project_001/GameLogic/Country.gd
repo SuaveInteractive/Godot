@@ -106,6 +106,9 @@ func addUnit(unit):
 	
 	unitInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
 	
+	unitInstance.get_node("DetectorNode").connect("EnitityDetected", self, "OnEnitityDetected")
+	unitInstance.get_node("DetectorNode").connect("EnitityUndetected", self, "OnEnitityUndetected")
+		
 	unitInstance.set_name("unit")
 	$Units.add_child(unitInstance)
 
@@ -124,3 +127,9 @@ func addMissile(source, target) -> void:
 """
 func OnUnitSelected(entity) -> void:
 	emit_signal("UnitSelected", self, entity)
+	
+func OnEnitityDetected(entity) -> void:
+	pass
+	
+func OnEnitityUndetected(entity) -> void:
+	pass
