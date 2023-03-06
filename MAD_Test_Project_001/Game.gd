@@ -34,8 +34,8 @@ func _process(_delta):
 		if not selectedUnits.empty():
 			GameCommands.MoveCommand.Navigation_Mesh = WorldController.getNavPolygon()
 			GameCommands.MoveCommand.Position_To = get_local_mouse_position()
-			GameCommands.MoveCommand.Selected_Units = selectedUnits
-			GameCommands.MoveCommand.execute()
+			GameCommands.MoveCommand.Selected_Units = selectedUnits			
+			ScriptRecorder.executeCommand(GameCommands.MoveCommand)
 		
 func _on_Button_button_down():
 	var actionInfo = {"ActionName": "LaunchStrikeAction"}	

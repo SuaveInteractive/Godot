@@ -44,10 +44,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://GameEntities/EntityBehaviours/EntityDetector/EntityDetector.gd"
 }, {
+"base": "Resource",
+"class": "GameScript",
+"language": "GDScript",
+"path": "res://Script/GameScript.gd"
+}, {
 "base": "Node",
 "class": "Matrix",
 "language": "GDScript",
 "path": "res://Utils/Matrix.gd"
+}, {
+"base": "Resource",
+"class": "ScriptLine",
+"language": "GDScript",
+"path": "res://Script/ScriptLine.gd"
 }, {
 "base": "Resource",
 "class": "StructureInformation",
@@ -72,7 +82,9 @@ _global_script_class_icons={
 "DebugMultiLine2D": "",
 "DebugRectangle2D": "",
 "DetectNode": "",
+"GameScript": "",
 "Matrix": "",
+"ScriptLine": "",
 "StructureInformation": "",
 "UnitInformation": "",
 "WorldInformation": ""
@@ -89,6 +101,7 @@ config/icon="res://icon.png"
 Signals="*res://Global/Signals.gd"
 GameCommands="*res://Global/GameCommands.gd"
 DebugOverlay="*res://Debug/DebugOverlay.gd"
+ScriptRecorder="*res://Script/ScriptRecorder.gd"
 
 [global]
 

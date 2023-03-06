@@ -4,7 +4,7 @@ var Position_To : Vector2
 var Selected_Units : Array
 var Navigation_Mesh : Navigation2D
 
-func _ready():
+func _init():
 	Command_Name = "Move_Command"
 
 func execute() -> bool:
