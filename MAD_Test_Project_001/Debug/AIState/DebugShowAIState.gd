@@ -8,7 +8,7 @@ var aiList : Array = []
 func _ready():
 	pass
 
-func _init(AIList):
+func _init(AIList : Array = []):
 	aiList = AIList
 	self.name = "Debug Show AI State"
 			
@@ -17,7 +17,7 @@ func getGUIControl():
 	checkbutton.name = "Toggle Show AI State"
 	checkbutton.text = "Toggle Show AI State"	
 	
-	checkbutton.connect("toggled", self, "OnButtonToggle")
+	var _ret = checkbutton.connect("toggled", self, "OnButtonToggle")
 	
 	return checkbutton;
 	

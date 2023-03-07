@@ -6,7 +6,7 @@ var worldController : Node
 func _ready():
 	pass
 
-func _init(parameters):
+func _init(parameters = null):
 	selectedUnits = parameters.SelectedUnits
 	worldController = parameters.WorldController
 	

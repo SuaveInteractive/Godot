@@ -3,7 +3,7 @@ extends "res://GameActions/GameAction.gd"
 var selectedUnits = null
 var worldController : Node = null
 
-func _init(parameters):
+func _init(parameters = null):
 	selectedUnits = parameters.SelectedUnits
 	worldController = parameters.WorldController
 	

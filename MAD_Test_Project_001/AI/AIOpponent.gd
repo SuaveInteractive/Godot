@@ -18,7 +18,7 @@ var addedScriptedBehaviour := false
 func _ready():
 	heatMap = Matrix.new()
 
-func _init(name, country, worldController):
+func _init(name : String = "", country : Node = null, worldController : Node = null):
 	self.set_name(name)
 	ControllingCountry = country
 	WorldController = worldController

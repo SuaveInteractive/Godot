@@ -5,7 +5,7 @@ var debugDetectorScene = load("res://DetectorRendering/Debug/DebugDetectorInform
 var checkbutton : CheckButton = null
 var DetetorTexture : Texture = null
 
-func _init(detectionTexture):
+func _init(detectionTexture : Node = null):
 	DetetorTexture = detectionTexture.get_texture()
 	self.name = "Debug Show Detector Texture"
 		
@@ -17,7 +17,7 @@ func getGUIControl():
 	checkbutton.name = "Show Detector"
 	checkbutton.text = "Show Detector Texture"	
 	
-	checkbutton.connect("toggled", self, "OnButtonToggle")
+	var _ret = checkbutton.connect("toggled", self, "OnButtonToggle")
 	
 	return checkbutton;
 	

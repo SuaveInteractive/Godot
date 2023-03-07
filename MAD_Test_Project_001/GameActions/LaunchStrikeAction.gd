@@ -1,6 +1,6 @@
 extends "res://GameActions/GameAction.gd"
 
-var worldController : Node
+var worldController : Node = null
 
 func _init(parameters):
 	worldController = parameters.WorldController

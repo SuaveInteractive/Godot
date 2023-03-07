@@ -21,7 +21,7 @@ func _process(delta):
 		if nextTimeOffset < currentExecutionTime:
 			var line = _getNextLine()
 			if line:
-				_executeLine(line)
+				runningScript = _executeLine(line)
 				currentLineIndex = currentLineIndex + 1
 				
 				_setNextTimeOffset()
@@ -53,7 +53,7 @@ func _getNextLine():
 	return null
 
 func _executeLine(line) -> bool:
-	var result :bool = false
+	var result : bool = false
 	var commandName = line.getCommandName()
 	if CommandMap.has(commandName):
 		var command = CommandMap[commandName]

@@ -28,7 +28,7 @@ func _ready():
 	debugPolyline.points = polyPoints
 	add_child(debugPolyline)
 
-func _init(parameters):
+func _init(parameters = null):
 	Params = parameters
 	Params.BuildCountry = parameters.BuildCountry
 	BuildArea = parameters.BuildArea

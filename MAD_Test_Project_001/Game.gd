@@ -1,8 +1,6 @@
 extends Node2D
 
 # https://www.youtube.com/watch?v=Ad6Us73smNs
-
-var nuclearExplosionScene = load("res://GameEntities/NuclearExplosion/NuclearExplosion.tscn")
 var worldDefinition = "res://Data/World/WorldInformation_003.tres"
 
 var moveSpeed : float = 20.0
@@ -19,9 +17,6 @@ func _ready():
 	SetControllingCountry(countrollingCountry)
 	
 	$ViewportContainer.material.set_shader_param("maskTexture", $DetectionMap.get_texture())
-	
-	# Connect to signals
-	Signals.connect("NodeCreate", self, "OnNodeCreated")
 		
 func _process(_delta):
 	var selectedUnits = WorldController.getSelectedUnits()
@@ -58,20 +53,6 @@ func OnMovePressed():
 	actionInfo.WorldController = WorldController
 	
 	$GameActions.startAction(actionInfo)
-
-func OnNodeCreated(_type, _obj) -> void:
-	_obj.connect("targetReached", self, "OnTargetReached")
-	
-func OnTargetReached(target, hits):
-	var nuclearExplosionInstance = nuclearExplosionScene.instance()
-	nuclearExplosionInstance.position = target
-	add_child(nuclearExplosionInstance)
-	nuclearExplosionInstance.play()
-	
-	#Check any hits
-	for hit in hits:
-		if hit.is_class("City"):
-			hit.setPopulation(49)
 			
 func SetControllingCountry(country):
 	ControllingCountry = country

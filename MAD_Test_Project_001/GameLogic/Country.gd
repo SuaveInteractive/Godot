@@ -17,6 +17,8 @@ signal UnitSelected(country, unit)
 signal CountryControlChange(oldControl, newControl)
 signal CountryFinanceChange(oldFinance, newFinance)
 
+signal CountryTargetHit(country, target, hits)
+
 var CountryColour : Color = Color(255) setget , get_colour
 var Boarder : PoolVector2Array 
 
@@ -120,6 +122,9 @@ func addMissile(source, target) -> void:
 	missileInstance.set_name("missile")
 	missileInstance.setTarget(target)
 	missileInstance.position = source
+	
+	missileInstance.connect("targetReached", self, "OnTargetReached")
+	
 	$Missiles.add_child(missileInstance)
 	
 """
@@ -128,8 +133,11 @@ func addMissile(source, target) -> void:
 func OnUnitSelected(entity) -> void:
 	emit_signal("UnitSelected", self, entity)
 	
-func OnEnitityDetected(entity) -> void:
+func OnTargetReached(target, hits):
+	emit_signal("CountryTargetHit", self, target, hits)
+	
+func OnEnitityDetected(_entity) -> void:
 	pass
 	
-func OnEnitityUndetected(entity) -> void:
+func OnEnitityUndetected(_entity) -> void:
 	pass

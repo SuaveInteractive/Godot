@@ -7,6 +7,7 @@ https://miro.com/app/board/uXjVPBx20R0=/
 
 var countryScene = load("res://GameLogic/Country.tscn")
 var targetScene = load("res://GameEntities/Target/Target.tscn")
+var nuclearExplosionScene = load("res://GameEntities/NuclearExplosion/NuclearExplosion.tscn")
 
 signal WorldEntitySelected(country, entity)
 
@@ -57,6 +58,7 @@ func _updateCountry(countries):
 		$Countries.add_child(newCountry)
 		
 		newCountry.connect("UnitSelected", self, "OnCountryUnitSelected")
+		newCountry.connect("CountryTargetHit", self, "OnCountryTargetHit")
 	
 func _updateUnits(units):
 	for unit in units:	
@@ -182,4 +184,15 @@ func getNavPolygon() -> Navigation2D:
 """	
 func OnCountryUnitSelected(country, entity):
 	emit_signal("WorldEntitySelected", country, entity)
+	
+func OnCountryTargetHit(_country, target, hits):
+	var nuclearExplosionInstance = nuclearExplosionScene.instance()
+	nuclearExplosionInstance.position = target
+	add_child(nuclearExplosionInstance)
+	nuclearExplosionInstance.play()
+	
+	#Check any hits
+	for hit in hits:
+		if hit.is_class("City"):
+			hit.setPopulation(49)
 

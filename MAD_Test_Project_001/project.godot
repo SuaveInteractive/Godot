@@ -98,7 +98,6 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Signals="*res://Global/Signals.gd"
 GameCommands="*res://Global/GameCommands.gd"
 DebugOverlay="*res://Debug/DebugOverlay.gd"
 ScriptRecorder="*res://Script/ScriptRecorder.gd"

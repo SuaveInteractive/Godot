@@ -8,7 +8,8 @@ func checkRules(countries):
 	
 	for country in countries:
 		if country.get_control() < 50:
-			Signals.emit_signal("SetCountryActive", country, false)
+			pass
+			#Signals.emit_signal("SetCountryActive", country, false)
 		else:
 			ActiveCountry = country
 			activeCountries = activeCountries + 1

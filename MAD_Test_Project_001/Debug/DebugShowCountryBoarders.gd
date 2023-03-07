@@ -5,7 +5,7 @@ var debugPolylineScript = load("res://Debug/DebugPolyline2D.gd")
 func _ready():
 	pass
 
-func _init(countriesBoarders):
+func _init(countriesBoarders : Array = []):
 	self.name = "Debug Show Country Boarders"
 	
 	for boarder in countriesBoarders:

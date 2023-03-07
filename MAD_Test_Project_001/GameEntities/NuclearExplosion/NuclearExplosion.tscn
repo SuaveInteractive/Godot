@@ -46,9 +46,7 @@ animations = [ {
 "speed": 10.0
 } ]
 
-[node name="NuclearExplosion" type="AnimatedSprite" groups=[
-"Persistent",
-]]
+[node name="NuclearExplosion" type="AnimatedSprite" groups=["Persistent"]]
 z_index = 2
 frames = SubResource( 8 )
 script = ExtResource( 2 )
