@@ -8,38 +8,45 @@ var recording : bool = false
 var scriptPath : String = "res://Script/Recordings/GameScript001.tres"
 var recordingPath : String = "res://Script/Recordings/GameRecording_001.tres"
 var gameScript : Resource = null
+var dirty : bool = false
+var timeOffset : float = 0.0
 
 func _ready():
 	gameScript = GameScript.new()
 	
 func _process(delta):
 	if recording:
-		var err = ResourceSaver.save(recordingPath, gameScript)
-		if err:
-			print ("Error occured trying to save game script")
+		timeOffset = timeOffset + delta
+		if dirty:
+			var err = ResourceSaver.save(recordingPath, gameScript)
+			if err:
+				print ("Error occured trying to save game script")
+			dirty = false
 
-func executeCommand(command) -> bool:
+func executeCommand(command) -> void:
 	if recording:
-		return recordCommand(command)
+		recordCommand(command)
 	else:
-		return command.execute()
+		command.execute()
 	
-func recordCommand(command) -> bool:
+func recordCommand(command) -> void:
 	var ret = command.execute()
 	if ret:
 		var scriptLine = ScriptLine.new()
+		scriptLine.setTimeOffset(timeOffset)
 		scriptLine.setCommandName(command.GetName())
 		
 		var arguments : Dictionary = {}
 		var propteryArray = command.get_property_list()
 		for property in propteryArray:
 			if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
-				arguments[property.name] = command[property.name]
+				if property.name != "Command_Name":
+					arguments[property.name] = command[property.name]
 				
 		scriptLine.setCommandArguments(arguments)
 		gameScript.GameScript.append(scriptLine)
 		
-	return ret
+		dirty = true
 	
 func record():
 	recording = true

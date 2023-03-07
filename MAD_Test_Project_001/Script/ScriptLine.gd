@@ -2,6 +2,7 @@ extends Resource
 class_name ScriptLine
 
 export(String) var CommandName = "" setget setCommandName, getCommandName
+export(float) var TimeOffset = 0.0 setget setTimeOffset, getTimeOffset
 export(Dictionary) var CommandArguments = null setget setCommandArguments, getCommandArguments
 
 func _ready():
@@ -18,3 +19,9 @@ func setCommandArguments(var commandArgs : Dictionary) -> void:
 	
 func getCommandArguments() -> Dictionary:
 	return CommandArguments 
+
+func setTimeOffset(timeOffset : float) -> void:
+	TimeOffset = timeOffset
+
+func getTimeOffset() -> float:
+	return TimeOffset
