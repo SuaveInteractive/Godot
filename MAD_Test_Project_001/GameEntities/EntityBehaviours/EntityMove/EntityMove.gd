@@ -25,9 +25,11 @@ func _process(_delta):
 		lastPos = path[0]
 		path.remove(0)
 		
-func createPath(navigationMesh, fromPos, toPos) -> void:
-	var newPath = navigationMesh.get_simple_path(fromPos, toPos)
-	newPath.remove(0);
+func createPath(mapRID, fromPos, toPos) -> void:
+	#var newPath = navigationMesh.get_simple_path(fromPos, toPos)
+	
+	var newPath = Navigation2DServer.map_get_path(mapRID, fromPos, toPos, true)
+	#newPath.remove(0);
 	path = newPath
 	
 	

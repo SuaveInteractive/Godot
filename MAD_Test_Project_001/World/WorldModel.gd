@@ -21,6 +21,9 @@ var WorldView : Node = null
 
 var SelectedEntities : Array = []
 
+var LandMapRID : RID 
+var WaterMapRID : RID 
+
 class TargetorTargets:
 	var targetor : Node
 	var targets : Array
@@ -34,17 +37,21 @@ func _init():
 func setWorldModel(worldModelRes : Resource) -> void:
 	if WorldModelResource != worldModelRes:
 		WorldModelResource = worldModelRes
+			
+		# create a new navigation map
+		LandMapRID = Navigation2DServer.map_create()
+		var landRegion = Navigation2DServer.region_create()
+		Navigation2DServer.region_set_transform(landRegion, Transform())
+		Navigation2DServer.region_set_map(landRegion, LandMapRID)
+		Navigation2DServer.region_set_navpoly(landRegion, WorldModelResource.LandNavigation)
 		
-		var landNavInstance : NavigationPolygonInstance = NavigationPolygonInstance.new()
-		landNavInstance.name = "LandNavigation"
-		landNavInstance.set_navigation_polygon(WorldModelResource.LandNavigation)
-
-		var waterNavInstance : NavigationPolygonInstance = NavigationPolygonInstance.new()
-		waterNavInstance.name = "WaterNavigation"
-		waterNavInstance.set_navigation_polygon(WorldModelResource.WaterNavigation)
+		WaterMapRID = Navigation2DServer.map_create()
+		var waterRegion = Navigation2DServer.region_create()		
+		Navigation2DServer.region_set_transform(waterRegion, Transform())
+		Navigation2DServer.region_set_map(waterRegion, WaterMapRID)
+		Navigation2DServer.region_set_navpoly(waterRegion, WorldModelResource.WaterNavigation)
 				
-		$Navigation.add_child(landNavInstance)
-		$Navigation.add_child(waterNavInstance)
+		Navigation2DServer.map_set_active(WaterMapRID, true)
 		
 		_updateCountry(WorldModelResource.Countries)
 		_updateUnits(WorldModelResource.Units)
@@ -176,8 +183,8 @@ func getCountryColour(countryName : String) -> Color:
 """
 HELPER FUNCTIONS
 """
-func getNavPolygon() -> Navigation2D:
-	return $Navigation as Navigation2D
+func getMapRID() -> RID:
+	return WaterMapRID
 
 """
 	Callbacks

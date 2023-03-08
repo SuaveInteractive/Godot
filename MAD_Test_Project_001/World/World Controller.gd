@@ -20,8 +20,8 @@ func getSelectedUnits() -> Array:
 func setSelectedEntities(selectedEntities : Array) -> void:
 	WorldModel.setSelectedEntities(selectedEntities)
 	
-func getNavPolygon() -> Navigation2D:
-	return WorldModel.getNavPolygon()
+func getMapRID() -> RID:
+	return WorldModel.getMapRID()
 
 func getCountryBuildArea():
 	return getCountries()[0].Boarder
