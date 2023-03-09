@@ -26,19 +26,6 @@ func _process(_delta):
 		path.remove(0)
 		
 func createPath(mapRID, fromPos, toPos) -> void:
-	#var newPath = navigationMesh.get_simple_path(fromPos, toPos)
-	
 	var newPath = Navigation2DServer.map_get_path(mapRID, fromPos, toPos, true)
-	#newPath.remove(0);
 	path = newPath
-	
-	
-func save():
-	var saveDict = {
-		"path": var2str(path)
-		}
-	return saveDict
-	
 
-func load(dic):
-	path = str2var(dic["path"])

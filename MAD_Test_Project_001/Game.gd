@@ -17,6 +17,8 @@ func _ready():
 	SetControllingCountry(countrollingCountry)
 	
 	$ViewportContainer.material.set_shader_param("maskTexture", $DetectionMap.get_texture())
+	
+	ScriptRecorder.record()
 		
 func _process(_delta):
 	var selectedUnits = WorldController.getSelectedUnits()
