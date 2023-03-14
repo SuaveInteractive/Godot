@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://Script/GameScript.gd" type="Script" id=1]
 [ext_resource path="res://Script/ScriptLine.gd" type="Script" id=2]
@@ -6,21 +6,12 @@
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
 CommandName = "Test_Command_001"
-TimeOffset = 1.01597
+TimeOffset = 0.0
 CommandArguments = {
 "Position_To": Vector2( 123, 456 ),
 "Selected_Units": [ 1, "blah" ]
 }
 
-[sub_resource type="Resource" id=2]
-script = ExtResource( 2 )
-CommandName = "Test_Command_001"
-TimeOffset = 1.01597
-CommandArguments = {
-"Position_To": Vector2( 654, 321 ),
-"Selected_Units": [ "foo", Vector3( 1, 2, 3 ) ]
-}
-
 [resource]
 script = ExtResource( 1 )
-GameScript = [ SubResource( 1 ), SubResource( 2 ) ]
+GameScript = [ SubResource( 1 ) ]

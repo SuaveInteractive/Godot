@@ -21,7 +21,7 @@ func _process(delta):
 			
 func _writeFile() -> void:
 	if dirty:
-		var recordingFilePath = String(recordingPath + "/" + recordingFilename)
+		var recordingFilePath = getRecordingFilePath()
 		var err = ResourceSaver.save(recordingFilePath, gameScript)
 		if err:
 			print ("Error occured trying to save game script.  Error [" , err , "]")
@@ -98,3 +98,6 @@ func setRecordingFilename(filename) -> void:
 	
 func getRecordingFilename() -> String:
 	return recordingFilename
+
+func getRecordingFilePath() -> String:
+	return String(recordingPath + "/" + recordingFilename)

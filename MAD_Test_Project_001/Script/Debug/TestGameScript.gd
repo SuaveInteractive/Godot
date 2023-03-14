@@ -48,7 +48,6 @@ func recordScript_Test() -> void:
 
 func recordScript_Test002() -> void:
 	ScriptRecorder.setRecordingFilename("Test002.tres")
-	ScriptRecorder.record()
 	
 	var testCommand = TestCommandScript_002.new()
 	testCommand.TestSprite = $TestSprite
