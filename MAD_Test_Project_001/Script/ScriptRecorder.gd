@@ -9,7 +9,7 @@ var recordingPath : String = "res://Script/Recordings" setget setRecordingPath, 
 var recordingFilename : String = "GameRecording_001.tres" setget setRecordingFilename, getRecordingFilename
 var gameScript : Resource = null
 var dirty : bool = false
-var timeOffset : float = 0.0
+var timeOffset : float = 0.0 
 
 func _ready():
 	gameScript = GameScript.new()
@@ -79,6 +79,9 @@ func stop():
 	recording = false
 	_writeFile()
 	gameScript.GameScript.clear()
+	
+func resetTimeOffset() -> void:
+	timeOffset = 0.0
 	
 """
 	Accessors

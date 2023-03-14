@@ -23,6 +23,7 @@ func test_file_exists():
 	assert_file_exists(ScriptRecorder.getRecordingFilePath())
 
 func test_basic_recording_01():
+	ScriptRecorder.resetTimeOffset()
 	ScriptRecorder.record()
 	
 	var testCommand = TestCommandScript_001.new()
