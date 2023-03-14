@@ -8,3 +8,8 @@ var TargetCommand = TargetCommandScript.new()
 
 var BuildCommandScript = load("res://GameCommand/BuildCommand.gd")
 var BuildCommand = BuildCommandScript.new()
+
+func _init():
+	add_child(MoveCommand)
+	add_child(TargetCommand)
+	add_child(BuildCommand)

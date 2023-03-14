@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
 CommandName = "Test_Command_001"
-TimeOffset = 1.01597
+TimeOffset = 1.00627
 CommandArguments = {
 "Position_To": Vector2( 123, 456 ),
 "Selected_Units": [ 1, "blah" ]
@@ -15,7 +15,7 @@ CommandArguments = {
 [sub_resource type="Resource" id=2]
 script = ExtResource( 2 )
 CommandName = "Test_Command_001"
-TimeOffset = 1.01597
+TimeOffset = 1.00627
 CommandArguments = {
 "Position_To": Vector2( 654, 321 ),
 "Selected_Units": [ "foo", Vector3( 1, 2, 3 ) ]
