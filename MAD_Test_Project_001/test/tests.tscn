@@ -7,6 +7,7 @@ margin_right = 934.0
 margin_bottom = 546.0
 rect_min_size = Vector2( 740, 250 )
 script = ExtResource( 1 )
+_run_on_load = true
 _should_maximize = true
 _directory1 = "res://test/unit"
 _directory2 = "res://test/integration"

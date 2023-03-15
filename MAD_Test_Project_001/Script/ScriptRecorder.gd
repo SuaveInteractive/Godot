@@ -4,8 +4,11 @@ extends Node
 # https://docs.godotengine.org/en/3.5/tutorials/scripting/filesystem.html
 # https://docs.godotengine.org/en/3.5/tutorials/io/data_paths.html#doc-data-paths
 
+#print(OS.get_data_dir()) # C:\Users\Manix\AppData\Roaming\Godot\app_userdata\MAD
+
 var recording : bool = false
-var recordingPath : String = "res://Script/Recordings" setget setRecordingPath, getRecordingPath
+var recordingPath : String = "user://" setget setRecordingPath, getRecordingPath
+#var recordingPath : String = "res://Script/Recordings" setget setRecordingPath, getRecordingPath
 var recordingFilename : String = "GameRecording_001.tres" setget setRecordingFilename, getRecordingFilename
 var gameScript : Resource = null
 var dirty : bool = false

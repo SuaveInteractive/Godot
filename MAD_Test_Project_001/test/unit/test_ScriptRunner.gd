@@ -3,10 +3,10 @@ extends GutTest
 var ScriptRunnerClass = preload("res://Script/ScriptRunner.gd")
 var ScriptRunner = null
 
-var TestCommandScript_001 = preload("res://Script/Debug/Commands/TestCommand_001.gd")
-var TestCommandScript_002 = preload("res://Script/Debug/Commands/TestCommand_002.gd")
+var TestCommandScript_001 = preload("res://test/unit/data/TestCommand_001.gd")
+var TestCommandScript_002 = preload("res://test/unit/data/TestCommand_002.gd")
 
-func before_all():	
+func before_all():		
 	ScriptRunner = autofree(ScriptRunnerClass.new())
 	
 	var commandScript_001 = autofree(TestCommandScript_001.new())
