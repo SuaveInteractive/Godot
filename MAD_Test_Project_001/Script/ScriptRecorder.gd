@@ -8,7 +8,6 @@ extends Node
 
 var recording : bool = false
 var recordingPath : String = "user://" setget setRecordingPath, getRecordingPath
-#var recordingPath : String = "res://Script/Recordings" setget setRecordingPath, getRecordingPath
 var recordingFilename : String = "GameRecording_001.tres" setget setRecordingFilename, getRecordingFilename
 var gameScript : Resource = null
 var dirty : bool = false
@@ -27,52 +26,43 @@ func _writeFile() -> void:
 		var recordingFilePath = getRecordingFilePath()
 		var err = ResourceSaver.save(recordingFilePath, gameScript)
 		if err:
-			print ("Error occured trying to save game script.  Error [" , err , "]")
+			var stringError : String = "Error occured trying to save game script.  Error [" + err + "]"
+			push_error(stringError)
 		dirty = false
 
 func executeCommand(command) -> void:
 	if recording:
-		recordCommand(command)
+		var ret = command.execute()
+		if ret:
+			recordCommand(command)
 	else:
 		command.execute()
 	
 func recordCommand(command) -> void:
-	var ret = command.execute()
-	if ret:
-		var scriptLine = ScriptLine.new()
-		scriptLine.setTimeOffset(timeOffset)
-		scriptLine.setCommandName(command.GetName())
-		
-		var arguments : Dictionary = {}
-		var propteryArray = command.get_property_list()
-		for property in propteryArray:
-			if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
-				if property.name != "Command_Name":
-					match property.type:
-						TYPE_RID:
-							arguments[property.name] = command[property.name].get_id ()
-						TYPE_ARRAY:
-							arguments[property.name] = _processArray(command[property.name])
-						_: 
-							arguments[property.name] = command[property.name]
-				
-		scriptLine.setCommandArguments(arguments)
-		gameScript.GameScript.append(scriptLine)
-		
-		dirty = true
-		
-func _processArray(array):
-	var retArray : Array = []
+	var scriptLine = ScriptLine.new()
+	scriptLine.setTimeOffset(timeOffset)
+	scriptLine.setCommandName(command.GetName())
 	
-	for i in array:
-		match typeof(i):
-			TYPE_OBJECT:
-				retArray.append(i.get_path ())
-			_: 
-				retArray.append(i)
+	var arguments : Dictionary = {}
+	var propteryArray = command.get_property_list()
+	for property in propteryArray:
+		if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+			if property.name != "Command_Name":
+				match property.type:
+					TYPE_RID: 
+						arguments[property.name] = command[property.name].get_id()
+					TYPE_OBJECT:
+						arguments[property.name] = _processObject(command[property.name])
+					TYPE_ARRAY:
+						arguments[property.name] = _processArray(command[property.name])
+					_: 
+						arguments[property.name] = command[property.name]
+			
+	scriptLine.setCommandArguments(arguments)
+	gameScript.GameScript.append(scriptLine)
 	
-	return retArray
-	
+	dirty = true
+			
 func record():
 	recording = true
 	_writeFile()
@@ -85,6 +75,25 @@ func stop():
 	
 func resetTimeOffset() -> void:
 	timeOffset = 0.0
+"""
+	Helper Functions
+"""	
+func _processArray(array):
+	var retArray : Array = []
+	
+	for i in array:
+		match typeof(i):
+			TYPE_OBJECT:
+				retArray.append(i.get_path ())
+			_: 
+				retArray.append(i)
+	
+	return retArray
+
+func _processObject(object):
+	var ret : NodePath 
+	ret = object.get_path()
+	return ret
 	
 """
 	Accessors

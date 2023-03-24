@@ -1,5 +1,4 @@
-var TestSprite : Sprite = null
-var TestRID : RID
+var TestObject : Object = null
 
 var Command_Name : String = "Test_Command_002"
 
