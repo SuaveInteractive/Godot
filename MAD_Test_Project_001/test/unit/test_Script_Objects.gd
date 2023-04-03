@@ -1,5 +1,7 @@
 extends GutTest
 
+#	Aim to test that the Script Runner can write and read Objects
+
 var ScriptRunnerClass = preload("res://Script/ScriptRunner.gd")
 var ScriptRunner = null
 

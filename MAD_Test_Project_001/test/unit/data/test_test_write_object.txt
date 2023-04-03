@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://Script/GameScript.gd" type="Script" id=1]
+[ext_resource path="res://Script/ScriptLine.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+CommandName = "Test_Command_002"
+TimeOffset = 0.0
+CommandArguments = {
+"TestObject": NodePath("/root/@@96/Test_Script_Commands_Objects_Node/TestChildNode")
+}
+
+[resource]
+script = ExtResource( 1 )
+GameScript = [ SubResource( 1 ) ]
