@@ -9,4 +9,6 @@ func GetName() -> String:
 	return Command_Name
 
 func execute() -> bool:
-	return true
+	if TestObject != null:
+		return true
+	return false

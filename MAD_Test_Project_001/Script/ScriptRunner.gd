@@ -62,6 +62,8 @@ func _executeLine(line) -> bool:
 		if commandArgs:
 			for arg in commandArgs:
 				match typeof(commandArgs[arg]):
+					TYPE_NODE_PATH:
+						command[arg] = _processNodePath(commandArgs[arg])
 					TYPE_OBJECT:
 						command[arg] = _processObject(commandArgs[arg])
 					_:
@@ -85,6 +87,9 @@ func getScript() -> Resource:
 func addCommand(var command) -> void:
 	var commandName  = command.GetName()
 	CommandMap[commandName] = command
+	
+func _processNodePath(nodePath : NodePath) -> Node:
+	return get_node(nodePath)
 	
 func _processObject(nodePathStr : String):
 	var nodePath = NodePath(nodePathStr)
