@@ -48,21 +48,24 @@ func recordCommand(command) -> void:
 	for property in propteryArray:
 		if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
 			if property.name != "Command_Name":
-				match property.type:
-					TYPE_RID: 
-						arguments[property.name] = command[property.name].get_id()
-					TYPE_OBJECT:
-						arguments[property.name] = _processObject(command[property.name])
-					TYPE_ARRAY:
-						arguments[property.name] = _processArray(command[property.name])
-					_: 
-						arguments[property.name] = command[property.name]
+				arguments[property.name] = _processArgument(property.type, command[property.name])
 			
 	scriptLine.setCommandArguments(arguments)
 	gameScript.GameScript.append(scriptLine)
 	
 	dirty = true
-			
+	
+func _processArgument(type, variant):
+	match type:
+		TYPE_RID: 
+			return variant.get_id()
+		TYPE_OBJECT:
+			return _processObject(variant)
+		TYPE_ARRAY:
+			return _processArray(variant)
+		_: 
+			return variant
+	
 func record():
 	recording = true
 	_writeFile()
@@ -78,22 +81,21 @@ func resetTimeOffset() -> void:
 """
 	Helper Functions
 """	
-func _processArray(array):
-	var retArray : Array = []
-	
-	for i in array:
-		match typeof(i):
-			TYPE_OBJECT:
-				retArray.append(i.get_path ())
-			_: 
-				retArray.append(i)
-	
-	return retArray
-
 func _processObject(object):
 	var ret : NodePath 
 	ret = object.get_path()
 	return ret
+
+# Need to make sure any entries in the array that cannot be directly serialized are converted into a 
+# readable format.
+func _processArray(array) -> Array:
+	var retArray : Array = []
+
+	for i in array:
+		var newArg = _processArgument(typeof(i), i)
+		retArray.append(newArg)
+
+	return retArray
 	
 """
 	Accessors

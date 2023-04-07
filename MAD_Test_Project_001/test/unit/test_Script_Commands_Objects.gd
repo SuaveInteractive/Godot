@@ -18,7 +18,6 @@ func _create_script_runner():
 
 func before_all():		
 	gut.directory_delete_files(ScriptRecorder.getRecordingPath())
-	ScriptRecorder.resetTimeOffset()
 	ScriptRecorder.record()
 	set_name("Test_Script_Commands_Objects_Node")
 	
@@ -26,6 +25,7 @@ func after_all():
 	assert_no_new_orphans()
 	
 func before_each():
+	ScriptRecorder.resetTimeOffset()
 	_create_script_runner()
 	
 func test_write_object() -> void:

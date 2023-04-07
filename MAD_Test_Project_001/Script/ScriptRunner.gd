@@ -61,13 +61,7 @@ func _executeLine(line) -> bool:
 		
 		if commandArgs:
 			for arg in commandArgs:
-				match typeof(commandArgs[arg]):
-					TYPE_NODE_PATH:
-						command[arg] = _processNodePath(commandArgs[arg])
-					TYPE_OBJECT:
-						command[arg] = _processObject(commandArgs[arg])
-					_:
-						command[arg] = commandArgs[arg]
+				command[arg] = _processArgument(commandArgs[arg])
 		
 		result = command.execute()
 		if !result:
@@ -77,6 +71,15 @@ func _executeLine(line) -> bool:
 		print("ScriptRunner: Command [", commandName ,"] Does not exist in Script Mapped Comamnds")
 		
 	return result
+	
+func _processArgument(arg):
+	match typeof(arg):
+		TYPE_NODE_PATH:
+			return _processNodePath(arg)
+		TYPE_OBJECT:
+			return _processObject(arg)
+		_:
+			return arg
 
 func setScript(var script : Resource) -> void:
 	CurrentScript = script
@@ -91,6 +94,14 @@ func addCommand(var command) -> void:
 func _processNodePath(nodePath : NodePath) -> Node:
 	return get_node(nodePath)
 	
-func _processObject(nodePathStr : String):
+func _processObject(nodePathStr : String) -> Node:
 	var nodePath = NodePath(nodePathStr)
 	return get_node(nodePath)
+	
+func _processArray(stringArray : Array) -> Array:
+	var ret : Array = []
+	
+	for i in stringArray:
+		ret.append(_processArgument(i))
+	
+	return ret

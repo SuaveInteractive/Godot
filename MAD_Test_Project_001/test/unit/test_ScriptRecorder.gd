@@ -39,12 +39,12 @@ func test_basic_recording_01():
 	ScriptRecorder._process(0.0)
 	
 	var file1 = autofree(File.new())
-	file1.open("res://test/unit/data/test_basic_recording_01.txt", File.READ)
-	var content1 = file1.get_as_text()
+	file1.open("res://test/unit/data/test_basic_recording_01.tres", File.READ)
+	var referenceContent = file1.get_as_text()
 	
 	var file2 = autofree(File.new())
 	file2.open(ScriptRecorder.getRecordingFilePath(), File.READ)
 	var content2 = file2.get_as_text()
 	
 	assert_file_exists(ScriptRecorder.getRecordingFilePath())
-	assert_true(content1 == content2)
+	assert_true(referenceContent == content2)
