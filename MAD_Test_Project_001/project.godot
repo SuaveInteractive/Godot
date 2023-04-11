@@ -75,11 +75,6 @@ _global_script_classes=[ {
 "path": "res://GameEntities/StructureInformation.gd"
 }, {
 "base": "Resource",
-"class": "Test_Resource",
-"language": "GDScript",
-"path": "res://test_resource_def.gd"
-}, {
-"base": "Resource",
 "class": "UnitInformation",
 "language": "GDScript",
 "path": "res://ResourceDefinition/World/UnitInformation.gd"
@@ -103,7 +98,6 @@ _global_script_class_icons={
 "Matrix": "",
 "ScriptLine": "",
 "StructureInformation": "",
-"Test_Resource": "",
 "UnitInformation": "",
 "WorldInformation": ""
 }

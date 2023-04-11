@@ -50,4 +50,17 @@ func test_serialize_object_array_object() -> void:
 	var processedArray = ScriptRecorder._processArray(testArray)
 	
 	assert_eq(processedArray, compareArray)
+
+func test_deserialize_object_array_object() -> void:
+	_create_test_objects()	
 	
+	var testArray : Array = []
+	var compareArray : Array = [] # contains the Nodes
+	for i in NumberOfChildNodes:
+		var childNode = newChildContainer.get_child(i)
+		testArray.append(childNode.get_path())
+		compareArray.append(childNode)
+		
+	var processedArray = ScriptRunner._processArray(testArray)
+
+	assert_eq(processedArray, compareArray)

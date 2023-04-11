@@ -3,6 +3,9 @@ extends Node2D
 # https://www.youtube.com/watch?v=Ad6Us73smNs
 var worldDefinition = "res://Data/World/WorldInformation_003.tres"
 
+var ScriptRunnerClass = preload("res://Script/ScriptRunner.gd")
+var ScriptRunner = null
+
 var moveSpeed : float = 20.0
 
 var WorldController = null
@@ -11,6 +14,11 @@ var ControllingCountry = null
 func _ready():	
 	WorldController = $"ViewportContainer/Viewport/World/World Controller"
 	
+	ScriptRunner = ScriptRunnerClass.new()
+	ScriptRunner.addCommand(GameCommands.MoveCommand)
+	
+	add_child(ScriptRunner)
+	
 	$CreateGame.createGame(self, worldDefinition)
 		
 	var countrollingCountry = WorldController.getCountries()[0]
@@ -18,7 +26,11 @@ func _ready():
 	
 	$ViewportContainer.material.set_shader_param("maskTexture", $DetectionMap.get_texture())
 	
-	ScriptRecorder.record()
+	#ScriptRecorder.record()
+	
+	
+	ScriptRunner.setScript(load("res://GameRecording_001.tres"))
+	ScriptRunner.Run()
 		
 func _process(_delta):
 	var selectedUnits = WorldController.getSelectedUnits()
