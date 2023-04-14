@@ -40,12 +40,14 @@ func setWorldModel(worldModelRes : Resource) -> void:
 			
 		# create a new navigation map
 		LandMapRID = Navigation2DServer.map_create()
+		RIDMapper.addMapping("LandMapRID", LandMapRID)
 		var landRegion = Navigation2DServer.region_create()
 		Navigation2DServer.region_set_transform(landRegion, Transform())
 		Navigation2DServer.region_set_map(landRegion, LandMapRID)
 		Navigation2DServer.region_set_navpoly(landRegion, WorldModelResource.LandNavigation)
 		
 		WaterMapRID = Navigation2DServer.map_create()
+		RIDMapper.addMapping("WaterMapRID", WaterMapRID)
 		var waterRegion = Navigation2DServer.region_create()		
 		Navigation2DServer.region_set_transform(waterRegion, Transform())
 		Navigation2DServer.region_set_map(waterRegion, WaterMapRID)

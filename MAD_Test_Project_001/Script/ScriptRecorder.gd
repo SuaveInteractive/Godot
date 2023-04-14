@@ -26,7 +26,7 @@ func _writeFile() -> void:
 		var recordingFilePath = getRecordingFilePath()
 		var err = ResourceSaver.save(recordingFilePath, gameScript)
 		if err:
-			var stringError : String = "Error occured trying to save game script.  Error [" + err + "]"
+			var stringError : String = "[ScriptRecorder]: Error occured trying to save game script.  Error [" + err + "]"
 			push_error(stringError)
 		dirty = false
 
@@ -58,7 +58,9 @@ func recordCommand(command) -> void:
 func _processArgument(type, variant):
 	match type:
 		TYPE_RID: 
-			return variant.get_id()
+			var stringError : String = "[ScriptRecorder]: RID Not supported to be serialized.  Look at RIDMapper instead."
+			push_error(stringError)
+			return null
 		TYPE_OBJECT:
 			return _processObject(variant)
 		TYPE_ARRAY:
@@ -81,6 +83,9 @@ func resetTimeOffset() -> void:
 """
 	Helper Functions
 """	
+func _processRID(var rid : RID):
+	RIDMapper.addMapping("processedRID", rid)
+
 func _processObject(object):
 	var ret : NodePath 
 	ret = object.get_path()

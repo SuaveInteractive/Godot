@@ -10,6 +10,10 @@ func after_all():
 	Navigation2DServer.free_rid(rid)
 
 func test_serialize_RID() -> void:
+	RIDMapper.addMapping("processedRID", rid)
+	
 	var processedRID = ScriptRecorder._processArgument(TYPE_RID, rid)
-	assert_not_null(processedRID)
+	assert_null(processedRID)
+	
+	
 
