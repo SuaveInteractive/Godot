@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
 CommandName = "Move_Command"
-TimeOffset = 2.05646
+TimeOffset = 0.5
 CommandArguments = {
-"MapID": 252,
-"Position_To": Vector2( 379.976, 379.976 ),
+"MapName": "WaterMapRID",
+"Position_To": Vector2( 344, 497 ),
 "Selected_Units": [ NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_1/Units/unit") ]
 }
 

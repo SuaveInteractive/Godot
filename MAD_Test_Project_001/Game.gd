@@ -40,7 +40,7 @@ func _process(_delta):
 	$GameRules.checkRules(WorldController.getCountries())	
 	if Input.is_action_just_pressed ("ui_MoveAction"):
 		if not selectedUnits.empty():
-			GameCommands.MoveCommand.MapID = WorldController.getMapRID()
+			GameCommands.MoveCommand.MapName = "WaterMapRID"
 			GameCommands.MoveCommand.Position_To = get_local_mouse_position()
 			GameCommands.MoveCommand.Selected_Units = selectedUnits			
 			ScriptRecorder.executeCommand(GameCommands.MoveCommand)

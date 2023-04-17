@@ -78,6 +78,8 @@ func _processArgument(arg):
 			return _processNodePath(arg)
 		TYPE_OBJECT:
 			return _processObject(arg)
+		TYPE_ARRAY:
+			return _processArray(arg)
 		_:
 			return arg
 
