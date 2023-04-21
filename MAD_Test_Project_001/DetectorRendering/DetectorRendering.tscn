@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://DetectorRendering/DetectorDraw.gd" type="Script" id=1]
+[ext_resource path="res://DetectorRendering/DetectorMap.gd" type="Script" id=2]
 
 [sub_resource type="Environment" id=2]
 background_mode = 1
@@ -44,7 +45,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -592.248, -54.8519 )
+graph_offset = Vector2( -202.36, 106.92 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 500, 180 )
@@ -67,6 +68,7 @@ own_world = true
 world = SubResource( 3 )
 hdr = false
 usage = 0
+script = ExtResource( 2 )
 
 [node name="BackgroundRender" type="Sprite" parent="."]
 material = SubResource( 6 )

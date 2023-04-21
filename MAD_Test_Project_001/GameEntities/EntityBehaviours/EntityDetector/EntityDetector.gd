@@ -27,14 +27,14 @@ func _ready():
 		addCollisionShape(shape2D, $DetectionArea)
 	
 	add_to_group("Detectors")
-	
-#func _draw():
-#	draw_circle (position, 20.0, Color(1.0, 0.0, 0.0) )
 		
 func addCollisionShape(shape2D : Shape2D, child : Node) -> void:
 	var newCollisionShape = CollisionShape2D.new()
 	newCollisionShape.set_shape(shape2D)
 	child.add_child(newCollisionShape)
+	
+func getDetectionAreas() -> Array:
+	return $DetectorArea.get_children()
 
 func _on_DetectorArea_area_entered(area):
 	if area != $DetectionArea:

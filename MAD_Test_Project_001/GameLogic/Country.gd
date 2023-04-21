@@ -72,10 +72,13 @@ func reduceFinance(var reduction: int) -> void:
 func get_colour() -> Color:
 	return CountryColour
 	
-func getDetectionArea():
+func getDetectionArea() -> Array:
+	var ret : Array = []
 	for unit in $Units.get_children():
-		if unit.has_node("DetectNode"):
-			pass
+		var detectorNode = unit.get_node("DetectorNode")
+		if detectorNode != null:
+			ret.append(detectorNode)
+	return ret
 
 """
 	Buildings
