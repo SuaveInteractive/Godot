@@ -38,6 +38,8 @@ radius = 50.0
 
 [node name="Submarine" type="Area2D" groups=["Persistent", "Targetor"]]
 z_index = 1
+collision_layer = 0
+collision_mask = 0
 script = ExtResource( 3 )
 
 [node name="SubmarineSprite" type="Sprite" parent="."]

@@ -139,8 +139,8 @@ func OnUnitSelected(entity) -> void:
 func OnTargetReached(target, hits):
 	emit_signal("CountryTargetHit", self, target, hits)
 	
-func OnEnitityDetected(_entity) -> void:
-	pass
+func OnEnitityDetected(entity) -> void:
+	$Intelligence.addDetection(entity)
 	
-func OnEnitityUndetected(_entity) -> void:
-	pass
+func OnEnitityUndetected(entity) -> void:
+	$Intelligence.removeDetection(entity)

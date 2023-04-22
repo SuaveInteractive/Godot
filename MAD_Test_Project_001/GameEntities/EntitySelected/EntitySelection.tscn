@@ -8,6 +8,8 @@ resource_local_to_scene = true
 extents = Vector2( 1, 1 )
 
 [node name="Selection" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
 script = ExtResource( 2 )
 SelectionSprite = ExtResource( 1 )
 
