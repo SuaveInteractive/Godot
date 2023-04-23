@@ -78,6 +78,8 @@ func SetControllingCountry(country):
 	
 	$DetectionMap.setDetectionAreas(ControllingCountry.getDetectionArea())
 	
+	$ViewportContainer/Viewport/World.setIntelligenceInterface(ControllingCountry.getIntelligenceInterface())
+	
 # https://docs.godotengine.org/en/3.1/tutorials/io/saving_games.html
 # C:\Users\Manix\AppData\Roaming\Godot\app_userdata\MAD_Test_Project_001
 func save_game():

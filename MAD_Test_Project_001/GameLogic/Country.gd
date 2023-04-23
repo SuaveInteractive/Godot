@@ -79,6 +79,9 @@ func getDetectionArea() -> Array:
 		if detectorNode != null:
 			ret.append(detectorNode)
 	return ret
+	
+func getIntelligenceInterface():
+	return $Intelligence
 
 """
 	Buildings
@@ -107,7 +110,8 @@ func addUnit(unit):
 	var unitInstance = submarineScene.instance()
 	unitInstance.position = unit.UnitPosition
 	unitInstance.z_index = 1
-	unitInstance.get_node("SubmarineSprite").get_material().set_shader_param("colour", CountryColour)
+	#unitInstance.get_node("SubmarineSprite").get_material().set_shader_param("colour", CountryColour)
+	unitInstance.get_node("EntityObfuscation").country_colour = CountryColour
 	
 	unitInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
 	

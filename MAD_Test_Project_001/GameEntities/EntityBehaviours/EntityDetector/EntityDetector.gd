@@ -14,11 +14,11 @@ signal EnitityUndetected(Entity)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$DetectorArea.collision_layer = DetectorLayer
-	$DetectorArea.collision_mask = DetectionLayer
+	$DetectorArea.set_collision_layer(DetectorLayer)
+	$DetectorArea.set_collision_mask(DetectionLayer)
 	
-	$DetectionArea.collision_layer = DetectionLayer
-	$DetectionArea.collision_mask = DetectorLayer	
+	$DetectionArea.set_collision_layer(DetectionLayer)
+	$DetectionArea.set_collision_mask(DetectorLayer)
 	
 	for shape2D in DetectorArea:
 		addCollisionShape(shape2D, $DetectorArea)

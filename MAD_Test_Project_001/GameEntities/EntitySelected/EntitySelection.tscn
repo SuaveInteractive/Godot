@@ -10,6 +10,8 @@ extents = Vector2( 1, 1 )
 [node name="Selection" type="Area2D"]
 collision_layer = 2
 collision_mask = 2
+monitoring = false
+monitorable = false
 script = ExtResource( 2 )
 SelectionSprite = ExtResource( 1 )
 
