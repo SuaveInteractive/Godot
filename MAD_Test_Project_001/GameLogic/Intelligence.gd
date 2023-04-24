@@ -3,28 +3,31 @@ extends Node
 enum InformationLevel {NONE, LOW, MEDIUM, HIGH, TOTAL}
 
 var Intel : Dictionary = {}
-var newIntel : Dictionary = {}
+var changedIntel : Dictionary = {}
 
-signal intelligenceChanged(changedIntellegence)
+signal IntelligenceChanged(changedIntellegence)
 
 func _ready():
 	pass
 	
 func _process(_delta):
-	if !newIntel.empty():
-		emit_signal("intelligenceChanged", newIntel)
-		newIntel.clear()
+	if !changedIntel.empty():
+		emit_signal("IntelligenceChanged", changedIntel)
+		changedIntel.clear()
 
 func addDetection(entity) -> void:
-	if Intel.has(Intel):
+	var parentNode = entity.get_parent()
+	if Intel.has(parentNode):
 		pass #update current intelligence
 	else:
-		Intel[entity] = InformationLevel.TOTAL
-		newIntel["entity"] = entity
-		newIntel["InformationLevel"] = InformationLevel.TOTAL
+		Intel[parentNode] = InformationLevel.TOTAL
+		changedIntel[parentNode] = InformationLevel.TOTAL
 	
 func removeDetection(entity) -> void:
-	Intel.erase(entity)
+	var parentNode = entity.get_parent()
+	if Intel.has(parentNode):
+		changedIntel[parentNode] = InformationLevel.NONE
+		Intel.erase(parentNode)
 
 func getKnownIntelligence() -> Dictionary:
 	return Intel

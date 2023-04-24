@@ -120,6 +120,8 @@ func addUnit(unit):
 		
 	unitInstance.set_name("unit")
 	$Units.add_child(unitInstance)
+	
+	$Intelligence.addDetection(unitInstance.get_node("DetectorNode"))
 
 """
 	Weapons
