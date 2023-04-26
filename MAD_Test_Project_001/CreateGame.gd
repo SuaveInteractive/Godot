@@ -6,6 +6,7 @@ var AIOpponentScript = load("res://AI/AIOpponent.gd")
 """ DEBUG SETUP """
 var DebugShowCountryBoardersScript = load("res://Debug/DebugShowCountryBoarders.gd")
 var DebugDetectorInformation = load("res://DetectorRendering/Debug/DebugDetectorInformation.gd")
+var DebugScriptController = load("res://Script/Debug/DebugMenuScriptController.gd")
 var DebugShowAIStateScript = load("res://Debug/AIState/DebugShowAIState.gd")
 
 func createGame(gameObject, worldInformation):
@@ -20,6 +21,9 @@ func createGame(gameObject, worldInformation):
 	DebugOverlay.addDebugControl(debugControl)
 	
 	debugControl = DebugDetectorInformation.new(get_parent().find_node("DetectionMap"))
+	DebugOverlay.addDebugControl(debugControl)
+	
+	debugControl = DebugScriptController.new(get_parent().getScriptRunner(), ScriptRecorder)
 	DebugOverlay.addDebugControl(debugControl)
 	
 	#debugControl = DebugShowAIStateScript.new(AIList)

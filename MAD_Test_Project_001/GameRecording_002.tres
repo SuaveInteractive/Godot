@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://Script/GameScript.gd" type="Script" id=1]
+[ext_resource path="res://Script/ScriptLine.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+CommandName = "Move_Command"
+TimeOffset = 0.5
+CommandArguments = {
+"MapName": "WaterMapRID",
+"Position_To": Vector2( 344, 497 ),
+"Selected_Units": [ NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_1/Units/unit") ]
+}
+
+[resource]
+script = ExtResource( 1 )
+GameScript = [ SubResource( 1 ) ]

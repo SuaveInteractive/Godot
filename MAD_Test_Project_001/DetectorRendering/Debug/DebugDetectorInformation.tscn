@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Debug/DebugWindow/ControlWindow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Debug/DebugWindow/DebugControlWindow.tscn" type="PackedScene" id=1]
 [ext_resource path="res://DetectorRendering/Debug/DebugDetectorControl.gd" type="Script" id=2]
 
 [node name="DebugDetectorControl" type="Control"]

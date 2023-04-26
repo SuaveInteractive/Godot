@@ -7,7 +7,9 @@ var currentExecutionTime : float = 0.0
 var nextTimeOffset : float = 0.0
 var currentLineIndex : int = 0
 var numberOfScriptLines : int = 0
-var runningScript : bool = false
+var runningScript : bool = false setget ,isRunning
+
+signal ScriptStarted()
 
 func _init():
 	name = "ScriptRunner"
@@ -36,8 +38,13 @@ func Run():
 		numberOfScriptLines = CurrentScript.GameScript.size()
 		runningScript = true
 		_setNextTimeOffset()
+		
+		emit_signal("ScriptStarted")
 	else:
 		print("ScriptRunner: CurrentScript not set")
+		
+func isRunning() -> bool:
+	return runningScript
 
 func _setNextTimeOffset() -> void:
 	var line = _getNextLine()

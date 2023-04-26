@@ -4,7 +4,7 @@ extends Node2D
 var worldDefinition = "res://Data/World/WorldInformation_003.tres"
 
 var ScriptRunnerClass = preload("res://Script/ScriptRunner.gd")
-var ScriptRunner = null
+var ScriptRunner = null setget , getScriptRunner
 
 var moveSpeed : float = 20.0
 
@@ -79,6 +79,9 @@ func SetControllingCountry(country):
 	$DetectionMap.setDetectionAreas(ControllingCountry.getDetectionArea())
 	
 	$ViewportContainer/Viewport/World.setIntelligenceInterface(ControllingCountry.getIntelligenceInterface())
+	
+func getScriptRunner():
+	return ScriptRunner
 	
 # https://docs.godotengine.org/en/3.1/tutorials/io/saving_games.html
 # C:\Users\Manix\AppData\Roaming\Godot\app_userdata\MAD_Test_Project_001
