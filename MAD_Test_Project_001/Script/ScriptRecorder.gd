@@ -6,12 +6,15 @@ extends Node
 
 #print(OS.get_data_dir()) # C:\Users\Manix\AppData\Roaming\Godot\app_userdata\MAD
 
-var recording : bool = false
+var recording : bool = false setget ,isRecording
 var recordingPath : String = "user://" setget setRecordingPath, getRecordingPath
 var recordingFilename : String = "GameRecording_001.tres" setget setRecordingFilename, getRecordingFilename
 var gameScript : Resource = null
 var dirty : bool = false
 var timeOffset : float = 0.0 
+
+signal RecordingStarted()
+signal RecordingFinished()
 
 func _ready():
 	gameScript = GameScript.new()
@@ -26,7 +29,7 @@ func _writeFile() -> void:
 		var recordingFilePath = getRecordingFilePath()
 		var err = ResourceSaver.save(recordingFilePath, gameScript)
 		if err:
-			var stringError : String = "[ScriptRecorder]: Error occured trying to save game script.  Error [" + err + "]"
+			var stringError : String = "[ScriptRecorder]: Error occured trying to save game script.  Error [" + str(err) + "]"
 			push_error(stringError)
 		dirty = false
 
@@ -55,6 +58,9 @@ func recordCommand(command) -> void:
 	
 	dirty = true
 	
+func isRecording() -> bool:
+	return recording
+	
 func _processArgument(type, variant):
 	match type:
 		TYPE_RID: 
@@ -73,10 +79,14 @@ func record():
 	_writeFile()
 	gameScript.GameScript.clear()
 	
+	emit_signal("RecordingStarted")
+	
 func stop():
 	recording = false
 	_writeFile()
 	gameScript.GameScript.clear()
+	
+	emit_signal("RecordingFinished")
 	
 func resetTimeOffset() -> void:
 	timeOffset = 0.0
