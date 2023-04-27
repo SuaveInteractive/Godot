@@ -3,7 +3,6 @@ extends Node2D
 var debugScriptController = load("res://Script/Debug/DebugScriptController.tscn")
 
 var checkbutton : CheckButton = null
-var DetetorTexture : Texture = null
 
 var runner = null
 var recorder = null
@@ -30,6 +29,7 @@ func OnButtonToggle(toggle):
 		var debugScriptControllerInstance = debugScriptController.instance()
 		debugScriptControllerInstance.setRunner(runner)
 		debugScriptControllerInstance.setRecorder(recorder)
+		debugScriptControllerInstance.margin_left = checkbutton.get_size().x
 		add_child(debugScriptControllerInstance)
 	
 		debugScriptControllerInstance.connect("WindowClosed", self, "OnWindowClosed")

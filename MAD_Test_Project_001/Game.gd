@@ -28,8 +28,8 @@ func _ready():
 	
 	#ScriptRecorder.record()
 	
-	ScriptRunner.setScript(load("res://GameRecording_001.tres"))
-	ScriptRunner.Run()
+	#ScriptRunner.setScript(load("res://GameRecording_001.tres"))
+	#ScriptRunner.Run()
 		
 func _process(_delta):
 	var selectedUnits = WorldController.getSelectedUnits()

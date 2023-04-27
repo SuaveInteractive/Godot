@@ -1,28 +1,39 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Debug/DebugWindow/ControlWindow.gd" type="Script" id=1]
 [ext_resource path="res://Debug/DebugTheme.theme" type="Theme" id=2]
 
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.168627, 0.168627, 0.447059, 1 )
+
 [node name="Window" type="Control"]
 margin_left = -0.594604
-margin_right = 99.4054
+margin_right = 100.0
 margin_bottom = 100.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 2 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 0.594604
+margin_right = -0.594604
 mouse_filter = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="TitleBar" type="Panel" parent="."]
+anchor_right = 1.0
+margin_bottom = 21.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="WindowNameLabel" type="Label" parent="TitleBar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_right = -25.0
+text = "[Window Name]"
+valign = 1
+clip_text = true
 
 [node name="CloseButton" type="Button" parent="."]
 anchor_left = 1.0
@@ -30,9 +41,6 @@ anchor_right = 1.0
 margin_left = -20.0
 margin_bottom = 20.0
 text = "X"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="gui_input" from="." to="." method="_on_Window_gui_input"]
 [connection signal="pressed" from="CloseButton" to="." method="_on_Button_pressed"]

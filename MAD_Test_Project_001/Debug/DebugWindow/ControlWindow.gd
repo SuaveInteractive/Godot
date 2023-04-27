@@ -7,6 +7,9 @@ var drag_position = null
 func _ready():
 	pass
 
+func setWindowName(var name : String) -> void:
+	$TitleBar/WindowNameLabel.text = name
+
 func _on_Window_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:

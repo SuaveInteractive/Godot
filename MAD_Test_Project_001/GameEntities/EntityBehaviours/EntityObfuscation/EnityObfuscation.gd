@@ -20,7 +20,7 @@ func _ready():
 	
 	$None.get_material().set_shader_param("colour", country_colour)
 	
-func _process(delta):
+func _process(_delta):
 	if Engine.editor_hint:
 		$None.texture = obfuscation_none
 		$Low.texture = obfuscation_low

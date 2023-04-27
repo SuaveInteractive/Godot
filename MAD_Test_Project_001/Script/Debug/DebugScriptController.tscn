@@ -23,7 +23,7 @@ margin_bottom = 202.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DebugScriptWindow"]
 margin_left = 5.0
-margin_top = 20.0
+margin_top = 30.0
 margin_right = 40.0
 margin_bottom = 40.0
 
@@ -52,7 +52,7 @@ margin_right = 47.0
 margin_bottom = 14.0
 text = "Status: "
 
-[node name="Status" type="Label" parent="DebugScriptWindow/VBoxContainer/StatusHBoxContainer"]
+[node name="CurrentStatus" type="Label" parent="DebugScriptWindow/VBoxContainer/StatusHBoxContainer"]
 margin_left = 51.0
 margin_right = 137.0
 margin_bottom = 14.0
@@ -61,12 +61,38 @@ text = "[WWWWWW]"
 [node name="FileButtonHBoxContainer" type="HBoxContainer" parent="DebugScriptWindow/VBoxContainer"]
 margin_top = 36.0
 margin_right = 137.0
-margin_bottom = 50.0
+margin_bottom = 52.0
 
 [node name="OpenFileDialog" type="Button" parent="DebugScriptWindow/VBoxContainer/FileButtonHBoxContainer"]
-margin_right = 62.0
-margin_bottom = 14.0
+margin_right = 72.0
+margin_bottom = 16.0
 text = "Open File"
 
+[node name="ControlHBoxContainer" type="HBoxContainer" parent="DebugScriptWindow/VBoxContainer"]
+margin_top = 56.0
+margin_right = 137.0
+margin_bottom = 72.0
+
+[node name="RunButton" type="Button" parent="DebugScriptWindow/VBoxContainer/ControlHBoxContainer"]
+margin_right = 34.0
+margin_bottom = 16.0
+text = "Run"
+
+[node name="PauseButton" type="Button" parent="DebugScriptWindow/VBoxContainer/ControlHBoxContainer"]
+visible = false
+margin_left = 38.0
+margin_right = 86.0
+margin_bottom = 16.0
+text = "Pause"
+
+[node name="ResetButton" type="Button" parent="DebugScriptWindow/VBoxContainer/ControlHBoxContainer"]
+visible = false
+margin_left = 90.0
+margin_right = 136.0
+margin_bottom = 16.0
+text = "Reset"
+
 [connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
+[connection signal="WindowClosed" from="DebugScriptWindow" to="." method="_on_DebugScriptWindow_WindowClosed"]
 [connection signal="pressed" from="DebugScriptWindow/VBoxContainer/FileButtonHBoxContainer/OpenFileDialog" to="." method="_on_OpenFileDialog_pressed"]
+[connection signal="pressed" from="DebugScriptWindow/VBoxContainer/ControlHBoxContainer/RunButton" to="." method="_on_RunButton_pressed"]

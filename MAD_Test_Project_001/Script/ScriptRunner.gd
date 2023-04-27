@@ -10,6 +10,7 @@ var numberOfScriptLines : int = 0
 var runningScript : bool = false setget ,isRunning
 
 signal ScriptStarted()
+signal ScriptFinished()
 
 func _init():
 	name = "ScriptRunner"
@@ -28,7 +29,8 @@ func _process(delta):
 				
 				_setNextTimeOffset()
 			else:
-				runningScript = false	
+				runningScript = false
+				emit_signal("ScriptFinished")
 	
 func Run():
 	if CurrentScript != null:
@@ -52,6 +54,7 @@ func _setNextTimeOffset() -> void:
 		nextTimeOffset = line.getTimeOffset()
 	else:
 		runningScript = false
+		emit_signal("ScriptFinished")
 
 func _getNextLine():
 	if currentLineIndex < numberOfScriptLines:
