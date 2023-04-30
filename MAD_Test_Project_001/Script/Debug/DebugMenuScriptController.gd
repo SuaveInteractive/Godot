@@ -4,16 +4,21 @@ var debugScriptController = load("res://Script/Debug/DebugScriptController.tscn"
 
 var checkbutton : CheckButton = null
 
-var runner = null
-var recorder = null
+var Runner = null
+var Recorder = null
 
 func _init(scriptRunner, scriptRecorder):
 	self.name = "Debug Show Script Controller"
-	runner = scriptRunner
-	recorder = scriptRecorder
+	Runner = scriptRunner
+	Recorder = scriptRecorder
 		
 func _ready():
-	pass
+	if Settings.Get("RunScriptOnStartup") == true:
+		var runnerScript = Settings.Get("RunnerScript")
+		if runnerScript != null:
+			var scriptResource = load(runnerScript)
+			Runner.setScript(scriptResource)
+			Runner.Run()
 
 func getGUIControl():
 	checkbutton = CheckButton.new()
@@ -27,8 +32,8 @@ func getGUIControl():
 func OnButtonToggle(toggle):
 	if toggle:
 		var debugScriptControllerInstance = debugScriptController.instance()
-		debugScriptControllerInstance.setRunner(runner)
-		debugScriptControllerInstance.setRecorder(recorder)
+		debugScriptControllerInstance.setRunner(Runner)
+		debugScriptControllerInstance.setRecorder(Recorder)
 		debugScriptControllerInstance.margin_left = checkbutton.get_size().x
 		add_child(debugScriptControllerInstance)
 	

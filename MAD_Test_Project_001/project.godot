@@ -108,6 +108,7 @@ GameCommands="*res://Global/GameCommands.gd"
 DebugOverlay="*res://Debug/DebugOverlay.gd"
 ScriptRecorder="*res://Script/ScriptRecorder.gd"
 RIDMapper="*res://Global/RIDMapper.gd"
+Settings="*res://Global/Settings.gd"
 
 [editor_plugins]
 

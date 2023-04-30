@@ -84,46 +84,56 @@ margin_right = 266.0
 margin_bottom = 16.0
 text = "Open user:// Folder"
 
-[node name="RunnerLabel" type="Label" parent="DebugScriptWindow/VBoxContainer"]
+[node name="RunnerVBoxContainer" type="VBoxContainer" parent="DebugScriptWindow/VBoxContainer"]
 margin_top = 76.0
 margin_right = 266.0
-margin_bottom = 90.0
+margin_bottom = 132.0
+
+[node name="RunnerLabel" type="Label" parent="DebugScriptWindow/VBoxContainer/RunnerVBoxContainer"]
+margin_right = 266.0
+margin_bottom = 14.0
 text = "Runner"
 
-[node name="RunnerControlHBoxContainer" type="HBoxContainer" parent="DebugScriptWindow/VBoxContainer"]
-margin_top = 94.0
+[node name="RunnerControlHBoxContainer" type="HBoxContainer" parent="DebugScriptWindow/VBoxContainer/RunnerVBoxContainer"]
+margin_top = 18.0
 margin_right = 266.0
-margin_bottom = 110.0
+margin_bottom = 34.0
 
-[node name="RunButton" type="Button" parent="DebugScriptWindow/VBoxContainer/RunnerControlHBoxContainer"]
+[node name="RunButton" type="Button" parent="DebugScriptWindow/VBoxContainer/RunnerVBoxContainer/RunnerControlHBoxContainer"]
 margin_right = 34.0
 margin_bottom = 16.0
 text = "Run"
 
-[node name="PauseButton" type="Button" parent="DebugScriptWindow/VBoxContainer/RunnerControlHBoxContainer"]
+[node name="PauseButton" type="Button" parent="DebugScriptWindow/VBoxContainer/RunnerVBoxContainer/RunnerControlHBoxContainer"]
 visible = false
 margin_left = 38.0
 margin_right = 86.0
 margin_bottom = 16.0
 text = "Pause"
 
-[node name="ResetButton" type="Button" parent="DebugScriptWindow/VBoxContainer/RunnerControlHBoxContainer"]
+[node name="ResetButton" type="Button" parent="DebugScriptWindow/VBoxContainer/RunnerVBoxContainer/RunnerControlHBoxContainer"]
 visible = false
 margin_left = 38.0
 margin_right = 84.0
 margin_bottom = 16.0
 text = "Reset"
 
-[node name="RecorderLable" type="Label" parent="DebugScriptWindow/VBoxContainer"]
-margin_top = 114.0
+[node name="RunScriptOnStartupCheckbox" type="CheckBox" parent="DebugScriptWindow/VBoxContainer/RunnerVBoxContainer"]
+margin_top = 38.0
 margin_right = 266.0
-margin_bottom = 128.0
+margin_bottom = 56.0
+text = "Run Script on Startup"
+
+[node name="RecorderLable" type="Label" parent="DebugScriptWindow/VBoxContainer"]
+margin_top = 136.0
+margin_right = 266.0
+margin_bottom = 150.0
 text = "Recorder"
 
 [node name="RecorderControlHBoxContainer" type="HBoxContainer" parent="DebugScriptWindow/VBoxContainer"]
-margin_top = 132.0
+margin_top = 154.0
 margin_right = 266.0
-margin_bottom = 148.0
+margin_bottom = 170.0
 
 [node name="StartRecordingButton" type="Button" parent="DebugScriptWindow/VBoxContainer/RecorderControlHBoxContainer"]
 margin_right = 39.0
@@ -141,6 +151,7 @@ text = "Stop"
 [connection signal="pressed" from="DebugScriptWindow/VBoxContainer/FileButtonHBoxContainer/OpenFileDialog" to="." method="_on_OpenFileDialog_pressed"]
 [connection signal="pressed" from="DebugScriptWindow/VBoxContainer/FolderHBoxContainer/OpenResFolderButton" to="." method="_on_OpenFolderButton_pressed"]
 [connection signal="pressed" from="DebugScriptWindow/VBoxContainer/FolderHBoxContainer/OpenUserFolderButton" to="." method="_on_OpenUserFolderButton_pressed"]
-[connection signal="pressed" from="DebugScriptWindow/VBoxContainer/RunnerControlHBoxContainer/RunButton" to="." method="_on_RunButton_pressed"]
+[connection signal="pressed" from="DebugScriptWindow/VBoxContainer/RunnerVBoxContainer/RunnerControlHBoxContainer/RunButton" to="." method="_on_RunButton_pressed"]
+[connection signal="toggled" from="DebugScriptWindow/VBoxContainer/RunnerVBoxContainer/RunScriptOnStartupCheckbox" to="." method="_on_RunScriptOnStartupCheckbox_toggled"]
 [connection signal="pressed" from="DebugScriptWindow/VBoxContainer/RecorderControlHBoxContainer/StartRecordingButton" to="." method="_on_StartRecordingButton_pressed"]
 [connection signal="pressed" from="DebugScriptWindow/VBoxContainer/RecorderControlHBoxContainer/StopRecordingButton" to="." method="_on_StopRecordingButton_pressed"]

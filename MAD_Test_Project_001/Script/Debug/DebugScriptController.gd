@@ -10,12 +10,14 @@ var Recorder = null setget setRecorder
 onready var currentStatus : Node = $DebugScriptWindow/VBoxContainer/StatusHBoxContainer/CurrentStatus
 onready var fileUsed : Node = $DebugScriptWindow/VBoxContainer/FileHBoxContainer/FileUsed
 
-onready var runButton : Node = $DebugScriptWindow/VBoxContainer/RunnerControlHBoxContainer/RunButton
-onready var pauseButton : Node = $DebugScriptWindow/VBoxContainer/RunnerControlHBoxContainer/PauseButton
-onready var resetButton : Node = $DebugScriptWindow/VBoxContainer/RunnerControlHBoxContainer/ResetButton
+onready var runButton : Node = $DebugScriptWindow/VBoxContainer/RunnerVBoxContainer/RunnerControlHBoxContainer/RunButton
+onready var pauseButton : Node = $DebugScriptWindow/VBoxContainer/RunnerVBoxContainer/RunnerControlHBoxContainer/PauseButton
+onready var resetButton : Node = $DebugScriptWindow/VBoxContainer/RunnerVBoxContainer/RunnerControlHBoxContainer/ResetButton
 
 onready var startRecordingButton : Node = $DebugScriptWindow/VBoxContainer/RecorderControlHBoxContainer/StartRecordingButton
 onready var stopRecordingButton : Node = $DebugScriptWindow/VBoxContainer/RecorderControlHBoxContainer/StopRecordingButton
+
+onready var runOnStartup : Node = $DebugScriptWindow/VBoxContainer/RunnerVBoxContainer/RunScriptOnStartupCheckbox
 
 func _init():
 	pass
@@ -28,6 +30,12 @@ func _ready():
 	
 	Recorder.connect("RecordingStarted", self, "OnRecordingStarted")
 	Recorder.connect("RecordingFinished", self, "OnRecordingFinished")
+	
+	var runnerScript = Settings.Get("RunnerScript")
+	if runnerScript != null:
+		var scriptResource = load(runnerScript)
+		_setScriptFilename(scriptResource)
+		Runner.setScript(scriptResource)
 	
 	_update()
 	
@@ -46,6 +54,8 @@ func _update() -> void:
 		_setScriptFilename(Runner.getScript())	
 		
 	_updateButtonStates()
+	
+	runOnStartup.pressed = Settings.Get("RunScriptOnStartup") == true
 	
 func _setStatus(var status) -> void:
 	currentStatus.text = STATUS.keys()[status]
@@ -107,6 +117,8 @@ func _on_FileDialog_file_selected(path):
 	var scriptResource = load(path)
 	_setScriptFilename(scriptResource)
 	Runner.setScript(scriptResource)
+	
+	Settings.Set("RunnerScript", path)
 
 func _on_DebugScriptWindow_WindowClosed():
 	emit_signal("WindowClosed")
@@ -133,3 +145,6 @@ func _on_StartRecordingButton_pressed():
 func _on_StopRecordingButton_pressed():
 	if Recorder != null:
 		Recorder.stop()
+
+func _on_RunScriptOnStartupCheckbox_toggled(button_pressed):
+	Settings.Set("RunScriptOnStartup", button_pressed)
