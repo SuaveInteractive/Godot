@@ -18,10 +18,10 @@ func _unhandled_input(event : InputEvent) -> void:
 		return
 		
 	if Input.is_mouse_button_pressed(BUTTON_LEFT):
-		GameCommands.MoveCommand.Navigation_Mesh = worldController.getNavPolygon()
+		GameCommands.MoveCommand.MapName = "WaterMapRID"
 		GameCommands.MoveCommand.Position_To = get_parent().get_parent().get_global_mouse_position() 
-		GameCommands.MoveCommand.Selected_Units = selectedUnits
-		GameCommands.MoveCommand.execute()
+		GameCommands.MoveCommand.Selected_Units = selectedUnits			
+		ScriptRecorder.executeCommand(GameCommands.MoveCommand)
 		
 		get_tree().set_input_as_handled()
 		
