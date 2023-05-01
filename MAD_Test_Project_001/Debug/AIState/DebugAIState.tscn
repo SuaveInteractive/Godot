@@ -35,4 +35,5 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[connection signal="WindowClosed" from="AIStateWindow" to="." method="_on_AIStateWindow_WindowClosed"]
 [connection signal="item_selected" from="AIStateWindow/AIStateInfoContainer/OptionButton" to="AIStateWindow/AIStateInfoContainer" method="_on_OptionButton_item_selected"]

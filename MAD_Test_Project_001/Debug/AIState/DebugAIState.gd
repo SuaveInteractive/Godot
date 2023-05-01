@@ -9,7 +9,6 @@ var AIList = null
 func _ready():
 	$AIStateWindow/AIStateInfoContainer/CurrentAction.visible = false
 	
-	$AIStateWindow.connect("WindowClosed", self, "OnWindowClosed")
 	
 	$AIStateWindow/AIStateInfoContainer.connect("AIStateInfoChanged", self, "OnAIStateInfoChanged")
 	
@@ -21,10 +20,9 @@ func SetAIs(aiList):
 	for ai in AIList:
 		$AIStateWindow/AIStateInfoContainer/OptionButton.add_item(ai.get_name())
 	$AIStateWindow/AIStateInfoContainer.SetAIInformation(AIList[0])
-	
-func OnWindowClosed():
-	hide()	
-	emit_signal("WindowClosed")
-	
+		
 func OnAIStateInfoChanged(index):
 	$AIStateWindow/AIStateInfoContainer.SetAIInformation(AIList[index])
+
+func _on_AIStateWindow_WindowClosed():
+	emit_signal("WindowClosed")

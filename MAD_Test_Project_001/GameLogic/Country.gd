@@ -74,6 +74,14 @@ func get_colour() -> Color:
 	
 func getDetectionArea() -> Array:
 	var ret : Array = []
+	
+	# Buildings
+	for buildings in $Buildings.get_children():
+		var detectorNode = buildings.get_node("DetectorNode")
+		if detectorNode != null:
+			ret.append(detectorNode)
+	
+	# Units
 	for unit in $Units.get_children():
 		var detectorNode = unit.get_node("DetectorNode")
 		if detectorNode != null:
@@ -103,6 +111,9 @@ func addBuilding(type, pos):
 	
 	if buildingInstance.has_node("CitySprite"):
 		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", CountryColour)
+		
+	buildingInstance.get_node("DetectorNode").connect("EnitityDetected", self, "OnEnitityDetected")
+	buildingInstance.get_node("DetectorNode").connect("EnitityUndetected", self, "OnEnitityUndetected")
 """
 	Units
 """
