@@ -12,7 +12,7 @@ func execute() -> bool:
 		return false
 	
 	var worldController = Build_Info.WorldController
-	worldController.addBuilding(Build_Info.Building, Position_Build, "Country_1")
+	worldController.addBuilding(Build_Info.Building, Position_Build, Build_Info.BuildCountry.get_name())
 	
 	# Remove cost from the country
 	Build_Info.BuildCountry.reduceFinance(100)

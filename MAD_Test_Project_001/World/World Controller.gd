@@ -22,9 +22,6 @@ func setSelectedEntities(selectedEntities : Array) -> void:
 	
 func getMapRID() -> RID:
 	return WorldModel.getMapRID()
-
-func getCountryBuildArea():
-	return getCountries()[0].Boarder
 	
 func addBuilding(type, position, country):
 	WorldModel.addBuilding(type, position, country)	

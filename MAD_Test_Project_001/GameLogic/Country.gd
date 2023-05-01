@@ -111,9 +111,10 @@ func addBuilding(type, pos):
 	
 	if buildingInstance.has_node("CitySprite"):
 		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", CountryColour)
-		
-	buildingInstance.get_node("DetectorNode").connect("EnitityDetected", self, "OnEnitityDetected")
-	buildingInstance.get_node("DetectorNode").connect("EnitityUndetected", self, "OnEnitityUndetected")
+	
+	if buildingInstance.has_node("DetectorNode"):
+		buildingInstance.get_node("DetectorNode").connect("EnitityDetected", self, "OnEnitityDetected")
+		buildingInstance.get_node("DetectorNode").connect("EnitityUndetected", self, "OnEnitityUndetected")
 """
 	Units
 """

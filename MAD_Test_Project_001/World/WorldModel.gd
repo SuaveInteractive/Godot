@@ -97,6 +97,7 @@ func addTarget(selectedUnit, targetPos):
 	var targetInstance = targetScene.instance()
 	targetInstance.position = targetPos
 	targetInstance.set_name("target")
+	targetInstance.visible = isEntitySelected(selectedUnit)
 	
 	var targetNode = selectedUnit.get_node("TargetNode")
 	if targetNode != null:
@@ -163,6 +164,14 @@ func setSelectedEntities(entities : Array) -> void:
 	
 	if unselectedEnties.size() > 0:
 		emit_signal("UnselectedEntitiesChanged", unselectedEnties)
+		
+func isEntitySelected(var entity) -> bool:
+	for selectedEntity in SelectedEntities:
+		if entity.has_node("Selection"):
+			var selectionNode = entity.get_node("Selection")
+			if selectedEntity == selectionNode:
+				return true
+	return false
 		
 """
 	Country Functions

@@ -18,6 +18,7 @@ func _ready():
 	
 	ScriptRunner = ScriptRunnerClass.new()
 	ScriptRunner.addCommand(GameCommands.MoveCommand)
+	ScriptRunner.addCommand(GameCommands.TargetCommand)
 	
 	add_child(ScriptRunner)
 	
@@ -104,8 +105,8 @@ func save_game():
 func _on_Build_UIBuildStructure(buildInfo):
 	var actionInfo = buildInfo	
 	
-	actionInfo.BuildCountry = WorldController.getCountries()[0]
-	actionInfo.BuildArea = WorldController.getCountryBuildArea()
+	actionInfo.BuildCountry = getControllingCountry()
+	actionInfo.BuildArea = getControllingCountry().Boarder
 	actionInfo.WorldController = WorldController
 	$GameActions.startAction(actionInfo)
 

@@ -7,11 +7,11 @@ var WorldController : Node = null
 func _ready():
 	Command_Name = "Target_Command"
 	
-func execute() -> bool:
+func execution() -> bool:
 	if SelectedUnits.empty():
 		return false
 	
 	for selectedUnit in SelectedUnits:
 		WorldController.addTarget(selectedUnit, Target_Position)
 		
-	return false
+	return true
