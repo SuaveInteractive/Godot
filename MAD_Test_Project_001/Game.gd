@@ -40,7 +40,7 @@ func _process(_delta):
 			GameCommands.MoveCommand.MapName = "WaterMapRID"
 			GameCommands.MoveCommand.Position_To = get_local_mouse_position()
 			GameCommands.MoveCommand.Selected_Units = selectedUnits			
-			ScriptRecorder.executeCommand(GameCommands.MoveCommand)
+			GameCommands.MoveCommand.execute()
 		
 func _on_Button_button_down():
 	var actionInfo = {"ActionName": "LaunchStrikeAction"}	

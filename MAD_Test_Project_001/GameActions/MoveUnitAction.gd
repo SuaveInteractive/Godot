@@ -21,7 +21,7 @@ func _unhandled_input(event : InputEvent) -> void:
 		GameCommands.MoveCommand.MapName = "WaterMapRID"
 		GameCommands.MoveCommand.Position_To = get_parent().get_parent().get_global_mouse_position() 
 		GameCommands.MoveCommand.Selected_Units = selectedUnits			
-		ScriptRecorder.executeCommand(GameCommands.MoveCommand)
+		GameCommands.MoveCommand.execute()
 		
 		get_tree().set_input_as_handled()
 		

@@ -33,13 +33,15 @@ func _writeFile() -> void:
 			push_error(stringError)
 		dirty = false
 
-func executeCommand(command) -> void:
+func executeCommand(command) -> bool:
+	var ret : bool = false
 	if recording:
-		var ret = command.execute()
+		ret = command.execution()
 		if ret:
 			recordCommand(command)
 	else:
-		command.execute()
+		ret = command.execution()
+	return ret
 	
 func recordCommand(command) -> void:
 	var scriptLine = ScriptLine.new()

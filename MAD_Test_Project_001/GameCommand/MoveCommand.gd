@@ -5,9 +5,9 @@ var Selected_Units : Array
 var MapName : String
 
 func _init():
-	Command_Name = "Move_Command"
+	SetName("Move_Command")
 
-func execute() -> bool:
+func execution() -> bool:
 	if Selected_Units.empty():
 		return false
 		
