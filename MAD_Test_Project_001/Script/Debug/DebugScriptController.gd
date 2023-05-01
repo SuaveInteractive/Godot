@@ -127,10 +127,16 @@ func _on_RunButton_pressed():
 	Runner.Run()
 
 func _on_OpenFolderButton_pressed():
-	OS.shell_open(ProjectSettings.globalize_path("res://"))
+	var err = OS.shell_open(ProjectSettings.globalize_path("res://"))
+	if err:
+		var stringError : String = "[DebugScriptController]: Error occured trying to shell_open res://.  Error [" + err + "]"
+		push_error(stringError)
 	
 func _on_OpenUserFolderButton_pressed():
-	OS.shell_open(ProjectSettings.globalize_path("user://"))
+	var err = OS.shell_open(ProjectSettings.globalize_path("user://"))
+	if err:
+		var stringError : String = "[DebugScriptController]: Error occured trying to shell_open user://.  Error [" + err + "]"
+		push_error(stringError)
 
 func _on_StartRecordingButton_pressed():
 	if Recorder != null:

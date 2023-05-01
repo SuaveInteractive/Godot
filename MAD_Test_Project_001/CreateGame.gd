@@ -7,6 +7,7 @@ var AIOpponentScript = load("res://AI/AIOpponent.gd")
 var DebugShowCountryBoardersScript = load("res://Debug/DebugShowCountryBoarders.gd")
 var DebugDetectorInformation = load("res://DetectorRendering/Debug/DebugDetectorInformation.gd")
 var DebugScriptController = load("res://Script/Debug/DebugMenuScriptController.gd")
+var DebugCountryController = load("res://Debug/Countries/DebugMenuCountriesController.gd")
 var DebugShowAIStateScript = load("res://Debug/AIState/DebugShowAIState.gd")
 
 func createGame(gameObject, worldInformation):
@@ -24,6 +25,10 @@ func createGame(gameObject, worldInformation):
 	DebugOverlay.addDebugControl(debugControl)
 	
 	debugControl = DebugScriptController.new(get_parent().getScriptRunner(), ScriptRecorder)
+	DebugOverlay.addDebugControl(debugControl)
+	
+	debugControl = DebugCountryController.new(gameObject.WorldController.getCountries(), funcref(gameObject, "SetControllingCountry"))
+	gameObject.connect("ControllingCountryChanged", debugControl, "OnControllingCountryChanged")
 	DebugOverlay.addDebugControl(debugControl)
 	
 	#debugControl = DebugShowAIStateScript.new(AIList)

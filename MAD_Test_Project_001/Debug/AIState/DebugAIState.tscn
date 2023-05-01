@@ -24,12 +24,12 @@ __meta__ = {
 
 [node name="OptionButton" type="OptionButton" parent="AIStateWindow/AIStateInfoContainer"]
 margin_right = 112.0
-margin_bottom = 14.0
+margin_bottom = 16.0
 
 [node name="CurrentAction" type="Label" parent="AIStateWindow/AIStateInfoContainer"]
-margin_top = 18.0
+margin_top = 20.0
 margin_right = 112.0
-margin_bottom = 32.0
+margin_bottom = 34.0
 text = "Current AI Action"
 __meta__ = {
 "_edit_use_anchors_": false

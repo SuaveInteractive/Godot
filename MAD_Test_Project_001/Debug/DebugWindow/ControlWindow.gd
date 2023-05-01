@@ -4,6 +4,7 @@ signal WindowClosed()
 
 export var SavePosition : bool = true
 export (Resource) var Settings
+export var WindowName : String setget setWindowName
 
 var drag_position = null
 var resourcePath : String = "user://DebugPersistentData.tres"

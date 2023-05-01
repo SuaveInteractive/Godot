@@ -17,6 +17,9 @@ func setIntelligenceInterface(var intelligence):
 				_setObfuscationLevel(unit, intelLevel)
 			else:
 				unit.get_node("EntityObfuscation").setObfuscationHigh()
+				
+func disconnectIntelligenceInterface(var intelligence):
+	intelligence.disconnect("IntelligenceChanged", self, "OnIntelligenceChanged")
 
 func OnIntelligenceChanged(changedIntel):
 	var countries = $"World Controller/World Model/Countries"

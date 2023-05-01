@@ -24,6 +24,7 @@ mouse_filter = 1
 [node name="TitleBar" type="Panel" parent="."]
 anchor_right = 1.0
 margin_bottom = 21.0
+mouse_filter = 1
 custom_styles/panel = SubResource( 1 )
 
 [node name="WindowNameLabel" type="Label" parent="TitleBar"]
@@ -31,6 +32,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
 margin_right = -25.0
+mouse_filter = 1
 text = "[Window Name]"
 valign = 1
 clip_text = true

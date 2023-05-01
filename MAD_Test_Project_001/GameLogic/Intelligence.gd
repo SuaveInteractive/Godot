@@ -27,7 +27,10 @@ func removeDetection(entity) -> void:
 	var parentNode = entity.get_parent()
 	if Intel.has(parentNode):
 		changedIntel[parentNode] = InformationLevel.NONE
-		Intel.erase(parentNode)
+		var err = Intel.erase(parentNode)
+		if err == false:
+			var stringError : String = "[Intelligence]: Could not find key to erase [" + str(parentNode) + "]"
+			push_error(stringError)
 
 func getKnownIntelligence() -> Dictionary:
 	return Intel

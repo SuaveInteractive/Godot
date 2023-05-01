@@ -1,5 +1,7 @@
 extends Node2D
 
+signal ControllingCountryChanged(country)
+
 # https://www.youtube.com/watch?v=Ad6Us73smNs
 var worldDefinition = "res://Data/World/WorldInformation_003.tres"
 
@@ -9,7 +11,7 @@ var ScriptRunner = null setget , getScriptRunner
 var moveSpeed : float = 20.0
 
 var WorldController = null
-var ControllingCountry = null
+var ControllingCountry = null setget ,getControllingCountry
 
 func _ready():	
 	WorldController = $"ViewportContainer/Viewport/World/World Controller"
@@ -25,11 +27,6 @@ func _ready():
 	SetControllingCountry(countrollingCountry)
 	
 	$ViewportContainer.material.set_shader_param("maskTexture", $DetectionMap.get_texture())
-	
-	#ScriptRecorder.record()
-	
-	#ScriptRunner.setScript(load("res://GameRecording_001.tres"))
-	#ScriptRunner.Run()
 		
 func _process(_delta):
 	var selectedUnits = WorldController.getSelectedUnits()
@@ -68,6 +65,11 @@ func OnMovePressed():
 	$GameActions.startAction(actionInfo)
 			
 func SetControllingCountry(country):
+	if ControllingCountry:
+		$ViewportContainer/Viewport/World.disconnectIntelligenceInterface(ControllingCountry.getIntelligenceInterface())
+		ControllingCountry.disconnect("CountryFinanceChange", $"UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer/FinanceValue", "OnCountryFinanceChange")
+		ControllingCountry.disconnect("CountryControlChange", $"UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer/ControlValue", "OnCountryControlChange")
+	
 	ControllingCountry = country
 	
 	$"UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer/FinanceValue".text = str(country.get_finance())
@@ -80,8 +82,13 @@ func SetControllingCountry(country):
 	
 	$ViewportContainer/Viewport/World.setIntelligenceInterface(ControllingCountry.getIntelligenceInterface())
 	
+	emit_signal("ControllingCountryChanged", ControllingCountry)
+	
 func getScriptRunner():
 	return ScriptRunner
+	
+func getControllingCountry():
+	return ControllingCountry
 	
 # https://docs.godotengine.org/en/3.1/tutorials/io/saving_games.html
 # C:\Users\Manix\AppData\Roaming\Godot\app_userdata\MAD_Test_Project_001
