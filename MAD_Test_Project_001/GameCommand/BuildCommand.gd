@@ -2,19 +2,19 @@ extends "res://GameCommand/GameCommand.gd"
 
 var Position_Build : Vector2
 var Build_Country : Node = null
-var Build_Info = null
+var Build_Type_Str : String = ""
+var WorldController : Node = null
 
 func _ready():
 	Command_Name = "Build_Command"
 
-func execute() -> bool:
-	if Build_Info == null:
+func execution() -> bool:
+	if Build_Country == null || WorldController == null || Build_Type_Str.empty():
 		return false
 	
-	var worldController = Build_Info.WorldController
-	worldController.addBuilding(Build_Info.Building, Position_Build, Build_Info.BuildCountry.get_name())
+	WorldController.addBuilding(Build_Type_Str, Position_Build, Build_Country.get_name())
 	
 	# Remove cost from the country
-	Build_Info.BuildCountry.reduceFinance(100)
+	Build_Country.reduceFinance(100)
 		
 	return true

@@ -3,7 +3,10 @@ extends "res://GameActions/GameAction.gd"
 var MouseIcon : Sprite = null
 var BuildArea : PoolVector2Array = PoolVector2Array()
 var ValidBuildArea : bool = false
-var Params = null
+
+var BuildCountry : Node = null
+var BuildingName : String = ""
+var WorldController : Node = null
 
 var debugRecScript = load("res://Debug/DebugRectangle2D.gd")
 var debugRec : Node2D = null
@@ -29,8 +32,10 @@ func _ready():
 	add_child(debugPolyline)
 
 func _init(parameters = null):
-	Params = parameters
-	Params.BuildCountry = parameters.BuildCountry
+	BuildCountry = parameters.BuildCountry
+	BuildingName = parameters.BuildingName
+	WorldController = parameters.WorldController
+	
 	BuildArea = parameters.BuildArea
 	MouseIcon = Sprite.new()
 	MouseIcon.z_index = 10
@@ -81,7 +86,9 @@ func _unhandled_input(event : InputEvent) -> void:
 		return
 	if Input.is_mouse_button_pressed(BUTTON_LEFT) and ValidBuildArea == true:
 		GameCommands.BuildCommand.Position_Build = MouseIcon.position
-		GameCommands.BuildCommand.Build_Info = Params
+		GameCommands.BuildCommand.Build_Country = BuildCountry
+		GameCommands.BuildCommand.Build_Type_Str = BuildingName
+		GameCommands.BuildCommand.WorldController = WorldController
 		GameCommands.BuildCommand.execute()
 		get_tree().set_input_as_handled()
 		

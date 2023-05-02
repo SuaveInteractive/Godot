@@ -19,6 +19,7 @@ func _ready():
 	ScriptRunner = ScriptRunnerClass.new()
 	ScriptRunner.addCommand(GameCommands.MoveCommand)
 	ScriptRunner.addCommand(GameCommands.TargetCommand)
+	ScriptRunner.addCommand(GameCommands.BuildCommand)
 	
 	add_child(ScriptRunner)
 	
