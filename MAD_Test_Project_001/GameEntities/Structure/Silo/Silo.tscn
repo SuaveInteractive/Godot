@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://GameEntities/Structure/Structure.tscn" type="PackedScene" id=1]
+[ext_resource path="res://GameEntities/Structure/Silo/Construction.png" type="Texture" id=2]
+[ext_resource path="res://GameEntities/Structure/Silo/FullHealth.png" type="Texture" id=3]
+[ext_resource path="res://GameEntities/StructureInformation.gd" type="Script" id=4]
+[ext_resource path="res://GameEntities/EntityBehaviours/EntityTarget/EntityTarget.tscn" type="PackedScene" id=5]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 4 )
+ContructionTimeDays = 5
+ContructionCost = 10000
+
+[node name="Structure" instance=ExtResource( 1 )]
+StructureInformation = SubResource( 1 )
+
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource( 3 )
+
+[node name="Construction" parent="." index="1"]
+texture = ExtResource( 2 )
+
+[node name="TargetNode" parent="." index="4" instance=ExtResource( 5 )]
+
+[connection signal="EntityDeselected" from="Selection" to="TargetNode" method="_on_Selection_EntityDeselected"]
+[connection signal="EntitySelected" from="Selection" to="TargetNode" method="_on_Selection_EntitySelected"]

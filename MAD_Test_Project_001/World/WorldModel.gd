@@ -68,6 +68,7 @@ func _updateCountry(countries):
 		
 		newCountry.connect("UnitSelected", self, "OnCountryUnitSelected")
 		newCountry.connect("CountryTargetHit", self, "OnCountryTargetHit")
+		newCountry.connect("CountryBuildingAdded", self, "OnCountryBuildingAdded")
 	
 func _updateUnits(units):
 	for unit in units:	
@@ -214,3 +215,5 @@ func OnCountryTargetHit(_country, target, hits):
 		if hit.is_class("City"):
 			hit.setPopulation(49)
 
+func OnCountryBuildingAdded(building):
+	pass

@@ -3,6 +3,8 @@ extends Node2D
 
 enum obfuscation_levels {NONE, LOW, MEDIUM, HIGH}
 
+export(obfuscation_levels) var obfuscation_level = obfuscation_levels.NONE
+
 export var obfuscation_none : Texture 
 export var obfuscation_low : Texture
 export var obfuscation_medium : Texture
@@ -10,7 +12,7 @@ export var obfuscation_high : Texture
 
 export var country_colour : Color = Color.fuchsia
 
-var obfuscation_level = obfuscation_levels.NONE
+#var obfuscation_level = obfuscation_levels.NONE
 
 func _ready():
 	$None.texture = obfuscation_none

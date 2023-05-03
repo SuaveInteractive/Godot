@@ -3,7 +3,8 @@ class_name Country
 
 # Buildings
 var cityScene = load("res://GameEntities/City/City.tscn")
-var siloScene = load("res://GameEntities/Silo/Silo.tscn")
+#var siloScene = load("res://GameEntities/Silo/Silo.tscn")
+var siloScene = load("res://GameEntities/Structure/Silo/Silo.tscn")
 
 # Units
 var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
@@ -18,6 +19,8 @@ signal CountryControlChange(oldControl, newControl)
 signal CountryFinanceChange(oldFinance, newFinance)
 
 signal CountryTargetHit(country, target, hits)
+
+signal CountryBuildingAdded(building)
 
 var CountryColour : Color = Color(255) setget , get_colour
 var Boarder : PoolVector2Array 
@@ -115,6 +118,9 @@ func addBuilding(type, pos):
 	if buildingInstance.has_node("DetectorNode"):
 		buildingInstance.get_node("DetectorNode").connect("EnitityDetected", self, "OnEnitityDetected")
 		buildingInstance.get_node("DetectorNode").connect("EnitityUndetected", self, "OnEnitityUndetected")
+		$Intelligence.addDetection(buildingInstance.get_node("DetectorNode"))	
+	
+	emit_signal("CountryBuildingAdded", buildingInstance)
 """
 	Units
 """
