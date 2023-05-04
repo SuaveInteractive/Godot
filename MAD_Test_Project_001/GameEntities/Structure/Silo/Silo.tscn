@@ -11,7 +11,7 @@ script = ExtResource( 4 )
 ContructionTimeDays = 5
 ContructionCost = 10000
 
-[node name="Structure" instance=ExtResource( 1 )]
+[node name="Silo" instance=ExtResource( 1 )]
 StructureInformation = SubResource( 1 )
 
 [node name="Sprite" parent="." index="0"]
@@ -19,6 +19,9 @@ texture = ExtResource( 3 )
 
 [node name="Construction" parent="." index="1"]
 texture = ExtResource( 2 )
+
+[node name="EntityObfuscation" parent="." index="2"]
+obfuscation_none = ExtResource( 3 )
 
 [node name="TargetNode" parent="." index="4" instance=ExtResource( 5 )]
 

@@ -215,5 +215,5 @@ func OnCountryTargetHit(_country, target, hits):
 		if hit.is_class("City"):
 			hit.setPopulation(49)
 
-func OnCountryBuildingAdded(building):
+func OnCountryBuildingAdded(_building):
 	pass

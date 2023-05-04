@@ -1,4 +1,4 @@
-extends Area2D
+extends Node2D
 
 # https://kidscancode.org/godot_recipes/basics/custom_resources/
 export (Resource) var StructureInformation
@@ -9,9 +9,9 @@ var _structureState = StructureStateEnum.STRUCTURE_CONSTRUCTING setget SetStruct
 var _elapsedContructionTime : float = 0
 
 func _ready():
-	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTING:
-		$Sprite.visible = false
-		$Construction.visible = true
+	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTING:	
+		$EntityObfuscation.SetNoneTexture($Construction.texture)
+		
 		setShowInfoUI(false)
 	$Selection.setCallback(funcref(self, "setShowInfoUI"))
 
@@ -20,18 +20,16 @@ func _process(delta):
 		_elapsedContructionTime += delta
 		if _elapsedContructionTime >= StructureInformation.ContructionTimeDays:
 			_structureState = StructureStateEnum.STRUCTURE_ACTIVE
-			
-			$Sprite.visible = true
-			$Construction.visible = false
+			$EntityObfuscation.SetNoneTexture($Sprite.texture)
 			
 	_processInfoUI()
 
 func _processInfoUI() -> void:
-	$StructureInformationUI/BuildPercentage.text = str("%.0f" % (_elapsedContructionTime/StructureInformation.ContructionTimeDays * 100) + "%")
+	$"%BuildPercentage".text = str("%.0f" % (_elapsedContructionTime/StructureInformation.ContructionTimeDays * 100) + "%")
 	
 	if _structureState == StructureStateEnum.STRUCTURE_ACTIVE:
-		$StructureInformationUI/BuildPercentage.visible = false
-		$StructureInformationUI/PauseConstruction.visible = false
+		$"%BuildPercentage".visible = false
+		$"%PauseConstruction".visible = false
 		
 func SetStructureState(var state):
 	_structureState = state
@@ -47,18 +45,11 @@ func getBaseConstructionCost() -> int:
 	
 func setShowInfoUI(show: bool) -> void:
 	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTING:
-		$StructureInformationUI/BuildPercentage.visible = show
-		$StructureInformationUI/PauseConstruction.visible = show
+		$"%BuildPercentage".visible = show
+		$"%PauseConstruction".visible = show
 		
 func onPauseConstructionPressed():
 	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTION_PAUSED:
 		_structureState = StructureStateEnum.STRUCTURE_CONSTRUCTING
 	else:
 		_structureState = StructureStateEnum.STRUCTURE_CONSTRUCTION_PAUSED
-
-
-func _on_Selection_EntitySelected(_entity):
-	setShowInfoUI(true)
-
-func _on_Selection_EntityDeselected(_entity):
-	setShowInfoUI(false)

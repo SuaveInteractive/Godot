@@ -27,6 +27,9 @@ func _ready():
 		addCollisionShape(shape2D, $DetectionArea)
 	
 	add_to_group("Detectors")
+	
+func get_class(): 
+	return "DetectNode"
 		
 func addCollisionShape(shape2D : Shape2D, child : Node) -> void:
 	var newCollisionShape = CollisionShape2D.new()

@@ -15,7 +15,10 @@ script = ExtResource( 1 )
 material = SubResource( 1 )
 
 [node name="Low" type="Sprite" parent="."]
+visible = false
 
 [node name="Medium" type="Sprite" parent="."]
+visible = false
 
 [node name="High" type="Sprite" parent="."]
+visible = false

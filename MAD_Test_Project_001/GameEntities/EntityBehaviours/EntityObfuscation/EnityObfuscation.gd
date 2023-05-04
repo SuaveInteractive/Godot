@@ -5,20 +5,16 @@ enum obfuscation_levels {NONE, LOW, MEDIUM, HIGH}
 
 export(obfuscation_levels) var obfuscation_level = obfuscation_levels.NONE
 
-export var obfuscation_none : Texture 
+export var obfuscation_none : Texture setget SetNoneTexture
 export var obfuscation_low : Texture
 export var obfuscation_medium : Texture
 export var obfuscation_high : Texture
 
 export var country_colour : Color = Color.fuchsia
 
-#var obfuscation_level = obfuscation_levels.NONE
-
 func _ready():
-	$None.texture = obfuscation_none
-	$Low.texture = obfuscation_low
-	$Medium.texture = obfuscation_medium
-	$High.texture = obfuscation_high
+	_updateTextures()
+	_updateVisibility()
 	
 	$None.get_material().set_shader_param("colour", country_colour)
 	
@@ -44,6 +40,16 @@ func setObfuscationMedium() -> void:
 func setObfuscationHigh() -> void:
 	obfuscation_level = obfuscation_levels.HIGH
 	_updateVisibility()
+	
+func SetNoneTexture(var texture : Texture) -> void:
+	obfuscation_none = texture
+	_updateTextures()
+	
+func _updateTextures() -> void:
+	$None.texture = obfuscation_none
+	$Low.texture = obfuscation_low
+	$Medium.texture = obfuscation_medium
+	$High.texture = obfuscation_high
 	
 func _updateVisibility() -> void:
 	$None.visible = false

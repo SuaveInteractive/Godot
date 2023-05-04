@@ -18,6 +18,13 @@ func setIntelligenceInterface(var intelligence):
 			else:
 				unit.get_node("EntityObfuscation").setObfuscationHigh()
 				
+		for building in country.get_node("Buildings").get_children():
+			if intel.has(building):
+				var intelLevel = intel[building]
+				_setObfuscationLevel(building, intelLevel)
+			else:
+				building.get_node("EntityObfuscation").setObfuscationHigh()
+				
 func disconnectIntelligenceInterface(var intelligence):
 	intelligence.disconnect("IntelligenceChanged", self, "OnIntelligenceChanged")
 
@@ -29,15 +36,20 @@ func OnIntelligenceChanged(changedIntel):
 				var intelLevel = changedIntel[unit]
 				_setObfuscationLevel(unit, intelLevel)
 				
-func _setObfuscationLevel(unit, intelLevel) -> void:
+		for building in country.get_node("Buildings").get_children():
+			if changedIntel.has(building):
+				var intelLevel = changedIntel[building]
+				_setObfuscationLevel(building, intelLevel)
+					
+func _setObfuscationLevel(entity, intelLevel) -> void:
 	match intelLevel:
 		0: # Intel Level None
-			unit.get_node("EntityObfuscation").setObfuscationHigh()
+			entity.get_node("EntityObfuscation").setObfuscationHigh()
 		1: # Intel Level Low
-			unit.get_node("EntityObfuscation").setObfuscationMedium()
+			entity.get_node("EntityObfuscation").setObfuscationMedium()
 		2: # Intel Level Medium
-			unit.get_node("EntityObfuscation").setObfuscationLow()
+			entity.get_node("EntityObfuscation").setObfuscationLow()
 		3: # Intel Level High
-			unit.get_node("EntityObfuscation").setObfuscationNone()
+			entity.get_node("EntityObfuscation").setObfuscationNone()
 		4: # Intel Level Total
-			unit.get_node("EntityObfuscation").setObfuscationNone()
+			entity.get_node("EntityObfuscation").setObfuscationNone()

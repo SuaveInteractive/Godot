@@ -5,6 +5,8 @@ enum InformationLevel {NONE, LOW, MEDIUM, HIGH, TOTAL}
 var Intel : Dictionary = {}
 var changedIntel : Dictionary = {}
 
+const acceptedNodeType : String = "DetectNode"
+
 signal IntelligenceChanged(changedIntellegence)
 
 func _ready():
@@ -16,6 +18,11 @@ func _process(_delta):
 		changedIntel.clear()
 
 func addDetection(entity) -> void:
+	if _validEntity(entity) == false:
+		var stringError : String = "[Intelligence]: Wrong node Type passed to 'addDetection' [" + str(entity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
+		push_error(stringError)
+		return
+	
 	var parentNode = entity.get_parent()
 	if Intel.has(parentNode):
 		pass #update current intelligence
@@ -34,3 +41,6 @@ func removeDetection(entity) -> void:
 
 func getKnownIntelligence() -> Dictionary:
 	return Intel
+	
+func _validEntity(var entity : Node) -> bool:
+	return entity.get_class() == acceptedNodeType

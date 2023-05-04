@@ -106,7 +106,6 @@ func addBuilding(type, pos):
 	
 	buildingInstance.position = pos
 	buildingInstance.z_index = 1
-	buildingInstance.set_name("building")
 	$Buildings.add_child(buildingInstance)
 	
 	if buildingInstance.has_node("Selection"):
@@ -116,9 +115,10 @@ func addBuilding(type, pos):
 		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", CountryColour)
 	
 	if buildingInstance.has_node("DetectorNode"):
-		buildingInstance.get_node("DetectorNode").connect("EnitityDetected", self, "OnEnitityDetected")
-		buildingInstance.get_node("DetectorNode").connect("EnitityUndetected", self, "OnEnitityUndetected")
-		$Intelligence.addDetection(buildingInstance.get_node("DetectorNode"))	
+		var buildingInstanceDetectorNode = buildingInstance.get_node("DetectorNode")
+		buildingInstanceDetectorNode.connect("EnitityDetected", self, "OnEnitityDetected")
+		buildingInstanceDetectorNode.connect("EnitityUndetected", self, "OnEnitityUndetected")
+		$Intelligence.addDetection(buildingInstanceDetectorNode)	
 	
 	emit_signal("CountryBuildingAdded", buildingInstance)
 """
@@ -133,13 +133,14 @@ func addUnit(unit):
 	
 	unitInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
 	
-	unitInstance.get_node("DetectorNode").connect("EnitityDetected", self, "OnEnitityDetected")
-	unitInstance.get_node("DetectorNode").connect("EnitityUndetected", self, "OnEnitityUndetected")
+	var unitInstanceDetectorNode = unitInstance.get_node("DetectorNode")
+	unitInstanceDetectorNode.connect("EnitityDetected", self, "OnEnitityDetected")
+	unitInstanceDetectorNode.connect("EnitityUndetected", self, "OnEnitityUndetected")
 		
 	unitInstance.set_name("unit")
 	$Units.add_child(unitInstance)
 	
-	$Intelligence.addDetection(unitInstance.get_node("DetectorNode"))
+	$Intelligence.addDetection(unitInstanceDetectorNode)
 
 """
 	Weapons
@@ -163,8 +164,8 @@ func OnUnitSelected(entity) -> void:
 func OnTargetReached(target, hits):
 	emit_signal("CountryTargetHit", self, target, hits)
 	
-func OnEnitityDetected(entity) -> void:
-	$Intelligence.addDetection(entity)
+func OnEnitityDetected(entityDetectorNode) -> void:
+	$Intelligence.addDetection(entityDetectorNode)
 	
-func OnEnitityUndetected(entity) -> void:
-	$Intelligence.removeDetection(entity)
+func OnEnitityUndetected(entityDetectorNode) -> void:
+	$Intelligence.removeDetection(entityDetectorNode)
