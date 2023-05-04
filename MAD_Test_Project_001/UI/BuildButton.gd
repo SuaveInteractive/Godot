@@ -7,4 +7,4 @@ func _on_Build_toggled(button_pressed):
 		child.visible = button_pressed
 
 func _on_BuildSiloButton_pressed():
-	emit_signal("UIBuildStructure", {"ActionName": "BuildAction", "BuildingName": "Silo", "Texture": "res://GameEntities/Silo/silo.png", "Scale": Vector2(0.75, 0.75)})
+	emit_signal("UIBuildStructure", {"ActionName": "BuildAction", "BuildingName": "Silo", "Texture": "res://GameEntities/Structure/Silo/FullHealth.png", "Scale": Vector2(0.75, 0.75)})
