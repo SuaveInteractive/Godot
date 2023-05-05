@@ -1,14 +1,11 @@
+extends "res://GameCommand/GameCommand.gd"
+
 var TestObject : Object = null
 
-var Command_Name : String = "Test_Command_002"
-
 func _init():
-	pass
-	
-func GetName() -> String:
-	return Command_Name
+	SetName("Test_Command_002")
 
-func execute() -> bool:
+func execution() -> bool:
 	if TestObject != null:
 		return true
 	return false

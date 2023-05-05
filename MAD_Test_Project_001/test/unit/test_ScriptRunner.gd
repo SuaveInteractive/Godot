@@ -6,16 +6,15 @@ var ScriptRunner = null
 var TestCommandScript_001 = preload("res://test/unit/data/TestCommand_001.gd")
 
 func before_all():		
-	ScriptRunner = autofree(ScriptRunnerClass.new())
+	ScriptRunner = add_child_autofree(ScriptRunnerClass.new())
 	
-	var commandScript_001 = autofree(TestCommandScript_001.new())
+	var commandScript_001 = add_child_autofree(TestCommandScript_001.new())
 	ScriptRunner.addCommand(commandScript_001)
 
 	add_child(ScriptRunner)
 	
 func after_all():
 	assert_no_new_orphans()
-	#print_stray_nodes()
 	
 func test_basic_run_script_01() -> void:
 	ScriptRunner.setScript(load("res://test/unit/data/Test_GameScript_001.tres"))

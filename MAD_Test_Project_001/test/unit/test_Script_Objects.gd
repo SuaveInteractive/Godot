@@ -5,6 +5,10 @@ extends GutTest
 var ScriptRunnerClass = preload("res://Script/ScriptRunner.gd")
 var ScriptRunner = null
 
+class NoneGDScriptObject:
+	var targetor : Node
+	var targets : Array
+
 func before_all():		
 	pass
 	
@@ -36,3 +40,6 @@ func test_basic_parse_object() -> void:
 	
 	var node = ScriptRunner._processObject(String(spritePath))
 	assert_not_null(node)
+
+func test_non_gdscript_object() -> void:
+	pass

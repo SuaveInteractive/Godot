@@ -9,8 +9,7 @@ var newChildContainer : Node = null
 var NumberOfChildNodes : int = 3
 
 func _create_script_runner():
-	ScriptRunner = ScriptRunnerClass.new()
-	add_child_autofree (ScriptRunner)
+	ScriptRunner = add_child_autofree(ScriptRunnerClass.new())
 	
 func _create_test_objects():
 	newChildContainer = Node.new()

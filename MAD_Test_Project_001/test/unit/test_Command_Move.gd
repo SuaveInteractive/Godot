@@ -14,8 +14,7 @@ func after_all():
 	Navigation2DServer.free_rid(rid)
 
 func before_each():
-	SubmarineObject = autofree(SubmarineScene.instance())
-	add_child(SubmarineObject)	
+	SubmarineObject = add_child_autofree(SubmarineScene.instance())
 
 func test_execution() -> void:
 	GameCommands.MoveCommand.MapName = "TestRID"

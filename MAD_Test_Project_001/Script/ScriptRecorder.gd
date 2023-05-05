@@ -78,7 +78,6 @@ func _processArgument(type, variant):
 	
 func record():
 	recording = true
-	_writeFile()
 	gameScript.GameScript.clear()
 	
 	emit_signal("RecordingStarted")
