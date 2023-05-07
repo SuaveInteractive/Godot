@@ -42,4 +42,13 @@ func test_basic_parse_object() -> void:
 	assert_not_null(node)
 
 func test_non_gdscript_object() -> void:
-	pass
+	var newChildNode = Sprite.new()
+	newChildNode.name = "TestChildNode"
+	add_child_autofree(newChildNode)
+	
+	var newObj = autofree(NoneGDScriptObject.new())
+	newObj.targetor = newChildNode
+	newObj.targets = [newChildNode]
+	
+	var processedObj = ScriptRecorder._processObject(newObj)
+	assert_null(processedObj)

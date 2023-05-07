@@ -18,7 +18,6 @@ func _create_script_runner():
 
 func before_all():		
 	gut.directory_delete_files(ScriptRecorder.getRecordingPath())
-	ScriptRecorder.record()
 	set_name("Test_Script_Commands_Objects_Node")
 	
 func after_all():
@@ -27,6 +26,7 @@ func after_all():
 func before_each():
 	ScriptRecorder.resetTimeOffset()
 	_create_script_runner()
+	ScriptRecorder.record()
 	
 func test_write_object() -> void:
 	var newChildNode = Sprite.new()
@@ -35,7 +35,7 @@ func test_write_object() -> void:
 	
 	commandScript_002.TestObject = newChildNode
 	
-	ScriptRecorder.executeCommand(commandScript_002)
+	var _err = ScriptRecorder.executeCommand(commandScript_002)
 	simulate(ScriptRecorder, 1, 1.0)
 	
 	var file1 = autofree(File.new())

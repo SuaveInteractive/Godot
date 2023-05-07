@@ -23,10 +23,6 @@ var SelectedEntities : Array = []
 
 var LandMapRID : RID 
 var WaterMapRID : RID 
-
-class TargetorTargets:
-	var targetor : Node
-	var targets : Array
 	
 func _ready():
 	WorldView = get_node("World View")
@@ -109,28 +105,32 @@ func addTarget(selectedUnit, targetPos):
 func getTargetsForCountry(countryObj) -> Array:
 	var targets : Array = []
 	
-	for unit in countryObj.get_node("Units").get_children():
-		targets.append_array(_getNodeTargets(unit))
-	
-	for building in countryObj.get_node("Buildings").get_children():
-		targets.append_array(_getNodeTargets(building))
+	targets.append_array(_getTargetsFromNodeArray(countryObj.get_node("Units").get_children()))
+	targets.append_array(_getTargetsFromNodeArray(countryObj.get_node("Buildings").get_children()))
 		
 	return targets
 	
-func _getNodeTargets(node) -> Array:
-	var targets : Array = []
+func _getTargetsFromNodeArray(nodeArray) -> Array:
+	var ret : Array = []
+	for node in nodeArray:
+		var foundTargets = _getNodeTargets(node)
+		if !foundTargets.empty():
+			ret.append(foundTargets)
+	return ret
 	
-	var targetorTargets = TargetorTargets.new()
-	targetorTargets.targetor = node
+func _getNodeTargets(node) -> Dictionary:	
+	var targetorTargets : Dictionary = {}
+	targetorTargets["targetor"] = node
+	targetorTargets["targets"] = []
 		
 	if node.has_node("TargetNode"):
 		for target in node.get_node("TargetNode").get_children():
-			targetorTargets.targets.append(target.position)
+			targetorTargets["targets"].append(target.position)
 			
-	if targetorTargets.targets.size() > 0:
-		targets.append(targetorTargets)
+	if targetorTargets["targets"].size() < 1:
+		return {}
 	
-	return targets
+	return targetorTargets
 			
 func launchMissile(country, source, target):
 	country.addMissile(source, target)

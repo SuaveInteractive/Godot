@@ -20,6 +20,7 @@ func _ready():
 	ScriptRunner.addCommand(GameCommands.MoveCommand)
 	ScriptRunner.addCommand(GameCommands.TargetCommand)
 	ScriptRunner.addCommand(GameCommands.BuildCommand)
+	ScriptRunner.addCommand(GameCommands.LaunchStrikeCommand)
 	
 	add_child(ScriptRunner)
 	

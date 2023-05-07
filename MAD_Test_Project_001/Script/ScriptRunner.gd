@@ -88,6 +88,8 @@ func _processArgument(arg):
 			return _processNodePath(arg)
 		TYPE_OBJECT:
 			return _processObject(arg)
+		TYPE_DICTIONARY:
+			return _processDictionary(arg)
 		TYPE_ARRAY:
 			return _processArray(arg)
 		_:
@@ -109,6 +111,16 @@ func _processNodePath(nodePath : NodePath) -> Node:
 func _processObject(nodePathStr : String) -> Node:
 	var nodePath = NodePath(nodePathStr)
 	return get_node(nodePath)
+	
+func _processDictionary(dict):
+	var ret = {}
+	
+	for key in dict:
+		var val = dict[key]
+		var newArg = _processArgument(val)
+		ret[key] = newArg
+	
+	return ret
 	
 func _processArray(stringArray : Array) -> Array:
 	var ret : Array = []

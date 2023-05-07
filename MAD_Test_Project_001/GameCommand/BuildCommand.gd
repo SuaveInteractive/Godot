@@ -6,7 +6,7 @@ var Build_Type_Str : String = ""
 var WorldController : Node = null
 
 func _ready():
-	Command_Name = "Build_Command"
+	SetName("Build_Command")
 
 func execution() -> bool:
 	if Build_Country == null || WorldController == null || Build_Type_Str.empty():

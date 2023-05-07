@@ -9,7 +9,11 @@ var TargetCommand = TargetCommandScript.new()
 var BuildCommandScript = load("res://GameCommand/BuildCommand.gd")
 var BuildCommand = BuildCommandScript.new()
 
+var LaunchStrikeCommandscript = load("res://GameCommand/LaunchStrikeCommand.gd")
+var LaunchStrikeCommand = LaunchStrikeCommandscript.new()
+
 func _init():
 	add_child(MoveCommand)
 	add_child(TargetCommand)
 	add_child(BuildCommand)
+	add_child(LaunchStrikeCommand)

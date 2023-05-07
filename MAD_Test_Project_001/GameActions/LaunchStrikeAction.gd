@@ -11,11 +11,10 @@ func _process(_delta):
 	pass
 
 func launchStrikeOnTargets(country, targetors : Array):
-	for targetor in targetors:
-		var targets = targetor.targets
-		for target in targets:
-			var from = targetor.targetor.position
-			worldController.launchMissile(country, from, target)
+	GameCommands.LaunchStrikeCommand.Country = country
+	GameCommands.LaunchStrikeCommand.Targetors = targetors
+	GameCommands.LaunchStrikeCommand.WorldController = worldController
+	GameCommands.LaunchStrikeCommand.execute()
 			
 	EndAction()
 	

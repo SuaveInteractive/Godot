@@ -71,6 +71,8 @@ func _processArgument(type, variant):
 			return null
 		TYPE_OBJECT:
 			return _processObject(variant)
+		TYPE_DICTIONARY :
+			return _processDictionary(variant)
 		TYPE_ARRAY:
 			return _processArray(variant)
 		_: 
@@ -98,9 +100,24 @@ func _processRID(var rid : RID):
 	RIDMapper.addMapping("processedRID", rid)
 
 func _processObject(object):
-	var ret : NodePath 
-	ret = object.get_path()
+	var ret = null 
+	if object is Node:
+		ret = object.get_path()
+	else:
+		var stringError : String = "[ScriptRecorder]: _processObject not given an Node."
+		push_error(stringError)
 	return ret
+
+func _processDictionary(dict):
+	var ret = {}
+	
+	for key in dict:
+		var val = dict[key]
+		var newArg = _processArgument(typeof(val), val)
+		ret[key] = newArg
+	
+	return ret
+	
 
 # Need to make sure any entries in the array that cannot be directly serialized are converted into a 
 # readable format.

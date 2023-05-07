@@ -18,7 +18,7 @@ func test_file_exists():
 	ScriptRecorder.record()
 	testCommand.Position_To = Vector2(123, 456)
 	testCommand.Selected_Units = [1, "blah"]
-	ScriptRecorder.executeCommand(testCommand)
+	var _err = ScriptRecorder.executeCommand(testCommand)
 	
 	ScriptRecorder._process(0.0)
 	
@@ -30,11 +30,11 @@ func test_basic_recording_01():
 	
 	testCommand.Position_To = Vector2(123, 456)
 	testCommand.Selected_Units = [1, "blah"]
-	ScriptRecorder.executeCommand(testCommand)
+	var _err = ScriptRecorder.executeCommand(testCommand)
 	
 	testCommand.Position_To = Vector2(654, 321)
 	testCommand.Selected_Units = ["foo", Vector3(1, 2, 3)]
-	ScriptRecorder.executeCommand(testCommand)
+	_err = ScriptRecorder.executeCommand(testCommand)
 	
 	ScriptRecorder._process(0.0)
 	
