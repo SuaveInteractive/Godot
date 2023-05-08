@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://GameEntities/StructureInformation.gd" type="Script" id=1]
+[ext_resource path="res://GameEntities/Structure/Silo/Silo.tscn" type="PackedScene" id=2]
+
+[resource]
+script = ExtResource( 1 )
+ContructionTimeDays = 5
+ContructionCost = 12500
+StructureScene = ExtResource( 2 )

@@ -1,0 +1,90 @@
+[gd_resource type="Resource" load_steps=10 format=2]
+
+[ext_resource path="res://Script/GameScript.gd" type="Script" id=1]
+[ext_resource path="res://Script/ScriptLine.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+CommandName = "Build_Command"
+TimeOffset = 1.0
+CommandArguments = {
+"Build_Country": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_1"),
+"Build_Type_Str": "Radar",
+"Construction_Cost": 80000,
+"Position_Build": Vector2( 75, 157.5 ),
+"WorldController": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller")
+}
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 2 )
+CommandName = "Build_Command"
+TimeOffset = 2.0
+CommandArguments = {
+"Build_Country": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_1"),
+"Build_Type_Str": "Radar",
+"Construction_Cost": 80000,
+"Position_Build": Vector2( 273.5, 202.5 ),
+"WorldController": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller")
+}
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 2 )
+CommandName = "Build_Command"
+TimeOffset = 3.0
+CommandArguments = {
+"Build_Country": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_1"),
+"Build_Type_Str": "Silo",
+"Construction_Cost": 12500,
+"Position_Build": Vector2( 153, 236 ),
+"WorldController": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller")
+}
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 2 )
+CommandName = "Move_Command"
+TimeOffset = 4.0
+CommandArguments = {
+"MapName": "WaterMapRID",
+"Position_To": Vector2( 232, 428.8 ),
+"Selected_Units": [ NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_1/Units/unit") ]
+}
+
+[sub_resource type="Resource" id=5]
+script = ExtResource( 2 )
+CommandName = "Target_Command"
+TimeOffset = 6.0
+CommandArguments = {
+"SelectedUnits": [ NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_1/Units/unit") ],
+"Target_Position": Vector2( 642.4, 427.2 ),
+"WorldController": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller")
+}
+
+[sub_resource type="Resource" id=6]
+script = ExtResource( 2 )
+CommandName = "Target_Command"
+TimeOffset = 10.0
+CommandArguments = {
+"SelectedUnits": [ NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_1/Buildings/Silo") ],
+"Target_Position": Vector2( 635.2, 428 ),
+"WorldController": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller")
+}
+
+[sub_resource type="Resource" id=7]
+script = ExtResource( 2 )
+CommandName = "Launch_Strike_Command"
+TimeOffset = 15.0
+CommandArguments = {
+"Country": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_1"),
+"Targetors": [ {
+"targetor": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_1/Units/unit"),
+"targets": [ Vector2( 642.4, 427.2 ) ]
+}, {
+"targetor": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_1/Buildings/Silo"),
+"targets": [ Vector2( 635.2, 428 ) ]
+} ],
+"WorldController": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller")
+}
+
+[resource]
+script = ExtResource( 1 )
+GameScript = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ]

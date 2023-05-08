@@ -2,8 +2,6 @@ extends Node
 class_name Country
 
 # Buildings
-#var cityScene = load("res://GameEntities/City/City.tscn")
-#var siloScene = load("res://GameEntities/Structure/Silo/Silo.tscn")
 var BuildingFactory = null
 
 # Units
@@ -30,6 +28,7 @@ var Finance : int = 0 setget set_finance, get_finance
 
 func _init():
 	BuildingFactory = load("res://GameEntities/Structure/StructureFactory.gd").new()
+	add_child(BuildingFactory)
 
 func initialize(name, color, boarder):
 	self.set_name(name) 

@@ -6,6 +6,7 @@ var ValidBuildArea : bool = false
 
 var BuildCountry : Node = null
 var BuildingName : String = ""
+var ConstructionCost : int = 0
 var WorldController : Node = null
 
 var debugRecScript = load("res://Debug/DebugRectangle2D.gd")
@@ -34,6 +35,7 @@ func _ready():
 func _init(parameters = null):
 	BuildCountry = parameters.BuildCountry
 	BuildingName = parameters.BuildingName
+	ConstructionCost = parameters.ConstructionCost
 	WorldController = parameters.WorldController
 	
 	BuildArea = parameters.BuildArea
@@ -84,10 +86,12 @@ func _process(_delta):
 func _unhandled_input(event : InputEvent) -> void:	
 	if not event is InputEventMouseButton:
 		return
+		
 	if Input.is_mouse_button_pressed(BUTTON_LEFT) and ValidBuildArea == true:
 		GameCommands.BuildCommand.Position_Build = MouseIcon.position
 		GameCommands.BuildCommand.Build_Country = BuildCountry
 		GameCommands.BuildCommand.Build_Type_Str = BuildingName
+		GameCommands.BuildCommand.Construction_Cost = ConstructionCost
 		GameCommands.BuildCommand.WorldController = WorldController
 		GameCommands.BuildCommand.execute()
 		get_tree().set_input_as_handled()

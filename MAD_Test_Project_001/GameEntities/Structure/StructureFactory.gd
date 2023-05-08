@@ -1,19 +1,30 @@
 extends Node
 
 var cityScene = preload("res://GameEntities/City/City.tscn")
-var siloScene = preload("res://GameEntities/Structure/Silo/Silo.tscn")
-var radarScene = preload("res://GameEntities/Structure/Radar/Radar.tscn")
+var siloInformaiton = preload("res://GameEntities/Structure/Silo/SiloInformation.tres")
+var radarInformaiton = preload("res://GameEntities/Structure/Radar/RadarInformation.tres")
 
 func _ready():
 	pass
 
-func getBuildingInstance(var buildingName):
+func getBuildingInformation(var buildingName) -> Resource:
+	var buildingInfo = null
+	match buildingName:
+		"City":
+			pass
+		"Silo":
+			buildingInfo = siloInformaiton
+		"Radar":
+			buildingInfo = radarInformaiton
+	return buildingInfo
+
+func getBuildingInstance(var buildingName) -> Node:
 	var buildingInst = null
 	match buildingName:
 		"City":
 			buildingInst = cityScene.instance()
 		"Silo":
-			buildingInst = siloScene.instance()
+			buildingInst = siloInformaiton.StructureScene.instance()
 		"Radar":
-			buildingInst = radarScene.instance()
+			buildingInst = radarInformaiton.StructureScene.instance()
 	return buildingInst
