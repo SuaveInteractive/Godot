@@ -2,9 +2,9 @@ extends Node
 class_name Country
 
 # Buildings
-var cityScene = load("res://GameEntities/City/City.tscn")
-#var siloScene = load("res://GameEntities/Silo/Silo.tscn")
-var siloScene = load("res://GameEntities/Structure/Silo/Silo.tscn")
+#var cityScene = load("res://GameEntities/City/City.tscn")
+#var siloScene = load("res://GameEntities/Structure/Silo/Silo.tscn")
+var BuildingFactory = null
 
 # Units
 var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
@@ -27,6 +27,9 @@ var Boarder : PoolVector2Array
 
 var Control : int = 0 setget set_control, get_control
 var Finance : int = 0 setget set_finance, get_finance
+
+func _init():
+	BuildingFactory = load("res://GameEntities/Structure/StructureFactory.gd").new()
 
 func initialize(name, color, boarder):
 	self.set_name(name) 
@@ -98,11 +101,7 @@ func getIntelligenceInterface():
 	Buildings
 """
 func addBuilding(type, pos):
-	var buildingInstance = null 
-	if type == "Silo":
-		buildingInstance = siloScene.instance()
-	else:
-		buildingInstance = cityScene.instance()
+	var buildingInstance = BuildingFactory.getBuildingInstance(type)
 	
 	buildingInstance.position = pos
 	buildingInstance.z_index = 1

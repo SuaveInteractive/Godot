@@ -22,10 +22,10 @@ func _save() -> void:
 	file.close()
 
 func _load():
+	var content = {}
 	var file = File.new()
-	file.open(resourcePath, File.READ)
-	var content = parse_json(file.get_as_text())
-	file.close()
-	if content == null:
-		return {}
+	var err = file.open(resourcePath, File.READ)
+	if err == OK:
+		content = parse_json(file.get_as_text())
+		file.close()
 	return content

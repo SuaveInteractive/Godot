@@ -129,16 +129,23 @@ action_mode = 0
 text = "Build"
 script = ExtResource( 3 )
 
-[node name="BuildSiloButton" type="Button" parent="UI Layer/UI/Build"]
+[node name="BuildButtonVBoxContainer" type="VBoxContainer" parent="UI Layer/UI/Build"]
 visible = false
-margin_left = 32.0
-margin_top = -28.0
-margin_right = 115.0
-margin_bottom = -8.0
+margin_left = 38.0
+margin_top = -50.0
+margin_right = 113.0
+margin_bottom = -4.0
+
+[node name="BuildSiloButton" type="Button" parent="UI Layer/UI/Build/BuildButtonVBoxContainer"]
+margin_right = 75.0
+margin_bottom = 20.0
 text = "Silo"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="BuildRadarButton" type="Button" parent="UI Layer/UI/Build/BuildButtonVBoxContainer"]
+margin_top = 24.0
+margin_right = 75.0
+margin_bottom = 44.0
+text = "Radar"
 
 [node name="PlayerInformation" type="Control" parent="UI Layer/UI"]
 margin_left = 120.0
@@ -211,4 +218,5 @@ text = "YOU XXX"
 [connection signal="pressed" from="UI Layer/UI/UnitMenu/Target" to="." method="TargetPressed"]
 [connection signal="UIBuildStructure" from="UI Layer/UI/Build" to="." method="_on_Build_UIBuildStructure"]
 [connection signal="toggled" from="UI Layer/UI/Build" to="UI Layer/UI/Build" method="_on_Build_toggled"]
-[connection signal="pressed" from="UI Layer/UI/Build/BuildSiloButton" to="UI Layer/UI/Build" method="_on_BuildSiloButton_pressed"]
+[connection signal="pressed" from="UI Layer/UI/Build/BuildButtonVBoxContainer/BuildSiloButton" to="UI Layer/UI/Build" method="_on_BuildSiloButton_pressed"]
+[connection signal="pressed" from="UI Layer/UI/Build/BuildButtonVBoxContainer/BuildRadarButton" to="UI Layer/UI/Build" method="_on_BuildRadarButton_pressed"]

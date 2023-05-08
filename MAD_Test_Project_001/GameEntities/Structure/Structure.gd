@@ -2,6 +2,8 @@ extends Node2D
 
 # https://kidscancode.org/godot_recipes/basics/custom_resources/
 export (Resource) var StructureInformation
+export (Texture) var ConstructionImage
+export (Texture) var StructureImage
 
 # Private
 enum StructureStateEnum {STRUCTURE_CONSTRUCTING, STRUCTURE_CONSTRUCTION_PAUSED, STRUCTURE_ACTIVE}
@@ -10,7 +12,7 @@ var _elapsedContructionTime : float = 0
 
 func _ready():
 	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTING:	
-		$EntityObfuscation.SetNoneTexture($Construction.texture)
+		$EntityObfuscation.SetNoneTexture(ConstructionImage)
 		
 		setShowInfoUI(false)
 	$Selection.setCallback(funcref(self, "setShowInfoUI"))
@@ -20,7 +22,7 @@ func _process(delta):
 		_elapsedContructionTime += delta
 		if _elapsedContructionTime >= StructureInformation.ContructionTimeDays:
 			_structureState = StructureStateEnum.STRUCTURE_ACTIVE
-			$EntityObfuscation.SetNoneTexture($Sprite.texture)
+			$EntityObfuscation.SetNoneTexture(StructureImage)
 			
 	_processInfoUI()
 

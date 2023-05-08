@@ -10,12 +10,6 @@ scale = Vector2( 0.75, 0.75 )
 z_index = 1
 script = ExtResource( 5 )
 
-[node name="Sprite" type="Sprite" parent="."]
-visible = false
-
-[node name="Construction" type="Sprite" parent="."]
-visible = false
-
 [node name="EntityObfuscation" parent="." instance=ExtResource( 1 )]
 obfuscation_level = 3
 
