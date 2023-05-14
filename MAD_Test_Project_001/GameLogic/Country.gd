@@ -19,6 +19,7 @@ signal CountryFinanceChange(oldFinance, newFinance)
 signal CountryTargetHit(country, target, hits)
 
 signal CountryBuildingAdded(building)
+signal CountryDetectionUpdated(country)
 
 var CountryColour : Color = Color(255) setget , get_colour
 var Boarder : PoolVector2Array 
@@ -81,10 +82,11 @@ func getDetectionArea() -> Array:
 	var ret : Array = []
 	
 	# Buildings
-	for buildings in $Buildings.get_children():
-		var detectorNode = buildings.get_node("DetectorNode")
-		if detectorNode != null:
-			ret.append(detectorNode)
+	for building in $Buildings.get_children():
+		if building.isStructureConstructing() == false:
+			var detectorNode = building.get_node("DetectorNode")
+			if detectorNode != null:
+				ret.append(detectorNode)
 	
 	# Units
 	for unit in $Units.get_children():
@@ -105,6 +107,8 @@ func addBuilding(type, pos):
 	buildingInstance.position = pos
 	buildingInstance.z_index = 1
 	$Buildings.add_child(buildingInstance)
+	
+	buildingInstance.connect("ConstructionFinished", self, "OnConstructionFinished")
 	
 	if buildingInstance.has_node("Selection"):
 		buildingInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
@@ -167,3 +171,7 @@ func OnEnitityDetected(entityDetectorNode) -> void:
 	
 func OnEnitityUndetected(entityDetectorNode) -> void:
 	$Intelligence.removeDetection(entityDetectorNode)
+	
+func OnConstructionFinished(structure) -> void:
+	if structure.has_node("DetectorNode"):
+		emit_signal("CountryDetectionUpdated", self)

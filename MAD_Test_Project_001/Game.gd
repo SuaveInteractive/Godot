@@ -72,7 +72,8 @@ func SetControllingCountry(country):
 		$ViewportContainer/Viewport/World.disconnectIntelligenceInterface(ControllingCountry.getIntelligenceInterface())
 		ControllingCountry.disconnect("CountryFinanceChange", $"UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer/FinanceValue", "OnCountryFinanceChange")
 		ControllingCountry.disconnect("CountryControlChange", $"UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer/ControlValue", "OnCountryControlChange")
-	
+		ControllingCountry.disconnect("CountryDetectionUpdated", self, "OnCountryDetectionChanged")
+		
 	ControllingCountry = country
 	
 	$"UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer/FinanceValue".text = str(country.get_finance())
@@ -80,6 +81,7 @@ func SetControllingCountry(country):
 	
 	ControllingCountry.connect("CountryFinanceChange", $"UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer/FinanceValue", "OnCountryFinanceChange")
 	ControllingCountry.connect("CountryControlChange", $"UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer/ControlValue", "OnCountryControlChange")
+	ControllingCountry.connect("CountryDetectionUpdated", self, "OnCountryDetectionChanged")
 	
 	$DetectionMap.setDetectionAreas(ControllingCountry.getDetectionArea())
 	
@@ -123,3 +125,7 @@ func _on_GameRules_CountryWins(country):
 func _on_World_WorldEntitySelected(country, entity):
 	if ControllingCountry == country:
 		WorldController.setSelectedEntities([entity])
+		
+func OnCountryDetectionChanged(country):
+	if ControllingCountry == country:
+		$DetectionMap.setDetectionAreas(ControllingCountry.getDetectionArea())

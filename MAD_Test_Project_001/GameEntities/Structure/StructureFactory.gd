@@ -1,17 +1,23 @@
 extends Node
 
-var cityScene = preload("res://GameEntities/City/City.tscn")
-var siloInformaiton = preload("res://GameEntities/Structure/Silo/SiloInformation.tres")
-var radarInformaiton = preload("res://GameEntities/Structure/Radar/RadarInformation.tres")
+var cityScene = preload("res://GameEntities/Structure/City/City.tscn")
+var siloScene = preload("res://GameEntities/Structure/Silo/Silo.tscn")
+var radarScene= preload("res://GameEntities/Structure/Radar/Radar.tscn")
+
+var cityInformaiton : Resource
+var siloInformaiton : Resource
+var radarInformaiton : Resource
 
 func _ready():
-	pass
+	cityInformaiton = _getStructureInfoFromScene("City")
+	siloInformaiton = _getStructureInfoFromScene("Silo")
+	radarInformaiton = _getStructureInfoFromScene("Radar")
 
 func getBuildingInformation(var buildingName) -> Resource:
 	var buildingInfo = null
 	match buildingName:
 		"City":
-			pass
+			buildingInfo = cityInformaiton
 		"Silo":
 			buildingInfo = siloInformaiton
 		"Radar":
@@ -24,7 +30,13 @@ func getBuildingInstance(var buildingName) -> Node:
 		"City":
 			buildingInst = cityScene.instance()
 		"Silo":
-			buildingInst = siloInformaiton.StructureScene.instance()
+			buildingInst = siloScene.instance()
 		"Radar":
-			buildingInst = radarInformaiton.StructureScene.instance()
+			buildingInst = radarScene.instance()
 	return buildingInst
+
+func _getStructureInfoFromScene(var structName) -> Resource:
+	var inst = getBuildingInstance(structName)
+	var structInformaiton : Resource = inst.StructureInformation
+	inst.queue_free()
+	return structInformaiton

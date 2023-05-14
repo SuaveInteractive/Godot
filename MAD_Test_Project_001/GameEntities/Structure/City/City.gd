@@ -1,4 +1,4 @@
-extends Area2D
+extends "res://GameEntities/Structure/Structure.gd"
 
 class_name City
 

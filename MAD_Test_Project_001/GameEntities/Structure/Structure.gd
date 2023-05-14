@@ -1,5 +1,7 @@
 extends Node2D
 
+signal ConstructionFinished(structure)
+
 # https://kidscancode.org/godot_recipes/basics/custom_resources/
 export (Resource) var StructureInformation
 export (Texture) var ConstructionImage
@@ -23,11 +25,13 @@ func _process(delta):
 		if _elapsedContructionTime >= StructureInformation.ContructionTimeDays:
 			_structureState = StructureStateEnum.STRUCTURE_ACTIVE
 			$EntityObfuscation.SetNoneTexture(StructureImage)
+			emit_signal("ConstructionFinished", self)
 			
 	_processInfoUI()
 
 func _processInfoUI() -> void:
-	$"%BuildPercentage".text = str("%.0f" % (_elapsedContructionTime/StructureInformation.ContructionTimeDays * 100) + "%")
+	if StructureInformation.ContructionTimeDays > 0:
+		$"%BuildPercentage".text = str("%.0f" % (_elapsedContructionTime/StructureInformation.ContructionTimeDays * 100) + "%")
 	
 	if _structureState == StructureStateEnum.STRUCTURE_ACTIVE:
 		$"%BuildPercentage".visible = false
