@@ -22,7 +22,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Country",
 "language": "GDScript",
-"path": "res://GameLogic/Country.gd"
+"path": "res://GameLogic/Country/Country.gd"
 }, {
 "base": "Resource",
 "class": "CountryInformation",

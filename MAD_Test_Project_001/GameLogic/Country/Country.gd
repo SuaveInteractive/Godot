@@ -120,7 +120,7 @@ func addBuilding(type, pos):
 		var buildingInstanceDetectorNode = buildingInstance.get_node("DetectorNode")
 		buildingInstanceDetectorNode.connect("EnitityDetected", self, "OnEnitityDetected")
 		buildingInstanceDetectorNode.connect("EnitityUndetected", self, "OnEnitityUndetected")
-		$Intelligence.addDetection(buildingInstanceDetectorNode)	
+		$Intelligence.addDetection(null, buildingInstanceDetectorNode)	
 	
 	emit_signal("CountryBuildingAdded", buildingInstance)
 """
@@ -130,7 +130,6 @@ func addUnit(unit):
 	var unitInstance = submarineScene.instance()
 	unitInstance.position = unit.UnitPosition
 	unitInstance.z_index = 1
-	#unitInstance.get_node("SubmarineSprite").get_material().set_shader_param("colour", CountryColour)
 	unitInstance.get_node("EntityObfuscation").country_colour = CountryColour
 	
 	unitInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
@@ -142,7 +141,7 @@ func addUnit(unit):
 	unitInstance.set_name("unit")
 	$Units.add_child(unitInstance)
 	
-	$Intelligence.addDetection(unitInstanceDetectorNode)
+	$Intelligence.addDetection(null, unitInstanceDetectorNode)
 
 """
 	Weapons
@@ -166,11 +165,11 @@ func OnUnitSelected(entity) -> void:
 func OnTargetReached(target, hits):
 	emit_signal("CountryTargetHit", self, target, hits)
 	
-func OnEnitityDetected(entityDetectorNode) -> void:
-	$Intelligence.addDetection(entityDetectorNode)
+func OnEnitityDetected(detectorEntity, entityDetectorNode) -> void:
+	$Intelligence.addDetection(detectorEntity, entityDetectorNode)
 	
-func OnEnitityUndetected(entityDetectorNode) -> void:
-	$Intelligence.removeDetection(entityDetectorNode)
+func OnEnitityUndetected(detectorEntity, entityDetectorNode) -> void:
+	$Intelligence.removeDetection(detectorEntity, entityDetectorNode)
 	
 func OnConstructionFinished(structure) -> void:
 	if structure.has_node("DetectorNode"):

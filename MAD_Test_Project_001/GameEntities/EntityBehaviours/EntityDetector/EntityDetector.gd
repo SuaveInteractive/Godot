@@ -6,19 +6,23 @@ export (Array, Shape2D) var DetectorArea = []
 ## The shape that this object can be detected (think rader cross-section)
 export (Array, Shape2D) var DetectionShapes = []
 
-export (int) var DetectorLayer = 31
-export (int) var DetectionLayer = 32
+export (int) var DetectorLayerBit = 30
+export (int) var DetectionLayerBit = 31
 
-signal EnitityDetected(Entity)
-signal EnitityUndetected(Entity)
+signal EnitityDetected(detector, detected)
+signal EnitityUndetected(detector, detected)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$DetectorArea.set_collision_layer(DetectorLayer)
-	$DetectorArea.set_collision_mask(DetectionLayer)
+	$DetectorArea.set_collision_layer(0)
+	$DetectorArea.set_collision_mask(0)
+	$DetectorArea.set_collision_layer_bit(DetectorLayerBit, true)
+	$DetectorArea.set_collision_mask_bit (DetectionLayerBit, true)
 	
-	$DetectionArea.set_collision_layer(DetectionLayer)
-	$DetectionArea.set_collision_mask(DetectorLayer)
+	$DetectionArea.set_collision_layer(0)
+	$DetectionArea.set_collision_mask(0)
+	$DetectionArea.set_collision_layer_bit (DetectionLayerBit, true)
+	$DetectionArea.set_collision_mask_bit (DetectorLayerBit, true)
 	
 	for shape2D in DetectorArea:
 		addCollisionShape(shape2D, $DetectorArea)
@@ -41,8 +45,8 @@ func getDetectionAreas() -> Array:
 
 func _on_DetectorArea_area_entered(area):
 	if area != $DetectionArea:
-		emit_signal("EnitityDetected", area.get_parent())
+		emit_signal("EnitityDetected", get_parent(), area.get_parent())
 	
 func _on_DetectorArea_area_exited(area):
 	if area != $DetectionArea:
-		emit_signal("EnitityUndetected", area.get_parent())
+		emit_signal("EnitityUndetected", get_parent(), area.get_parent())

@@ -5,7 +5,7 @@ Documentation:
 https://miro.com/app/board/uXjVPBx20R0=/ 
 """
 
-var countryScene = load("res://GameLogic/Country.tscn")
+var countryScene = load("res://GameLogic/Country/Country.tscn")
 var targetScene = load("res://GameEntities/Target/Target.tscn")
 var nuclearExplosionScene = load("res://GameEntities/NuclearExplosion/NuclearExplosion.tscn")
 
