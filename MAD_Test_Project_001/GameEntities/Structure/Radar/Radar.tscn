@@ -9,14 +9,18 @@
 radius = 200.0
 
 [node name="Radar" instance=ExtResource( 2 )]
+scale = Vector2( 1, 1 )
 StructureInformation = ExtResource( 3 )
 ConstructionImage = ExtResource( 4 )
 StructureImage = ExtResource( 1 )
 
 [node name="EntityObfuscation" parent="." index="0"]
-scale = Vector2( 0.25, 0.25 )
+scale = Vector2( 0.15, 0.15 )
 obfuscation_level = 0
 obfuscation_none = ExtResource( 1 )
 
 [node name="DetectorNode" parent="." index="1"]
 DetectorArea = [ SubResource( 2 ) ]
+
+[node name="Selection" parent="." index="2"]
+SelectionArea = Vector2( 30, 30 )

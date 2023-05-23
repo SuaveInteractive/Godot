@@ -98,6 +98,7 @@ func getDetectionArea() -> Array:
 func getIntelligenceInterface():
 	return $Intelligence
 
+
 """
 	Buildings
 """
@@ -165,10 +166,10 @@ func OnUnitSelected(entity) -> void:
 func OnTargetReached(target, hits):
 	emit_signal("CountryTargetHit", self, target, hits)
 	
-func OnEnitityDetected(detectorEntity, entityDetectorNode) -> void:
+func OnEnitityDetected(detectorEntity, detectorShapeIndex, entityDetectorNode) -> void:
 	$Intelligence.addDetection(detectorEntity, entityDetectorNode)
 	
-func OnEnitityUndetected(detectorEntity, entityDetectorNode) -> void:
+func OnEnitityUndetected(detectorEntity, detectorShapeIndex, entityDetectorNode) -> void:
 	$Intelligence.removeDetection(detectorEntity, entityDetectorNode)
 	
 func OnConstructionFinished(structure) -> void:

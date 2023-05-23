@@ -1,10 +1,27 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://GameEntities/EntityBehaviours/EntityDetector/DetectorArea.gd" type="Script" id=1]
 [ext_resource path="res://GameEntities/EntityBehaviours/EntityDetector/EntityDetector.gd" type="Script" id=2]
+[ext_resource path="res://Shaders/CircleShader.gdshader" type="Shader" id=3]
+
+[sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/longRangeRadar = 1.0
+shader_param/mediumRangeRadar = 0.75
+shader_param/shortRangeRadar = 0.5
+shader_param/visualRange = 0.1
+shader_param/longRangeColor = Color( 0.0745098, 0.423529, 0.0431373, 0.196078 )
+shader_param/mediumRangeColor = Color( 0.0745098, 0.423529, 0.0431373, 0.392157 )
+shader_param/shortRangeColor = Color( 0.0745098, 0.423529, 0.0431373, 0.588235 )
+shader_param/visualRangeColor = Color( 0.0745098, 0.423529, 0.0431373, 0.784314 )
 
 [node name="DetectorNode" type="Node2D"]
 script = ExtResource( 2 )
+
+[node name="RadarCoverage" type="Sprite" parent="."]
+visible = false
+material = SubResource( 1 )
 
 [node name="DetectorArea" type="Area2D" parent="."]
 collision_layer = 0
@@ -16,5 +33,5 @@ drawColour = Color( 1, 0, 1, 0.196078 )
 collision_layer = 0
 collision_mask = 0
 
-[connection signal="area_entered" from="DetectorArea" to="." method="_on_DetectorArea_area_entered"]
-[connection signal="area_exited" from="DetectorArea" to="." method="_on_DetectorArea_area_exited"]
+[connection signal="area_shape_entered" from="DetectorArea" to="." method="_on_DetectorArea_area_shape_entered"]
+[connection signal="area_shape_exited" from="DetectorArea" to="." method="_on_DetectorArea_area_shape_exited"]

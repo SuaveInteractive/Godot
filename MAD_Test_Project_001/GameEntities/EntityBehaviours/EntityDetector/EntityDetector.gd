@@ -9,8 +9,8 @@ export (Array, Shape2D) var DetectionShapes = []
 export (int) var DetectorLayerBit = 30
 export (int) var DetectionLayerBit = 31
 
-signal EnitityDetected(detector, detected)
-signal EnitityUndetected(detector, detected)
+signal EnitityDetected(detector, detectorShapeIndex, detected)
+signal EnitityUndetected(detector, detectorShapeIndex, detected)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -30,7 +30,8 @@ func _ready():
 	for shape2D in DetectionShapes:
 		addCollisionShape(shape2D, $DetectionArea)
 	
-	add_to_group("Detectors")
+	_createDetectionAreaTexture()
+	setDetectionAreaVisibility(false)
 	
 func get_class(): 
 	return "DetectNode"
@@ -42,11 +43,47 @@ func addCollisionShape(shape2D : Shape2D, child : Node) -> void:
 	
 func getDetectionAreas() -> Array:
 	return $DetectorArea.get_children()
-
-func _on_DetectorArea_area_entered(area):
-	if area != $DetectionArea:
-		emit_signal("EnitityDetected", get_parent(), area.get_parent())
 	
-func _on_DetectorArea_area_exited(area):
+func setDetectionAreaVisibility(var visibility) -> void:
+	$RadarCoverage.visible = visibility
+	
+func getRadarVisibility() -> bool:
+	return $RadarCoverage.visible
+	
+func _createDetectionAreaTexture() -> void:
+	var arrayRadius = []
+	for child in $DetectorArea.get_children():
+		if child is CollisionShape2D:
+			var shape = child.shape
+			if shape is CircleShape2D:
+				arrayRadius.append(shape.radius)
+	if arrayRadius.size() > 0:
+		arrayRadius.sort()
+		var largestRange = arrayRadius.back()
+		if largestRange != null:
+			var textureWidth = largestRange * 2
+			var texture = ImageTexture.new()
+			var image = Image.new()
+			image.create(textureWidth, textureWidth, false, Image.FORMAT_RGBAF)
+			texture.create_from_image(image)
+			$RadarCoverage.texture = texture
+			
+			_setDetectionAreaShaderParams(arrayRadius)
+			
+func _setDetectionAreaShaderParams(var sortedArrayRadius : Array) -> void:
+		var largestRange = sortedArrayRadius.back()
+		var shaderParamArray = ["visualRange", "shortRangeRadar", "mediumRangeRadar", "longRangeRadar"]
+		for param in shaderParamArray:
+			$RadarCoverage.get_material().set_shader_param(param, 1.0)	
+
+		for n in sortedArrayRadius.size():
+			var val = sortedArrayRadius[n] / largestRange
+			$RadarCoverage.get_material().set_shader_param(shaderParamArray[n], val)	
+			
+func _on_DetectorArea_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
 	if area != $DetectionArea:
-		emit_signal("EnitityUndetected", get_parent(), area.get_parent())
+		emit_signal("EnitityDetected", get_parent(), local_shape_index, area.get_parent())
+
+func _on_DetectorArea_area_shape_exited(area_rid, area, area_shape_index, local_shape_index):
+	if area != $DetectionArea:
+		emit_signal("EnitityUndetected", get_parent(), local_shape_index, area.get_parent())

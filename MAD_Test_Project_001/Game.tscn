@@ -210,6 +210,13 @@ margin_right = 28.0
 margin_bottom = 7.0
 text = "YOU XXX"
 
+[node name="ShowRadar" type="CheckBox" parent="UI Layer/UI"]
+margin_left = 911.783
+margin_top = 10.3826
+margin_right = 1011.78
+margin_bottom = 34.3826
+text = "Show Radar"
+
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
 [connection signal="CountryWins" from="GameRules" to="." method="_on_GameRules_CountryWins"]
 [connection signal="WorldEntitySelected" from="ViewportContainer/Viewport/World" to="." method="_on_World_WorldEntitySelected"]
@@ -220,3 +227,4 @@ text = "YOU XXX"
 [connection signal="toggled" from="UI Layer/UI/Build" to="UI Layer/UI/Build" method="_on_Build_toggled"]
 [connection signal="pressed" from="UI Layer/UI/Build/BuildButtonVBoxContainer/BuildSiloButton" to="UI Layer/UI/Build" method="_on_BuildSiloButton_pressed"]
 [connection signal="pressed" from="UI Layer/UI/Build/BuildButtonVBoxContainer/BuildRadarButton" to="UI Layer/UI/Build" method="_on_BuildRadarButton_pressed"]
+[connection signal="toggled" from="UI Layer/UI/ShowRadar" to="." method="_on_ShowRadar_toggled"]

@@ -129,3 +129,7 @@ func _on_World_WorldEntitySelected(country, entity):
 func OnCountryDetectionChanged(country):
 	if ControllingCountry == country:
 		$DetectionMap.setDetectionAreas(ControllingCountry.getDetectionArea())
+
+func _on_ShowRadar_toggled(button_pressed):
+	for detectionNode in ControllingCountry.getDetectionArea():
+		detectionNode.setDetectionAreaVisibility(button_pressed)
