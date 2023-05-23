@@ -74,6 +74,8 @@ func SetControllingCountry(country):
 		ControllingCountry.disconnect("CountryControlChange", $"UI Layer/UI/PlayerInformation/TopBarInfoContainer/ControlInfoContainer/ControlValue", "OnCountryControlChange")
 		ControllingCountry.disconnect("CountryDetectionUpdated", self, "OnCountryDetectionChanged")
 		
+		setDetectionVisibility(ControllingCountry, false)
+		
 	ControllingCountry = country
 	
 	$"UI Layer/UI/PlayerInformation/TopBarInfoContainer/FinanceInfoContainer/FinanceValue".text = str(country.get_finance())
@@ -84,8 +86,8 @@ func SetControllingCountry(country):
 	ControllingCountry.connect("CountryDetectionUpdated", self, "OnCountryDetectionChanged")
 	
 	$DetectionMap.setDetectionAreas(ControllingCountry.getDetectionArea())
-	
 	$ViewportContainer/Viewport/World.setIntelligenceInterface(ControllingCountry.getIntelligenceInterface())
+	setDetectionVisibility(ControllingCountry, $"UI Layer/UI/ShowRadar".pressed)
 	
 	emit_signal("ControllingCountryChanged", ControllingCountry)
 	
@@ -94,6 +96,10 @@ func getScriptRunner():
 	
 func getControllingCountry():
 	return ControllingCountry
+	
+func setDetectionVisibility(var country, var visibile) -> void:
+	for detectionNode in country.getDetectionArea():
+		detectionNode.setDetectionAreaVisibility(visibile)
 	
 # https://docs.godotengine.org/en/3.1/tutorials/io/saving_games.html
 # C:\Users\Manix\AppData\Roaming\Godot\app_userdata\MAD_Test_Project_001
@@ -105,7 +111,10 @@ func save_game():
 		var node_data = i.call("save");
 		save_game.store_line(to_json(node_data))
 	save_game.close()
-
+	
+"""
+	Callbacks
+"""
 func _on_Build_UIBuildStructure(buildInfo):
 	var actionInfo = buildInfo	
 	
@@ -113,14 +122,13 @@ func _on_Build_UIBuildStructure(buildInfo):
 	actionInfo.BuildArea = getControllingCountry().Boarder
 	actionInfo.WorldController = WorldController
 	$GameActions.startAction(actionInfo)
-
+	
 func _on_GameRules_CountryWins(country):
 	get_node("UI Layer/UI/ResultLable").visible = true
 	if country == ControllingCountry:
 		get_node("UI Layer/UI/ResultLable").text = "YOU WIN"
 	else:
 		get_node("UI Layer/UI/ResultLable").text = "YOU LOSE"
-
 
 func _on_World_WorldEntitySelected(country, entity):
 	if ControllingCountry == country:
@@ -129,7 +137,7 @@ func _on_World_WorldEntitySelected(country, entity):
 func OnCountryDetectionChanged(country):
 	if ControllingCountry == country:
 		$DetectionMap.setDetectionAreas(ControllingCountry.getDetectionArea())
+		setDetectionVisibility(ControllingCountry, $"UI Layer/UI/ShowRadar".pressed)
 
 func _on_ShowRadar_toggled(button_pressed):
-	for detectionNode in ControllingCountry.getDetectionArea():
-		detectionNode.setDetectionAreaVisibility(button_pressed)
+	setDetectionVisibility(ControllingCountry, button_pressed)
