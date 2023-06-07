@@ -1,16 +1,23 @@
 extends Node2D
 class_name DetectNode
 
+var DetectionAreaResource = preload("res://GameEntities/EntityBehaviours/EntityDetector/DetectionAreaResource.gd")
+
+enum detection_levels {TOTAL, HIGH, MEDIUM, LOW}
+
 ## The area where this node can detect other detection shapes
-export (Array, Shape2D) var DetectorArea = []
+export (Array, Shape2D) var DetectorAreaArray setget setDetectorAreaArray
 ## The shape that this object can be detected (think rader cross-section)
 export (Array, Shape2D) var DetectionShapes = []
+
+## Maximum number of detectors
+var MaxDetectors : int = 4
 
 export (int) var DetectorLayerBit = 30
 export (int) var DetectionLayerBit = 31
 
-signal EnitityDetected(detector, detectorShapeIndex, detected)
-signal EnitityUndetected(detector, detectorShapeIndex, detected)
+signal EnitityDetected(detectorEntity, detectorShapeIndex, entityDetectorNode)
+signal EnitityUndetected(detectorEntity, detectorShapeIndex, entityDetectorNode)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,7 +31,7 @@ func _ready():
 	$DetectionArea.set_collision_layer_bit (DetectionLayerBit, true)
 	$DetectionArea.set_collision_mask_bit (DetectorLayerBit, true)
 	
-	for shape2D in DetectorArea:
+	for shape2D in DetectorAreaArray:
 		addCollisionShape(shape2D, $DetectorArea)
 		
 	for shape2D in DetectionShapes:
@@ -50,6 +57,13 @@ func setDetectionAreaVisibility(var visibility) -> void:
 func getRadarVisibility() -> bool:
 	return $RadarCoverage.visible
 	
+func setDetectorAreaArray(var detectArray : Array):
+	if detectArray.size() > MaxDetectors:
+		var stringError : String = "[EntityDetector]: Error trying to set too many detection areas"  
+		stringError = stringError + "Maximum number of areas is [" + String(MaxDetectors) + "]"
+		push_error(stringError)
+	DetectorAreaArray = detectArray
+
 func _createDetectionAreaTexture() -> void:
 	var arrayRadius = []
 	for child in $DetectorArea.get_children():

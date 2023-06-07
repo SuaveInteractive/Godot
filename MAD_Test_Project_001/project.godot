@@ -50,6 +50,11 @@ _global_script_classes=[ {
 "path": "res://GameEntities/EntityBehaviours/EntityDetector/EntityDetector.gd"
 }, {
 "base": "Resource",
+"class": "DetectionAreaResourceDef",
+"language": "GDScript",
+"path": "res://GameEntities/EntityBehaviours/EntityDetector/DetectionAreaResource.gd"
+}, {
+"base": "Resource",
 "class": "GameScript",
 "language": "GDScript",
 "path": "res://Script/GameScript.gd"
@@ -88,6 +93,7 @@ _global_script_class_icons={
 "DebugRectangle2D": "",
 "DebugWindowSettings": "",
 "DetectNode": "",
+"DetectionAreaResourceDef": "",
 "GameScript": "",
 "Matrix": "",
 "ScriptLine": "",

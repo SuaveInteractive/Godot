@@ -10,10 +10,11 @@
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 77.09, 19.0063 )
 
-[sub_resource type="CircleShape2D" id=6]
-radius = 50.0
+[sub_resource type="CircleShape2D" id=8]
+radius = 38.0
 
 [sub_resource type="CircleShape2D" id=7]
+radius = 5.0
 
 [node name="Submarine" type="Node2D" groups=["Persistent", "Targetor"]]
 z_index = 1
@@ -38,7 +39,7 @@ SelectionArea = Vector2( 38, 10 )
 [node name="TargetNode" parent="." instance=ExtResource( 5 )]
 
 [node name="DetectorNode" parent="." instance=ExtResource( 6 )]
-DetectorArea = [ SubResource( 6 ) ]
+DetectorAreaArray = [ SubResource( 8 ) ]
 DetectionShapes = [ SubResource( 7 ) ]
 
 [connection signal="EntityDeselected" from="Selection" to="TargetNode" method="_on_Selection_EntityDeselected"]

@@ -1,0 +1,50 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://TestScenes/DetectorTest/DetectorTest.gd" type="Script" id=1]
+[ext_resource path="res://GameEntities/EntityBehaviours/EntityDetector/EntityDetector.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GameEntities/Submarine/Submarine.tscn" type="PackedScene" id=3]
+[ext_resource path="res://GameLogic/Country/DetectionProcessing.gd" type="Script" id=4]
+[ext_resource path="res://Debug/Detection/DebugDetectionState.tscn" type="PackedScene" id=5]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 50.0
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 100.0
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 125.0
+
+[sub_resource type="CircleShape2D" id=2]
+
+[node name="Parent" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="DetectionProcessing" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="DetectorNode" parent="Node2D" instance=ExtResource( 2 )]
+position = Vector2( 249.187, 200 )
+DetectorAreaArray = [ SubResource( 1 ), SubResource( 3 ), SubResource( 4 ) ]
+DetectionShapes = [ SubResource( 2 ) ]
+
+[node name="Submarine" parent="." instance=ExtResource( 3 )]
+position = Vector2( 466.944, 200 )
+
+[node name="RadarToggle" type="Button" parent="."]
+unique_name_in_owner = true
+margin_left = 446.74
+margin_top = 553.374
+margin_right = 530.74
+margin_bottom = 573.374
+toggle_mode = true
+text = "Show Radar"
+
+[node name="DebugDetectionState" parent="." instance=ExtResource( 5 )]
+
+[connection signal="DetectTrackingChanged" from="DetectionProcessing" to="." method="_on_DetectionProcessing_DetectTrackingChanged"]
+[connection signal="EnitityDetected" from="Node2D/DetectorNode" to="." method="_on_DetectorNode_EnitityDetected"]
+[connection signal="EnitityUndetected" from="Node2D/DetectorNode" to="." method="_on_DetectorNode_EnitityUndetected"]
+[connection signal="toggled" from="RadarToggle" to="." method="_on_RadarToggle_toggled"]

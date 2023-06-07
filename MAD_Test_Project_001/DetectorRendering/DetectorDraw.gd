@@ -9,7 +9,7 @@ func _process(_delta):
 func _draw():
 	var detectors = detectionNodes
 	for dector in detectors:
-		drawDetectionArea(dector.global_position, dector.DetectorArea)
+		drawDetectionArea(dector.global_position, dector.DetectorAreaArray)
 
 func drawDetectionArea(position, detectorShapes):
 	for shape in detectorShapes:

@@ -29,7 +29,7 @@ StructureInformation = SubResource( 2 )
 scale = Vector2( 0.75, 0.75 )
 
 [node name="DetectorNode" parent="." index="1"]
-DetectorArea = [ SubResource( 3 ) ]
+DetectorAreaArray = [ SubResource( 3 ) ]
 
 [node name="DamagedCity" type="Sprite" parent="." index="4"]
 texture = ExtResource( 4 )

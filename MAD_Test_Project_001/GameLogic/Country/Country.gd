@@ -95,10 +95,21 @@ func getDetectionArea() -> Array:
 			ret.append(detectorNode)
 	return ret
 	
+func isOwned(var entity : Node) -> bool:
+	for building in $Buildings.get_children():
+		var detectorNode = building.get_node("DetectorNode")
+		if detectorNode != null && detectorNode == entity:
+			return true
+	
+	for unit in $Units.get_children():
+		var detectorNode = unit.get_node("DetectorNode")
+		if detectorNode != null && detectorNode == entity:
+			return true
+			
+	return false
+	
 func getIntelligenceInterface():
 	return $Intelligence
-
-
 """
 	Buildings
 """
@@ -167,10 +178,14 @@ func OnTargetReached(target, hits):
 	emit_signal("CountryTargetHit", self, target, hits)
 	
 func OnEnitityDetected(detectorEntity, detectorShapeIndex, entityDetectorNode) -> void:
-	$Intelligence.addDetection(detectorEntity, entityDetectorNode)
+	if not isOwned(entityDetectorNode):
+		$DetectionProcessing.addDetection(detectorEntity, detectorShapeIndex, entityDetectorNode)
+		$Intelligence.addDetection(detectorEntity, entityDetectorNode)
 	
 func OnEnitityUndetected(detectorEntity, detectorShapeIndex, entityDetectorNode) -> void:
-	$Intelligence.removeDetection(detectorEntity, entityDetectorNode)
+	if not isOwned(entityDetectorNode):
+		$DetectionProcessing.removeDetection(detectorEntity, detectorShapeIndex, entityDetectorNode)
+		$Intelligence.removeDetection(detectorEntity, entityDetectorNode)
 	
 func OnConstructionFinished(structure) -> void:
 	if structure.has_node("DetectorNode"):
