@@ -2,26 +2,29 @@ extends Node
 
 """
 	Detection Levels:
-		-1: None
 		0: TOTAL 
 		1: HIGH 
 		2: MEDIUM
 		3: LOW
+		4: NONE
 """
-enum DetectionLevels {NONE = -1, TOTAL = 0, HIGH = 1, MEDIUM = 2, LOW = 3}
+enum DetectionLevels {TOTAL = 0, HIGH = 1, MEDIUM = 2, LOW = 3, NONE = 4}
 
-signal GainedDetection(entity, detectionLevel)
-signal ChangedDetection(entity, detectionLevel)
-signal LostDetection(entity)
+signal GainedDetection(detectedEntity, detectionLevel)
+signal ChangedDetection(detectedEntity, detectionLevel)
+signal LostDetection(detectedEntity)
 
 # Emitted when an entitey has been added or removed to be processed 
 signal DetectTrackingChanged()
 
 export(float) var detectionTestTimer = 3.0
 
-class DetectionStatus:
+class DetectorStatus:
 	var detectedAtLevel : int = DetectionLevels.NONE
 	var detectionLevels = []
+
+class DetectionStatus:
+	var detectors = {}
 	var detectionTimer = 0.0
 	
 var DetectionDic = {}
@@ -44,49 +47,69 @@ func _process(delta):
 			_testDetection(detectionStatus, key)		
 			detectionStatus.detectionTimer = detectionTestTimer
 
-func addDetection(detectorEntity, detectionLevel, entityDetectorNode):
+func addDetection(detectorEntity, detectionLevel, detectedEntityNode):
 	var detectionStatus : DetectionStatus = null
-	if DetectionDic.has(entityDetectorNode):
-		detectionStatus = DetectionDic[entityDetectorNode]
-		detectionStatus.detectionLevels.append(detectionLevel)
-		detectionStatus.detectionLevels.sort()
+	if DetectionDic.has(detectedEntityNode):
+		detectionStatus = DetectionDic[detectedEntityNode]
+		if detectionStatus.detectors.has(detectorEntity):
+			var detectorStatus = detectionStatus.detectors[detectorEntity]
+			detectorStatus.detectionLevels.append(detectionLevel)
+			detectorStatus.detectionLevels.sort()
+		else:
+			var detectorStatus = DetectorStatus.new()
+			detectorStatus.detectionLevels.append(detectionLevel)
+			detectionStatus.detectors[detectorEntity] = detectorStatus
 	else:
 		detectionStatus = DetectionStatus.new()
-		detectionStatus.detectionLevels.append(detectionLevel)
-		
-		DetectionDic[entityDetectorNode] = detectionStatus
+		var detectorStatus = DetectorStatus.new()
+		detectorStatus.detectionLevels.append(detectionLevel)
+		detectionStatus.detectors[detectorEntity] = detectorStatus
+			
+		DetectionDic[detectedEntityNode] = detectionStatus
 		emit_signal("DetectTrackingChanged")
 		
-	_testDetection(detectionStatus, entityDetectorNode)	
+	_testDetection(detectionStatus, detectedEntityNode)	
 
-func removeDetection(detectorEntity, detectionLevel, entityDetectorNode):
-	if DetectionDic.has(entityDetectorNode):
-		var detectionStatus = DetectionDic[entityDetectorNode]
-		detectionStatus.detectionLevels.erase(detectionLevel)
+func removeDetection(detectorEntity, detectionLevel, detectedEntityNode):
+	if DetectionDic.has(detectedEntityNode):
+		var detectionStatus = DetectionDic[detectedEntityNode]
+		if detectionStatus.detectors.has(detectorEntity):
+			detectionStatus.detectors.erase(detectorEntity)
 		
-		if detectionStatus.detectionLevels.size() < 1:
-			DetectionDic.erase(entityDetectorNode)
+		if detectionStatus.detectors.size() < 1:
+			DetectionDic.erase(detectedEntityNode)
 			emit_signal("LostDetection")
 			emit_signal("DetectTrackingChanged")
 
-func _testDetection(var detectionStatus, var entity):
-	var previousDetectionLevel = detectionStatus.detectedAtLevel
-	var highestPossibleDetectionLevel = detectionStatus.detectionLevels.front()
-	var detected = _testDetectionLevel(highestPossibleDetectionLevel)
-	if detected:
+func _testDetection(var detectionStatus, var detectedEntity):
+	var previousDetectionLevel = DetectionLevels.NONE
+	var overallDetectionLevel = DetectionLevels.NONE
+	for detectorKey in detectionStatus.detectors:
+		var detector = detectionStatus.detectors[detectorKey]
+		if previousDetectionLevel < detector.detectedAtLevel:
+			previousDetectionLevel = detector.detectedAtLevel
+		
+		var detectionLevel = detector.detectionLevels.front()
+		var detected = _testDetectionLevel(detectionLevel)
+		if detected:
+			detector.detectedAtLevel = detectionLevel
+			if detectionLevel < overallDetectionLevel:
+				overallDetectionLevel = detectionLevel
+		else:
+			detector.detectedAtLevel = DetectionLevels.NONE
+	
+	if previousDetectionLevel != overallDetectionLevel:	
 		if previousDetectionLevel == DetectionLevels.NONE:
 			detectionStatus.detectionTimer = detectionTestTimer
-			emit_signal("GainedDetection", entity, highestPossibleDetectionLevel)
-		elif previousDetectionLevel != highestPossibleDetectionLevel:
-			if highestPossibleDetectionLevel < previousDetectionLevel:
+			emit_signal("GainedDetection", detectedEntity, overallDetectionLevel)
+		elif previousDetectionLevel != overallDetectionLevel:
+			if previousDetectionLevel > overallDetectionLevel:
 				detectionStatus.detectionTimer = detectionTestTimer
-			emit_signal("ChangedDetection", entity, highestPossibleDetectionLevel)
-		detectionStatus.detectedAtLevel = highestPossibleDetectionLevel
-	else:
-		if detectionStatus.detectionTimer < 0 && previousDetectionLevel != DetectionLevels.NONE:
-			detectionStatus.detectionTimer = detectionTestTimer
-			detectionStatus.detectedAtLevel = DetectionLevels.NONE
-			emit_signal("LostDetection", entity)
+			emit_signal("ChangedDetection", detectedEntity, overallDetectionLevel)
+		else:
+			if detectionStatus.detectionTimer < 0 && previousDetectionLevel != DetectionLevels.NONE:
+				detectionStatus.detectionTimer = detectionTestTimer
+				emit_signal("LostDetection", detectedEntity)
 			
 func _testDetectionLevel(var testDetectionLevel : int) -> bool:
 	var detected : bool = false

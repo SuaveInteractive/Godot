@@ -18,3 +18,7 @@ script = ExtResource( 2 )
 
 [node name="DetectionProcessing" type="Node" parent="."]
 script = ExtResource( 3 )
+
+[connection signal="ChangedDetection" from="DetectionProcessing" to="Intelligence" method="_on_DetectionProcessing_ChangedDetection"]
+[connection signal="GainedDetection" from="DetectionProcessing" to="Intelligence" method="_on_DetectionProcessing_GainedDetection"]
+[connection signal="LostDetection" from="DetectionProcessing" to="Intelligence" method="_on_DetectionProcessing_LostDetection"]

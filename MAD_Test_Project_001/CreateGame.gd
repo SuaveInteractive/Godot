@@ -8,6 +8,7 @@ var DebugShowCountryBoardersScript = load("res://Debug/DebugShowCountryBoarders.
 var DebugDetectorInformation = load("res://DetectorRendering/Debug/DebugDetectorInformation.gd")
 var DebugScriptController = load("res://Script/Debug/DebugMenuScriptController.gd")
 var DebugCountryController = load("res://Debug/Countries/DebugMenuCountriesController.gd")
+var DebugMenuDetectionState = load("res://Debug/Detection/DebugMenuDetectionState.gd")
 var DebugShowAIStateScript = load("res://Debug/AIState/DebugShowAIState.gd")
 
 func createGame(gameObject, worldInformation):
@@ -28,6 +29,10 @@ func createGame(gameObject, worldInformation):
 	DebugOverlay.addDebugControl(debugControl)
 	
 	debugControl = DebugCountryController.new(gameObject.WorldController.getCountries(), funcref(gameObject, "SetControllingCountry"))
+	gameObject.connect("ControllingCountryChanged", debugControl, "OnControllingCountryChanged")
+	DebugOverlay.addDebugControl(debugControl)
+	
+	debugControl = DebugMenuDetectionState.new()
 	gameObject.connect("ControllingCountryChanged", debugControl, "OnControllingCountryChanged")
 	DebugOverlay.addDebugControl(debugControl)
 	

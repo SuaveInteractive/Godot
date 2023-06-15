@@ -16,8 +16,8 @@ var MaxDetectors : int = 4
 export (int) var DetectorLayerBit = 30
 export (int) var DetectionLayerBit = 31
 
-signal EnitityDetected(detectorEntity, detectorShapeIndex, entityDetectorNode)
-signal EnitityUndetected(detectorEntity, detectorShapeIndex, entityDetectorNode)
+signal EnitityDetected(detectorEntity, detectorShapeIndex, detectedEntityNode)
+signal EnitityUndetected(detectorEntity, detectorShapeIndex, detectedEntityNode)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -11,8 +11,11 @@ func _ready():
 func _process(delta):
 	if is_instance_valid(SelectedDetectionNode):
 		$"%TimerValue".text = str("%.1f" % SelectedDetectionNode.detectionTimer)
-		$"%LevelsValue".text = str(SelectedDetectionNode.detectionLevels)
-		$"%DetectionValue".text = str(SelectedDetectionNode.detectedAtLevel)
+		
+		var detectionStr : String = str("[%s]" % _detectorsToString(SelectedDetectionNode.detectors))
+		$"%LevelsValue".text = str(detectionStr)
+		
+		#$"%DetectionValue".text = str(SelectedDetectionNode.detectedAtLevel)
 		
 func setDetectionProcessor(var detectionProcessor):
 	DetectionProcessor = detectionProcessor
@@ -23,6 +26,24 @@ func Refresh():
 	for key in DetectionProcessor.DetectionDic:
 		$"%Detections".add_item(key.get_path())
 		$"%Detections".set_item_metadata ($"%Detections".get_item_count() - 1, DetectionProcessor.DetectionDic[key])
+		
+		if $"%Detections".get_selected_items().size() < 1:
+			$"%Detections".select(0)
+			SelectedDetectionNode = $"%Detections".get_item_metadata(0)
+
+func _detectorsToString(detectors) -> String:
+	var retStr : String = ""
+	for key in detectors:
+		var detector = detectors[key]
+		retStr = retStr + "["
+		for lvl in detector.detectionLevels:
+			if lvl == detector.detectedAtLevel:
+				retStr = retStr + "*" + str(lvl) + "*"
+			else:
+				retStr = retStr + str(lvl)
+			retStr = retStr + " "
+		retStr = retStr + "]"
+	return retStr
 
 func _on_Window_WindowClosed():
 	emit_signal("WindowClosed")

@@ -88,3 +88,12 @@ func _getHighestIntelligenceForDetection(var detections : Array) -> int:
 
 func _validEntity(var entity : Node) -> bool:
 	return entity.get_class() == acceptedNodeType
+
+func _on_DetectionProcessing_GainedDetection(detectedEntity, detectionLevel):
+	pass # Replace with function body.
+
+func _on_DetectionProcessing_ChangedDetection(detectedEntity, detectionLevel):
+	pass # Replace with function body.
+
+func _on_DetectionProcessing_LostDetection(detectedEntity):
+	pass # Replace with function body.
