@@ -132,7 +132,10 @@ func addBuilding(type, pos):
 		var buildingInstanceDetectorNode = buildingInstance.get_node("DetectorNode")
 		buildingInstanceDetectorNode.connect("EnitityDetected", self, "OnEnitityDetected")
 		buildingInstanceDetectorNode.connect("EnitityUndetected", self, "OnEnitityUndetected")
-		$Intelligence.addDetection(null, buildingInstanceDetectorNode)	
+		
+		# Want to pass in InformationLevel.TOTAL which equals 4, but GDScript doens't support 
+		# predefined enums without making a global :(
+		$Intelligence.addIntel(null, 4, buildingInstanceDetectorNode)	
 	
 	emit_signal("CountryBuildingAdded", buildingInstance)
 """
@@ -153,7 +156,9 @@ func addUnit(unit):
 	unitInstance.set_name("unit")
 	$Units.add_child(unitInstance)
 	
-	$Intelligence.addDetection(null, unitInstanceDetectorNode)
+	# Want to pass in InformationLevel.TOTAL which equals 4, but GDScript doens't support 
+	# predefined enums without making a global :(
+	$Intelligence.addIntel(null, 4, unitInstanceDetectorNode)
 
 """
 	Weapons
@@ -180,12 +185,10 @@ func OnTargetReached(target, hits):
 func OnEnitityDetected(detectorEntity, detectorShapeIndex, entityDetectorNode) -> void:
 	if not isOwned(entityDetectorNode):
 		$DetectionProcessing.addDetection(detectorEntity, detectorShapeIndex, entityDetectorNode)
-		$Intelligence.addDetection(detectorEntity, entityDetectorNode)
 	
 func OnEnitityUndetected(detectorEntity, detectorShapeIndex, entityDetectorNode) -> void:
 	if not isOwned(entityDetectorNode):
 		$DetectionProcessing.removeDetection(detectorEntity, detectorShapeIndex, entityDetectorNode)
-		$Intelligence.removeDetection(detectorEntity, entityDetectorNode)
 	
 func OnConstructionFinished(structure) -> void:
 	if structure.has_node("DetectorNode"):

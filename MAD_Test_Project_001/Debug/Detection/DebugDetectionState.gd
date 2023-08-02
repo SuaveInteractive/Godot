@@ -8,7 +8,7 @@ var SelectedDetectionNode = null
 func _ready():
 	$"%TimerValue".text = "---"
 	
-func _process(delta):
+func _process(_delta):
 	if is_instance_valid(SelectedDetectionNode):
 		$"%TimerValue".text = str("%.1f" % SelectedDetectionNode.detectionTimer)
 		

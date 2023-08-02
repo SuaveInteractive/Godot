@@ -1,10 +1,14 @@
 extends Node
 
-enum InformationLevel {NONE, LOW, MEDIUM, HIGH, TOTAL}
+enum InformationLevel {NONE = 0, LOW, MEDIUM, HIGH, TOTAL}
 
 class Detection:
 	var detector : Node = null
 	var detectionLevel = InformationLevel.TOTAL
+	
+class IntelEntry:
+	var detections : Array = []
+	var highestIntelLvl = InformationLevel.NONE
 
 var Intel : Dictionary = {}
 var changedIntel : Dictionary = {}
@@ -20,35 +24,45 @@ func _process(_delta):
 	if !changedIntel.empty():
 		var highestIntel : Dictionary = _getHighestIntelligence(changedIntel)
 		changedIntel.clear()
-		if !highestIntel.empty():
-			emit_signal("IntelligenceChanged", highestIntel)
+		for highestEntityIntel in highestIntel:
+			if Intel[highestEntityIntel].highestIntelLvl < highestIntel[highestEntityIntel]:
+				Intel[highestEntityIntel].highestIntelLvl = highestIntel[highestEntityIntel]
+				emit_signal("IntelligenceChanged", highestIntel)
 		
 
-func addDetection(detectorEntity, detectedEntity) -> void:
+func addIntel(detectorEntity, informationLevel, detectedEntity) -> void:
 	if _validEntity(detectedEntity) == false:
-		var stringError : String = "[Intelligence]: Wrong node Type passed to 'addDetection' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
+		var stringError : String = "[Intelligence]: Wrong node Type passed to 'addIntel' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
 		push_error(stringError)
 		return
-		
-	var newDetection = Detection.new()
-	if detectorEntity != null:
-		newDetection.detector = detectorEntity.get_parent()
-	newDetection.detectionLevel = InformationLevel.TOTAL 
 	
 	var parentNode = detectedEntity.get_parent()
+	var detectorNode = null
+	if detectorEntity != null:
+		detectorNode = detectorEntity.get_parent()
+	
 	if Intel.has(parentNode):
-		Intel[parentNode].append(newDetection)
-	else:
-		Intel[parentNode] = []
-		Intel[parentNode].append(newDetection)
+		for detec in Intel[parentNode].detections:
+			if detec.detector == detectorNode and detec.detectionLevel == informationLevel:
+				return
 		
-		changedIntel[parentNode] = []
-		changedIntel[parentNode].append(newDetection)
+	var newDetection = Detection.new()
+	newDetection.detector = detectorNode
+	newDetection.detectionLevel = informationLevel
+	
+	if Intel.has(parentNode):
+		Intel[parentNode].detections.append(newDetection)
+	else:
+		Intel[parentNode] = IntelEntry.new()
+		Intel[parentNode].detections.append(newDetection)
+		
+	changedIntel[parentNode] = []
+	changedIntel[parentNode].append(newDetection)
 	
 func removeDetection(detectorEntity, detectedEntity) -> void:
 	var detectedParentNode = detectedEntity.get_parent()
 	if Intel.has(detectedParentNode):		
-		var intelEntries = Intel[detectedParentNode]
+		var intelEntries = Intel[detectedParentNode].detections
 		for intelEntry in intelEntries:
 			var detectorParentNode = detectorEntity.get_parent()
 			if intelEntry.detector == detectorParentNode:
@@ -67,15 +81,17 @@ func removeDetection(detectorEntity, detectedEntity) -> void:
 				break
 
 func getKnownIntelligence() -> Dictionary:	
-	return _getHighestIntelligence(Intel)
+	var param = {}
+	for k in Intel:
+		param[k] = Intel[k].detections
+		
+	return _getHighestIntelligence(param)
 
-func _getHighestIntelligence(var intel : Dictionary) -> Dictionary:
+func _getHighestIntelligence(var intelDict : Dictionary) -> Dictionary:
 	var retHighIntel = {}
 	
-	for entity in intel:
-		var highestDetectionLevel = InformationLevel.NONE 
-		for detection in intel[entity]:
-			retHighIntel[entity] = _getHighestIntelligenceForDetection(intel[entity])
+	for entity in intelDict:
+		retHighIntel[entity] = _getHighestIntelligenceForDetection(intelDict[entity])
 		
 	return  retHighIntel
 
@@ -88,12 +104,29 @@ func _getHighestIntelligenceForDetection(var detections : Array) -> int:
 
 func _validEntity(var entity : Node) -> bool:
 	return entity.get_class() == acceptedNodeType
+	
+func _convertDetectionLevelToIntelLevel(var detectionLevel) -> int:
+	match (detectionLevel):
+		0: 
+			return InformationLevel.TOTAL
+		1: 	
+			return InformationLevel.HIGH
+		2:
+			return InformationLevel.MEDIUM
+		3: 
+			return InformationLevel.LOW
+		4:
+			return InformationLevel.NONE
+			
+	return InformationLevel.NONE
 
-func _on_DetectionProcessing_GainedDetection(detectedEntity, detectionLevel):
-	pass # Replace with function body.
+func _on_DetectionProcessing_GainedDetection(detectedEntity, detectionLevel, detector):
+	var intelLvl = _convertDetectionLevelToIntelLevel(detectionLevel)
+	addIntel(detector, _convertDetectionLevelToIntelLevel(intelLvl), detectedEntity)
 
-func _on_DetectionProcessing_ChangedDetection(detectedEntity, detectionLevel):
-	pass # Replace with function body.
+func _on_DetectionProcessing_ChangedDetection(detectedEntity, detectionLevel, detector):
+	var intelLvl = _convertDetectionLevelToIntelLevel(detectionLevel)
+	addIntel(detector, _convertDetectionLevelToIntelLevel(intelLvl), detectedEntity)
 
-func _on_DetectionProcessing_LostDetection(detectedEntity):
+func _on_DetectionProcessing_LostDetection(_detectedEntity):
 	pass # Replace with function body.

@@ -1,0 +1,1 @@
+Rename the ".gdignore" to enable GUT

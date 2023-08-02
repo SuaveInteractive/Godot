@@ -1,0 +1,25 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://GameLogic/Country/Intelligence/Intelligence.gd" type="Script" id=1]
+[ext_resource path="res://TestScenes/IntelTest/IntelTest.gd" type="Script" id=2]
+[ext_resource path="res://TestScenes/IntelTest/Medium.png" type="Texture" id=3]
+[ext_resource path="res://TestScenes/IntelTest/High.png" type="Texture" id=4]
+[ext_resource path="res://TestScenes/IntelTest/None.png" type="Texture" id=5]
+[ext_resource path="res://TestScenes/IntelTest/Low.png" type="Texture" id=6]
+[ext_resource path="res://GameEntities/EntityBehaviours/EntityObfuscation/EnityObfuscation.tscn" type="PackedScene" id=7]
+
+[node name="IntelTest" type="Node"]
+script = ExtResource( 2 )
+
+[node name="Intelligence" type="Node" parent="."]
+script = ExtResource( 1 )
+
+[node name="EntityObfuscation" parent="." instance=ExtResource( 7 )]
+position = Vector2( 111.839, 84.0894 )
+obfuscation_level = 4
+obfuscation_none = ExtResource( 5 )
+obfuscation_low = ExtResource( 6 )
+obfuscation_medium = ExtResource( 3 )
+obfuscation_high = ExtResource( 4 )
+
+[connection signal="IntelligenceChanged" from="Intelligence" to="." method="_on_Intelligence_IntelligenceChanged"]

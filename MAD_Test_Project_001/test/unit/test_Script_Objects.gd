@@ -50,5 +50,6 @@ func test_non_gdscript_object() -> void:
 	newObj.targetor = newChildNode
 	newObj.targets = [newChildNode]
 	
+	" Should Error "
 	var processedObj = ScriptRecorder._processObject(newObj)
 	assert_null(processedObj)

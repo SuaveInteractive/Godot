@@ -16,7 +16,7 @@ func setIntelligenceInterface(var intelligence):
 				var intelLevel = intel[unit]
 				_setObfuscationLevel(unit, intelLevel)
 			else:
-				unit.get_node("EntityObfuscation").setObfuscationHigh()
+				unit.get_node("EntityObfuscation").setObfuscationTotal()
 				
 		for building in country.get_node("Buildings").get_children():
 			if intel.has(building):
@@ -44,12 +44,12 @@ func OnIntelligenceChanged(changedIntel):
 func _setObfuscationLevel(entity, intelLevel) -> void:
 	match intelLevel:
 		0: # Intel Level None
-			entity.get_node("EntityObfuscation").setObfuscationHigh()
+			entity.get_node("EntityObfuscation").setObfuscationTotal()
 		1: # Intel Level Low
-			entity.get_node("EntityObfuscation").setObfuscationMedium()
+			entity.get_node("EntityObfuscation").setObfuscationHigh()
 		2: # Intel Level Medium
-			entity.get_node("EntityObfuscation").setObfuscationLow()
+			entity.get_node("EntityObfuscation").setObfuscationMedium()
 		3: # Intel Level High
-			entity.get_node("EntityObfuscation").setObfuscationNone()
+			entity.get_node("EntityObfuscation").setObfuscationLow()
 		4: # Intel Level Total
 			entity.get_node("EntityObfuscation").setObfuscationNone()

@@ -94,10 +94,10 @@ func _setDetectionAreaShaderParams(var sortedArrayRadius : Array) -> void:
 			var val = sortedArrayRadius[n] / largestRange
 			$RadarCoverage.get_material().set_shader_param(shaderParamArray[n], val)	
 			
-func _on_DetectorArea_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
+func _on_DetectorArea_area_shape_entered(_area_rid, area, _area_shape_index, local_shape_index):
 	if area != $DetectionArea:
 		emit_signal("EnitityDetected", get_parent(), local_shape_index, area.get_parent())
 
-func _on_DetectorArea_area_shape_exited(area_rid, area, area_shape_index, local_shape_index):
+func _on_DetectorArea_area_shape_exited(_area_rid, area, _area_shape_index, local_shape_index):
 	if area != $DetectionArea:
 		emit_signal("EnitityUndetected", get_parent(), local_shape_index, area.get_parent())

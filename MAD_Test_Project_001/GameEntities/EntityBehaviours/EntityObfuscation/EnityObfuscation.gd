@@ -1,7 +1,7 @@
 tool
 extends Node2D
 
-enum obfuscation_levels {NONE, LOW, MEDIUM, HIGH}
+enum obfuscation_levels {NONE, LOW, MEDIUM, HIGH, TOTAL}
 
 export(obfuscation_levels) var obfuscation_level = obfuscation_levels.NONE
 
@@ -41,6 +41,10 @@ func setObfuscationHigh() -> void:
 	obfuscation_level = obfuscation_levels.HIGH
 	_updateVisibility()
 	
+func setObfuscationTotal() -> void:
+	obfuscation_level = obfuscation_levels.TOTAL
+	_updateVisibility()
+	
 func SetNoneTexture(var texture : Texture) -> void:
 	obfuscation_none = texture
 	_updateTextures()
@@ -66,4 +70,6 @@ func _updateVisibility() -> void:
 			$Medium.visible = true
 		obfuscation_levels.HIGH:
 			$High.visible = true
+		obfuscation_levels.TOTAL:
+			pass
 

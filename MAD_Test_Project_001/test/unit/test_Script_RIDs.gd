@@ -12,6 +12,7 @@ func after_all():
 func test_serialize_RID() -> void:
 	RIDMapper.addMapping("processedRID", rid)
 	
+	" Should Error "
 	var processedRID = ScriptRecorder._processArgument(TYPE_RID, rid)
 	assert_null(processedRID)
 	

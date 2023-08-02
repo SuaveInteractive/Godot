@@ -10,8 +10,6 @@ func before_all():
 	
 	var commandScript_001 = add_child_autofree(TestCommandScript_001.new())
 	ScriptRunner.addCommand(commandScript_001)
-
-	add_child(ScriptRunner)
 	
 func after_all():
 	assert_no_new_orphans()
