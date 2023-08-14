@@ -95,6 +95,17 @@ CommandArguments = {
 "WorldController": NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller")
 }
 
+[sub_resource type="Resource" id=9]
+script = ExtResource( 2 )
+CommandName = "Move_Command"
+TimeOffset = 30
+CommandArguments = {
+"MapName": "WaterMapRID",
+"Position_To": Vector2( 630, 95.2 ),
+"Selected_Units": [ NodePath("/root/Game/ViewportContainer/Viewport/World/World Controller/World Model/Countries/Country_2/Units/unit") ]
+}
+
+
 [resource]
 script = ExtResource( 1 )
-GameScript = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ]
+GameScript = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ) ]

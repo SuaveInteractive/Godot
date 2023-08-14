@@ -22,14 +22,10 @@ func _ready():
 	
 func _process(_delta):
 	if !changedIntel.empty():
-		var highestIntel : Dictionary = _getHighestIntelligence(changedIntel)
+		var parameters = changedIntel.duplicate(true)
 		changedIntel.clear()
-		for highestEntityIntel in highestIntel:
-			if Intel[highestEntityIntel].highestIntelLvl < highestIntel[highestEntityIntel]:
-				Intel[highestEntityIntel].highestIntelLvl = highestIntel[highestEntityIntel]
-				emit_signal("IntelligenceChanged", highestIntel)
-		
-
+		emit_signal("IntelligenceChanged", parameters)
+			
 func addIntel(detectorEntity, informationLevel, detectedEntity) -> void:
 	if _validEntity(detectedEntity) == false:
 		var stringError : String = "[Intelligence]: Wrong node Type passed to 'addIntel' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
@@ -52,33 +48,32 @@ func addIntel(detectorEntity, informationLevel, detectedEntity) -> void:
 	
 	if Intel.has(parentNode):
 		Intel[parentNode].detections.append(newDetection)
+		if Intel[parentNode].highestIntelLvl < informationLevel:
+			Intel[parentNode].highestIntelLvl = informationLevel
+			changedIntel[parentNode] = informationLevel
 	else:
 		Intel[parentNode] = IntelEntry.new()
 		Intel[parentNode].detections.append(newDetection)
-		
-	changedIntel[parentNode] = []
-	changedIntel[parentNode].append(newDetection)
+		Intel[parentNode].highestIntelLvl = informationLevel
+		changedIntel[parentNode] = informationLevel
 	
-func removeDetection(detectorEntity, detectedEntity) -> void:
+func removeDetection(detectorEntity, informationLevel, detectedEntity) -> void:
 	var detectedParentNode = detectedEntity.get_parent()
 	if Intel.has(detectedParentNode):		
-		var intelEntries = Intel[detectedParentNode].detections
+		var intelEntries : Array = Intel[detectedParentNode].detections
 		for intelEntry in intelEntries:
 			var detectorParentNode = detectorEntity.get_parent()
-			if intelEntry.detector == detectorParentNode:
+			if intelEntry.detector == detectorParentNode and intelEntry.detectionLevel == informationLevel:
 				var previousHighesDetection = _getHighestIntelligenceForDetection(intelEntries)
-				intelEntry.detectionLevel = InformationLevel.NONE
-				var newHighesDetection = _getHighestIntelligenceForDetection(intelEntries)
-				
-				if previousHighesDetection > newHighesDetection:
-					if changedIntel.has(detectedParentNode):
-						changedIntel[detectedParentNode].append(intelEntry)
-					else:
-						changedIntel[detectedParentNode] = []
-						changedIntel[detectedParentNode].append(intelEntry)
-				
 				intelEntries.erase(intelEntry)
+				intelEntry.detectionLevel = _getHighestIntelligenceForDetection(intelEntries)
+
+				if previousHighesDetection > intelEntry.detectionLevel:
+					changedIntel[detectedParentNode] = intelEntry.detectionLevel
 				break
+		
+		if intelEntries.size() < 1:
+			Intel.erase(detectedParentNode)
 
 func getKnownIntelligence() -> Dictionary:	
 	var param = {}
