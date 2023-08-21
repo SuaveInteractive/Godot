@@ -1,4 +1,5 @@
 extends Node
+"***** This class has unit test coverage.  Refer to 'test_Intelligence.gd' *****"
 
 enum InformationLevel {NONE = 0, LOW, MEDIUM, HIGH, TOTAL}
 
@@ -123,5 +124,6 @@ func _on_DetectionProcessing_ChangedDetection(detectedEntity, detectionLevel, de
 	var intelLvl = _convertDetectionLevelToIntelLevel(detectionLevel)
 	addIntel(detector, _convertDetectionLevelToIntelLevel(intelLvl), detectedEntity)
 
-func _on_DetectionProcessing_LostDetection(_detectedEntity):
-	pass # Replace with function body.
+func _on_DetectionProcessing_LostDetection(detectedEntity):
+	#removeDetection(detector, _convertDetectionLevelToIntelLevel(intelLvl), detectedEntity)
+	pass

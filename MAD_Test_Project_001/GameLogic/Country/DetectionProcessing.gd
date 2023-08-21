@@ -1,3 +1,5 @@
+"***** This class has unit test coverage.  Refer to 'test_DetectionProcessing.gd' *****"
+
 extends Node
 
 """
@@ -12,20 +14,22 @@ enum DetectionLevels {TOTAL = 0, HIGH = 1, MEDIUM = 2, LOW = 3, NONE = 4}
 
 signal GainedDetection(detectedEntity, detectionLevel, detectorEntity)
 signal ChangedDetection(detectedEntity, detectionLevel, detectorEntity)
-signal LostDetection(detectedEntity)
+signal LostDetection(detectedEntity, detectionLevel)
 
 # Emitted when an entitey has been added or removed to be processed 
 signal DetectTrackingChanged()
 
 export(float) var detectionTestTimer = 3.0
 
-class DetectorStatus:
-	var detectedAtLevel : int = DetectionLevels.NONE
-	var detectionLevels = []
-
+"One detection status per entity.  An entity can hae multiple detectors which all have their own test."
 class DetectionStatus:
-	var detectors = {}
+	var detectors = {} 			# Entities that could detect the entity.  See DetectorStatus
+	var detectedAtLevel : int = DetectionLevels.NONE # Not NONE if the entity is not detected
 	var detectionTimer = 0.0
+
+"A Detector might be detecting an entity at various levels."
+class DetectorStatus:
+	var detectionLevels = []
 	
 var DetectionDic = {}
 var Randomizer : RandomNumberGenerator = RandomNumberGenerator.new()
@@ -78,52 +82,55 @@ func removeDetection(detectorEntity, detectionLevel, detectedEntityNode):
 		
 		if detectionStatus.detectors.size() < 1:
 			DetectionDic.erase(detectedEntityNode)
-			emit_signal("LostDetection", detectedEntityNode)
+			emit_signal("LostDetection", detectedEntityNode, detectionLevel, detectorEntity)
 			emit_signal("DetectTrackingChanged")
 
 func _testDetection(var detectionStatus, var detectedEntity):
-	var previousDetectionLevel = DetectionLevels.NONE
 	var overallDetectionLevel = DetectionLevels.NONE
 	var newDetector = null
-	
+			
 	for detectorKey in detectionStatus.detectors:
 		var detector = detectionStatus.detectors[detectorKey]
-		if previousDetectionLevel > detector.detectedAtLevel:
-			previousDetectionLevel = detector.detectedAtLevel
+		var newDetectionLevel = _testDectectionLevels(detector.detectionLevels)
 		
-		var detectionLevel = detector.detectionLevels.front()
-		var detected = _testDetectionLevel(detectionLevel)
-		if detected:
-			detector.detectedAtLevel = detectionLevel
-			if detectionLevel < overallDetectionLevel:
-				overallDetectionLevel = detectionLevel
-				newDetector = detectorKey
-		else:
-			detector.detectedAtLevel = DetectionLevels.NONE
+		if newDetectionLevel < overallDetectionLevel:
+			overallDetectionLevel = newDetectionLevel
+			newDetector = detectorKey
 	
-	if previousDetectionLevel != overallDetectionLevel:	
-		if previousDetectionLevel == DetectionLevels.NONE:
+	if detectionStatus.detectedAtLevel != overallDetectionLevel:	
+		if detectionStatus.detectedAtLevel == DetectionLevels.NONE:
 			detectionStatus.detectionTimer = detectionTestTimer
 			emit_signal("GainedDetection", detectedEntity, overallDetectionLevel, newDetector)
-		elif previousDetectionLevel != overallDetectionLevel:
-			if previousDetectionLevel < overallDetectionLevel:
+		elif overallDetectionLevel == DetectionLevels.NONE:
+			emit_signal("LostDetection", detectedEntity, detectionStatus.detectedAtLevel)
+		elif detectionStatus.detectedAtLevel != overallDetectionLevel:
+			if detectionStatus.detectedAtLevel < overallDetectionLevel:
 				detectionStatus.detectionTimer = detectionTestTimer
 			emit_signal("ChangedDetection", detectedEntity, overallDetectionLevel, newDetector)
-		else:
-			if detectionStatus.detectionTimer < 0 && previousDetectionLevel != DetectionLevels.NONE:
-				detectionStatus.detectionTimer = detectionTestTimer
-				emit_signal("LostDetection", detectedEntity)
+		
+		detectionStatus.detectedAtLevel = overallDetectionLevel
+				
+func _testDectectionLevels(var detectionLevels : Array) -> int:
+	var detectedLevel = DetectionLevels.NONE
+	var randVal = Randomizer.randf()
+	
+	for level in detectionLevels:
+		if _testDetectionLevel(level, randVal):
+			if detectedLevel > level:
+				detectedLevel = level
 			
-func _testDetectionLevel(var testDetectionLevel : int) -> bool:
+	return detectedLevel
+			
+func _testDetectionLevel(var testDetectionLevel : int, var randVal : float) -> bool:
 	var detected : bool = false
 	match testDetectionLevel:
 		DetectionLevels.TOTAL:
-			detected = Randomizer.randf() <= detectionChance_TOTAL
+			detected = randVal <= detectionChance_TOTAL
 		DetectionLevels.HIGH:
-			detected = Randomizer.randf() <= detectionChance_HIGH
+			detected = randVal <= detectionChance_HIGH
 		DetectionLevels.MEDIUM:
-			detected = Randomizer.randf() <= detectionChance_MEDIUM
+			detected = randVal <= detectionChance_MEDIUM
 		DetectionLevels.LOW:
-			detected = Randomizer.randf() <= detectionChance_LOW
+			detected = randVal <= detectionChance_LOW
 				
 	return detected

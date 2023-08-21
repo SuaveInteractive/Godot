@@ -9,6 +9,7 @@ var testEntityDetectorObject = null
 var testDectorNodeParent = null
 var testDetectedNodeParent = null
 
+"===== SETUP ====="
 func before_each():
 	testDectorNodeParent = add_child_autofree(Node.new())
 	testDectorNodeParent.name = "TestDetector"
