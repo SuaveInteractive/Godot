@@ -16,9 +16,6 @@ signal GainedDetection(detectedEntity, detectionLevel, detectorEntity)
 signal ChangedDetection(detectedEntity, detectionLevel, detectorEntity)
 signal LostDetection(detectedEntity, detectionLevel)
 
-# Emitted when an entitey has been added or removed to be processed 
-signal DetectTrackingChanged()
-
 export(float) var detectionTestTimer = 3.0
 
 "One detection status per entity.  An entity can hae multiple detectors which all have their own test."
@@ -52,13 +49,25 @@ func _process(delta):
 			detectionStatus.detectionTimer = detectionTestTimer
 
 func addDetection(detectorEntity, detectionLevel, detectedEntityNode):
+	if typeof(detectorEntity) != TYPE_OBJECT:
+		var stringError : String = "[DetectionProcessing:addDetection]: 'detectorEntity' must be the Object that has detected another Object"
+		push_error(stringError) 
+		return
+	if typeof(detectionLevel) != TYPE_INT:
+		var stringError : String = "[DetectionProcessing:addDetection]: 'detectionLevel' must be an int - specifically the an int from the DetectionLevels enum"
+		push_error(stringError) 
+		return
+	if typeof(detectedEntityNode) != TYPE_OBJECT:
+		var stringError : String = "[DetectionProcessing:addDetection]: 'detectedEntityNode' must be the Object that was detected by another Object"
+		push_error(stringError) 
+		return
+		
 	var detectionStatus : DetectionStatus = null
 	if DetectionDic.has(detectedEntityNode):
 		detectionStatus = DetectionDic[detectedEntityNode]
 		if detectionStatus.detectors.has(detectorEntity):
 			var detectorStatus = detectionStatus.detectors[detectorEntity]
 			detectorStatus.detectionLevels.append(detectionLevel)
-			detectorStatus.detectionLevels.sort()
 		else:
 			var detectorStatus = DetectorStatus.new()
 			detectorStatus.detectionLevels.append(detectionLevel)
@@ -70,21 +79,36 @@ func addDetection(detectorEntity, detectionLevel, detectedEntityNode):
 		detectionStatus.detectors[detectorEntity] = detectorStatus
 			
 		DetectionDic[detectedEntityNode] = detectionStatus
-		emit_signal("DetectTrackingChanged")
 		
 	_testDetection(detectionStatus, detectedEntityNode)	
 
 func removeDetection(detectorEntity, detectionLevel, detectedEntityNode):
+	if typeof(detectorEntity) != TYPE_OBJECT:
+		var stringError : String = "[DetectionProcessing:removeDetection]: 'detectorEntity' must be the Object that has detected another Object"
+		push_error(stringError) 
+		return
+	if typeof(detectionLevel) != TYPE_INT:
+		var stringError : String = "[DetectionProcessing:removeDetection]: 'detectionLevel' must be an int - specifically the an int from the DetectionLevels enum"
+		push_error(stringError) 
+		return
+	if typeof(detectedEntityNode) != TYPE_OBJECT:
+		var stringError : String = "[DetectionProcessing:removeDetection]: 'detectedEntityNode' must be the Object that was detected by another Object"
+		push_error(stringError) 
+		return
+		
 	if DetectionDic.has(detectedEntityNode):
 		var detectionStatus = DetectionDic[detectedEntityNode]
 		if detectionStatus.detectors.has(detectorEntity):
-			detectionStatus.detectors.erase(detectorEntity)
+			if detectionStatus.detectors[detectorEntity].detectionLevels.has(detectionLevel):
+				detectionStatus.detectors[detectorEntity].detectionLevels.erase(detectionLevel)
+				if detectionStatus.detectors[detectorEntity].detectionLevels.size() < 1:
+					detectionStatus.detectors.erase(detectorEntity)
 		
 		if detectionStatus.detectors.size() < 1:
 			DetectionDic.erase(detectedEntityNode)
-			emit_signal("LostDetection", detectedEntityNode, detectionLevel, detectorEntity)
-			emit_signal("DetectTrackingChanged")
-
+			
+		_testDetection(detectionStatus, detectedEntityNode)
+		
 func _testDetection(var detectionStatus, var detectedEntity):
 	var overallDetectionLevel = DetectionLevels.NONE
 	var newDetector = null

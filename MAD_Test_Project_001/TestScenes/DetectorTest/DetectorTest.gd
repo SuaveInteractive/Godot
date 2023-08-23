@@ -34,6 +34,3 @@ func _on_DetectorNode_EnitityDetected(detector, detectorShapeIndex, detected):
 	
 func _on_DetectorNode_EnitityUndetected(detectorEntity, detectorShapeIndex, entityDetectorNode):
 	$DetectionProcessing.removeDetection(detectorEntity, detectorShapeIndex, entityDetectorNode)
-	
-func _on_DetectionProcessing_DetectTrackingChanged():
-	$DebugDetectionState.Refresh()

@@ -143,7 +143,6 @@ func test_testDetection_001() -> void:
 	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "DetectTrackingChanged")
 
 "A 'GainedDetection' signal sent when detecting with a single entry"
 func test_testDetection_002() -> void:	
@@ -165,7 +164,6 @@ func test_testDetection_002() -> void:
 
 	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "DetectTrackingChanged")
 
 "No signal is sent when not detecting an entry which has mutliple detectors"
 func test_testDetection_003() -> void:	
@@ -186,7 +184,6 @@ func test_testDetection_003() -> void:
 	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "DetectTrackingChanged")
 	
 "A 'GainedDetection' signal sent when detecting with a multiple detection levels"
 func test_testDetection_004() -> void:	
@@ -210,7 +207,6 @@ func test_testDetection_004() -> void:
 	
 	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "DetectTrackingChanged")
 	
 "A 'ChangedDetection' signal is sent when the detection level of an object has changed"
 func test_testDetection_005() -> void:
@@ -235,7 +231,6 @@ func test_testDetection_005() -> void:
 
 	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "DetectTrackingChanged")
 	
 "A 'ChangedDetection' signal is sent when the detection level of an object is reduced"
 func test_testDetection_006() -> void:
@@ -261,7 +256,6 @@ func test_testDetection_006() -> void:
 
 	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "DetectTrackingChanged")
 
 "A signal is not sent if the same detection level is added."
 func test_testDetection_007() -> void:
@@ -284,7 +278,6 @@ func test_testDetection_007() -> void:
 	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "DetectTrackingChanged")
 
 "A 'LostDetection' signal is sent once an entity loses detection."
 func test_testDetection_008() -> void:
@@ -309,7 +302,6 @@ func test_testDetection_008() -> void:
 
 	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "DetectTrackingChanged")
 	
 "A 'GainedDetection' signal is sent when there are multiple detectors and one detects the entity."
 func test_testDetection_009() -> void:
@@ -337,7 +329,6 @@ func test_testDetection_009() -> void:
 	
 	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "DetectTrackingChanged")
 	
 "A 'ChangedDetection' signal is sent when there are multiple detectors and detection changes from one to another."
 func test_testDetection_010() -> void:
@@ -367,7 +358,6 @@ func test_testDetection_010() -> void:
 	
 	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "DetectTrackingChanged")
 	
 "A 'ChangedDetection' signal is sent when there are multiple detectors and detection changes from one to another."
 func test_testDetection_011() -> void:
@@ -398,4 +388,245 @@ func test_testDetection_011() -> void:
 	
 	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "DetectTrackingChanged")
+
+"Nothing happens if nothing is passed into 'addDetection'"
+func test_addDetection_001() -> void:
+	watch_signals(testDetectionProcessing)
+
+	testDetectionProcessing.addDetection(null, null, null)
+
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+
+"A 'GainedDetection' Signal is send when an object is detected for the first time via 'addDetection'"
+func test_addDetection_002() -> void:
+	watch_signals(testDetectionProcessing)
+
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.HIGH, testNodes[1])
+
+	var expectedRes = [testNodes[1], TestDetectionProcessingScript.DetectionLevels.HIGH, testNodes[0]]
+	assert_signal_emitted_with_parameters(testDetectionProcessing, "GainedDetection", expectedRes)
+
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+
+"A 'ChangedDetection' Signal is send when a previous detected is lower than a new detection added via 'addDetection'"
+func test_addDetection_003() -> void:
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.LOW, testNode_01)
+
+	watch_signals(testDetectionProcessing)
+	testDetectionProcessing.addDetection(testNodes[1], TestDetectionProcessingScript.DetectionLevels.HIGH, testNode_01)
+
+	var expectedRes = [testNode_01, TestDetectionProcessingScript.DetectionLevels.HIGH, testNodes[1]]
+	assert_signal_emitted_with_parameters(testDetectionProcessing, "ChangedDetection", expectedRes)
+
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+	
+"No Signal is send when a previous detected is higher than a new detection added via 'addDetection'"
+func test_addDetection_004() -> void:
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.HIGH, testNode_01)
+
+	watch_signals(testDetectionProcessing)
+
+	testDetectionProcessing.addDetection(testNodes[1], TestDetectionProcessingScript.DetectionLevels.LOW, testNode_01)
+
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+
+"No Signal is send when a previous detected is the same level as a new detection added via 'addDetection'"
+func test_addDetection_005() -> void:
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.HIGH, testNode_01)
+
+	watch_signals(testDetectionProcessing)
+
+	testDetectionProcessing.addDetection(testNodes[1], TestDetectionProcessingScript.DetectionLevels.HIGH, testNode_01)
+
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+
+"Nothing happens if nothing is passed into 'removeDetection'"
+func test_removeDetection_001() -> void:
+	watch_signals(testDetectionProcessing)
+
+	testDetectionProcessing.removeDetection(null, null, null)
+
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+
+"No signal is sent if any of the parameters passed to 'removeDetection' are invalid"
+func test_removeDetection_002() -> void:
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.HIGH, testNodes[1])
+
+	watch_signals(testDetectionProcessing)
+
+	testDetectionProcessing.removeDetection(testNodes[1], TestDetectionProcessingScript.DetectionLevels.HIGH, testNodes[1])
+	testDetectionProcessing.removeDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.LOW, testNodes[1])
+	testDetectionProcessing.removeDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.HIGH, testNodes[0])
+
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+
+"'LostDetection' Signal is sent when the last detection level is removed"
+func test_removeDetection_003() -> void:
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.HIGH, testNodes[1])
+
+	watch_signals(testDetectionProcessing)
+
+	testDetectionProcessing.removeDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.HIGH, testNodes[1])
+
+	var expectedRes = [testNodes[1], TestDetectionProcessingScript.DetectionLevels.HIGH]
+	assert_signal_emitted_with_parameters(testDetectionProcessing, "LostDetection", expectedRes)
+
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
+
+"'ChangedDetection' Signal is sent when a current higher detection is removed"
+func test_removeDetection_004() -> void:
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.MEDIUM, testNodes[1])
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.HIGH, testNodes[1])
+
+	watch_signals(testDetectionProcessing)
+
+	testDetectionProcessing.removeDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.HIGH, testNodes[1])
+
+	var expectedRes = [testNodes[1], TestDetectionProcessingScript.DetectionLevels.MEDIUM, testNodes[0]]
+	assert_signal_emitted_with_parameters(testDetectionProcessing, "ChangedDetection", expectedRes)
+
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+	
+"No signal is sent if the detection of an Entity changes from one detector to another"
+func test_removeDetection_005() -> void:
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+	
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.MEDIUM, testNode_01)
+	testDetectionProcessing.addDetection(testNodes[1], TestDetectionProcessingScript.DetectionLevels.MEDIUM, testNode_01)
+	
+	watch_signals(testDetectionProcessing)
+	
+	testDetectionProcessing.removeDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.MEDIUM, testNode_01)
+	
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+	
+"'ChangedDetection' Signal is sent if the highest detector is removed "
+func test_removeDetection_006() -> void:
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+	
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.MEDIUM, testNode_01)
+	testDetectionProcessing.addDetection(testNodes[1], TestDetectionProcessingScript.DetectionLevels.LOW, testNode_01)
+	
+	watch_signals(testDetectionProcessing)
+	
+	testDetectionProcessing.removeDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.MEDIUM, testNode_01)
+	
+	var expectedRes = [testNode_01, TestDetectionProcessingScript.DetectionLevels.LOW, testNodes[1]]
+	assert_signal_emitted_with_parameters(testDetectionProcessing, "ChangedDetection", expectedRes)
+	
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+
+"No Signal is sent if there is no data"
+func test_process_001() -> void:
+	watch_signals(testDetectionProcessing)
+	
+	simulate(testDetectionProcessing, 3.0*5, 0.5)
+	
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+	
+"No Signal is sent if there is no change to detection"
+func test_process_002() -> void:
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+	
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.LOW, testNode_01)
+	
+	watch_signals(testDetectionProcessing)
+	
+	simulate(testDetectionProcessing, 3.0*5, 0.5)
+	
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+
+"'GainedDetection' Signal is sent if a previous detected entity is updated and gains detection"
+func test_process_003() -> void:
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_TOTAL
+	
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.LOW, testNodes[1])
+	
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+	
+	watch_signals(testDetectionProcessing)
+	
+	simulate(testDetectionProcessing, 3.0*5, 0.5)
+	
+	var expectedRes = [testNodes[1], TestDetectionProcessingScript.DetectionLevels.LOW, testNodes[0]]
+	assert_signal_emitted_with_parameters(testDetectionProcessing, "GainedDetection", expectedRes)
+	
+	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")	
+
+"'LostDetection' Signal is sent if a previous detected entity is updated and loses detection"
+func test_process_004() -> void:
+	testDetectionProcessing.Randomizer = FixedNumberRandomizer.new()
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_LOW
+	
+	var testNodes = createTestNodes(2)
+	testDetectionProcessing.addDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.LOW, testNodes[1])
+	
+	testDetectionProcessing.Randomizer.fixedValue = testDetectionProcessing.detectionChance_TOTAL
+	
+	watch_signals(testDetectionProcessing)
+	
+	simulate(testDetectionProcessing, 3.0*5, 0.5)
+	
+	var expectedRes = [testNodes[1], TestDetectionProcessingScript.DetectionLevels.LOW]
+	assert_signal_emitted_with_parameters(testDetectionProcessing, "LostDetection", expectedRes)
+	
+	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
+	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")

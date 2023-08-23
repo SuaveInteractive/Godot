@@ -322,3 +322,16 @@ func test_IntelligenceChanged_Signal_009() -> void:
 	simulate(testIntelligence, 1, 0.1)
 	
 	assert_signal_emit_count(testIntelligence, "IntelligenceChanged", 1)
+	
+"No signal sent when lower value intelligence is added"	
+func test_IntelligenceChanged_Signal_010() -> void:
+	# Ignore the first signal sent when the intel is added
+	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
+	simulate(testIntelligence, 1, 0.1)
+	
+	watch_signals(testIntelligence)
+	
+	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+	simulate(testIntelligence, 1, 0.1)
+	
+	assert_signal_not_emitted(testIntelligence, "IntelligenceChanged")

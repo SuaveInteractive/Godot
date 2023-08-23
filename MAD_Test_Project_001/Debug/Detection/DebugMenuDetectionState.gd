@@ -6,6 +6,8 @@ var checkbutton : CheckButton = null
 
 var DetectionProcessingNode = null
 
+var debugDetectionStateInstance = null
+
 func _init():
 	self.name = "Debug Show Entity Detection State"
 			
@@ -23,18 +25,29 @@ func getGUIControl():
 	
 func OnButtonToggle(toggle):
 	if toggle:
-		var debugDetectionStateInstance = debugDetectionState.instance()
+		debugDetectionStateInstance = debugDetectionState.instance()
 	
 		debugDetectionStateInstance.setDetectionProcessor(DetectionProcessingNode)
 		add_child(debugDetectionStateInstance)
 
-		DetectionProcessingNode.connect("DetectTrackingChanged", debugDetectionStateInstance, "Refresh")
+		DetectionProcessingNode.connect("GainedDetection", self, "OnDetectionSignalGainedChanged")
+		DetectionProcessingNode.connect("ChangedDetection", self, "OnDetectionSignalGainedChanged")
+		DetectionProcessingNode.connect("LostDetection", self, "OnDetectionSignalLost")
+		
 		debugDetectionStateInstance.connect("WindowClosed", self, "OnWindowClosed")
 	elif get_child(0):
 		get_child(0).queue_free()
+		debugDetectionStateInstance = null
 
 func OnWindowClosed():
 	checkbutton.pressed = false
 	
 func OnControllingCountryChanged(country):
 	DetectionProcessingNode = country.get_node("DetectionProcessing")
+	
+func OnDetectionSignalGainedChanged(_detectedEntity, _detectionLevel, _detectorEntity):
+	debugDetectionStateInstance.Refresh()
+	
+func OnDetectionSignalLost(_detectedEntity, _detectionLevel):
+	debugDetectionStateInstance.Refresh()
+	
