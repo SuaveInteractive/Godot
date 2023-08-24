@@ -85,7 +85,6 @@ func test_addIntel_003() -> void:
 	
 "Same Entity with Multiple Detections from different Detectors"
 func test_addIntel_004() -> void:
-	
 	var infoLevelArray = []
 	infoLevelArray.append(TestIntelligenceScript.InformationLevel.LOW)
 	infoLevelArray.append(TestIntelligenceScript.InformationLevel.MEDIUM)
@@ -109,6 +108,26 @@ func test_addIntel_005() -> void:
 
 	assert_eq(testIntelligence.Intel.size(), 1)
 	assert_eq(testIntelligence.Intel[testDetectedNodeParent].detections.size(), 1)
+
+"Changing the intel level of an object does not the number of entries"
+func test_changeIntel_001() -> void:
+	testDectorNodeParent = add_child_autofree(Node.new())
+	testDectorNodeParent.name = "TestDetector_2"
+
+	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
+	testIntelligence.changeIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+
+	assert_eq(testIntelligence.Intel.size(), 1)
+	assert_eq(testIntelligence.Intel[testDetectedNodeParent].detections.size(), 1)
+	
+"Trying to change intel on something that doesn't exist does not change state"
+func test_changeIntel_002() -> void:
+	testDectorNodeParent = add_child_autofree(Node.new())
+	testDectorNodeParent.name = "TestDetector_2"
+
+	testIntelligence.changeIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+
+	assert_eq(testIntelligence.Intel.size(), 0)
 	
 "Nothing changes if there is nothing to remove from intelligence"
 func test_removeDetection_001() -> void:

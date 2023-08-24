@@ -55,6 +55,28 @@ func addIntel(detectorEntity, informationLevel, detectedEntity) -> void:
 		Intel[parentNode].detections[detectorParentNode] = informationLevel 
 		Intel[parentNode].highestIntelLvl = informationLevel
 		changedIntel[parentNode] = informationLevel
+		
+func changeIntel(detectorEntity, informationLevel, detectedEntity) -> void:
+	if _validEntity(detectedEntity) == false:
+		var stringError : String = "[Intelligence]: Wrong node Type passed to 'addIntel' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
+		push_error(stringError)
+		return
+		
+	var parentNode = detectedEntity.get_parent()
+	var detectorParentNode = null
+	if detectorEntity != null:
+		detectorParentNode = detectorEntity.get_parent()
+		
+	if Intel.has(parentNode):
+		var intelEntry = Intel[parentNode]
+		if intelEntry.detections.has(detectorParentNode) and intelEntry.detections[detectorParentNode] == informationLevel:
+			return
+			
+	if Intel.has(parentNode):
+		if Intel[parentNode].detections.has(detectorParentNode):
+			if Intel[parentNode].detections[detectorParentNode] != informationLevel:
+				Intel[parentNode].detections[detectorParentNode] = informationLevel
+				changedIntel[parentNode] = informationLevel
 	
 func removeDetection(detectorEntity, informationLevel, detectedEntity) -> void:
 	if _validEntity(detectedEntity) == false:
@@ -125,7 +147,7 @@ func _on_DetectionProcessing_GainedDetection(detectedEntity, detectionLevel, det
 
 func _on_DetectionProcessing_ChangedDetection(detectedEntity, detectionLevel, detector):
 	var intelLvl = _convertDetectionLevelToIntelLevel(detectionLevel)
-	addIntel(detector, intelLvl, detectedEntity)
+	changeIntel(detector, intelLvl, detectedEntity)
 
 func _on_DetectionProcessing_LostDetection(detectedEntity, previousDetectionLevel):
 	removeDetection(null, null, detectedEntity)
