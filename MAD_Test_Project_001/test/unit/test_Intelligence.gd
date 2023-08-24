@@ -27,7 +27,8 @@ func _createObjectForDetection() -> Array:
 	var entityDetectorInstance = TestEntityDetectorScene.instance()
 	nodeToDetect.add_child(entityDetectorInstance)
 	return [nodeToDetect, entityDetectorInstance]
-	
+
+" Returns and array of [ParentNode, EntityDetectorNode, InformationLevel]"
 func _createObjectsForDetection(var InformationLevels : Array) -> Array:
 	var retArray = []
 	
@@ -50,14 +51,24 @@ func test_addIntel_001() -> void:
 	assert_eq(testIntelligence.Intel.size(), 1)
 	assert_eq(testIntelligence.Intel[testDetectedNodeParent].detections.size(), 1)
 
-"Same Detector adding Multiple Intelligence"
+"Same Detector with Multiple detections"
 func test_addIntel_002() -> void:
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.TOTAL, testEntityDetectorObject)
-	assert_eq(testIntelligence.Intel.size(), 1)
-	assert_eq(testIntelligence.Intel[testDetectedNodeParent].detections.size(), 4)
+	
+	var infoLevelArray = []
+	infoLevelArray.append(TestIntelligenceScript.InformationLevel.LOW)
+	infoLevelArray.append(TestIntelligenceScript.InformationLevel.MEDIUM)
+	infoLevelArray.append(TestIntelligenceScript.InformationLevel.HIGH)
+	infoLevelArray.append(TestIntelligenceScript.InformationLevel.TOTAL)
+	var testData = _createObjectsForDetection(infoLevelArray)
+	
+	for k in testData:
+		testIntelligence.addIntel(testEntityDetectorObject, k[2], k[1])
+	
+	assert_eq(testIntelligence.Intel.size(), 4)
+	assert_eq(testIntelligence.Intel[testData[0][0]].detections.size(), 1)
+	assert_eq(testIntelligence.Intel[testData[1][0]].detections.size(), 1)
+	assert_eq(testIntelligence.Intel[testData[2][0]].detections.size(), 1)
+	assert_eq(testIntelligence.Intel[testData[3][0]].detections.size(), 1)
 
 "Seperate Detected"
 func test_addIntel_003() -> void:
@@ -72,16 +83,21 @@ func test_addIntel_003() -> void:
 	assert_eq(testIntelligence.Intel[testDetectedNodeParent].detections.size(), 1)
 	assert_eq(testIntelligence.Intel[testDectorNodeParent_02].detections.size(), 1)
 	
-"Multiple Detections"
+"Same Entity with Multiple Detections from different Detectors"
 func test_addIntel_004() -> void:
-	testDectorNodeParent = add_child_autofree(Node.new())
-	testDectorNodeParent.name = "TestDetector_2"
-
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
-
+	
+	var infoLevelArray = []
+	infoLevelArray.append(TestIntelligenceScript.InformationLevel.LOW)
+	infoLevelArray.append(TestIntelligenceScript.InformationLevel.MEDIUM)
+	infoLevelArray.append(TestIntelligenceScript.InformationLevel.HIGH)
+	infoLevelArray.append(TestIntelligenceScript.InformationLevel.TOTAL)
+	var testData = _createObjectsForDetection(infoLevelArray)
+	
+	for k in testData:
+		testIntelligence.addIntel(k[1], k[2], testEntityDetectorObject)
+	
 	assert_eq(testIntelligence.Intel.size(), 1)
-	assert_eq(testIntelligence.Intel[testDetectedNodeParent].detections.size(), 2)
+	assert_eq(testIntelligence.Intel[testDetectedNodeParent].detections.size(), 4)
 	
 "Duplicate detections don't result in multiple Intel entries"
 func test_addIntel_005() -> void:
@@ -132,25 +148,20 @@ func test_removeDetection_004() -> void:
 
 "Test an array with a single Information Level"
 func test_getHighestIntelligenceForDetection_001() -> void:
-	var newDetection_LOW = TestIntelligenceScript.Detection.new()
-	newDetection_LOW.detectionLevel = TestIntelligenceScript.InformationLevel.LOW
-
-	var detectionArray = [newDetection_LOW]
-	var res = testIntelligence._getHighestIntelligenceForDetection(detectionArray)
+	var detectionDic = {}
+	detectionDic[1] = TestIntelligenceScript.InformationLevel.LOW
+	
+	var res = testIntelligence._getHighestIntelligenceForDetection(detectionDic)
 
 	assert_eq(res, TestIntelligenceScript.InformationLevel.LOW)
 
 "Test an array with a multiple Information Levels"	
 func test_getHighestIntelligenceForDetection_002() -> void:
-	var newDetection_LOW = TestIntelligenceScript.Detection.new()
-	newDetection_LOW.detectionLevel = TestIntelligenceScript.InformationLevel.LOW
-	var newDetection_MEDIUM = TestIntelligenceScript.Detection.new()
-	newDetection_MEDIUM.detectionLevel = TestIntelligenceScript.InformationLevel.MEDIUM
-	var newDetection_HIGH = TestIntelligenceScript.Detection.new()
-	newDetection_HIGH.detectionLevel = TestIntelligenceScript.InformationLevel.HIGH
-
-	var detectionArray = [newDetection_LOW, newDetection_MEDIUM, newDetection_HIGH]
-	var res = testIntelligence._getHighestIntelligenceForDetection(detectionArray)
+	var detectionDic = {}
+	detectionDic[1] = TestIntelligenceScript.InformationLevel.LOW
+	detectionDic[2] = TestIntelligenceScript.InformationLevel.MEDIUM
+	detectionDic[3] = TestIntelligenceScript.InformationLevel.HIGH
+	var res = testIntelligence._getHighestIntelligenceForDetection(detectionDic)
 
 	assert_eq(res, TestIntelligenceScript.InformationLevel.HIGH)
 
@@ -158,11 +169,8 @@ func test_getHighestIntelligenceForDetection_002() -> void:
 func test_getHighestIntelligence_001() -> void:
 	var intelDic = {}
 
-	var newDetection_LOW = TestIntelligenceScript.Detection.new()
-	newDetection_LOW.detectionLevel = TestIntelligenceScript.InformationLevel.LOW	
-
-	intelDic[testDectorNodeParent] = []
-	intelDic[testDectorNodeParent].append(newDetection_LOW)
+	intelDic[testDectorNodeParent] = TestIntelligenceScript.IntelEntry.new()
+	intelDic[testDectorNodeParent].highestIntelLvl = TestIntelligenceScript.InformationLevel.LOW	
 
 	var resDic = testIntelligence._getHighestIntelligence(intelDic)
 
@@ -171,15 +179,8 @@ func test_getHighestIntelligence_001() -> void:
 "Get the highest intel for a Intelligence Dictionary with multiple entries"
 func test_getHighestIntelligence_002() -> void:
 	var intelDic = {}
-
-	var newDetection_LOW = TestIntelligenceScript.Detection.new()
-	newDetection_LOW.detectionLevel = TestIntelligenceScript.InformationLevel.LOW	
-	var newDetection_HIGH = TestIntelligenceScript.Detection.new()
-	newDetection_HIGH.detectionLevel = TestIntelligenceScript.InformationLevel.HIGH
-
-	intelDic[testDectorNodeParent] = []
-	intelDic[testDectorNodeParent].append(newDetection_LOW)
-	intelDic[testDectorNodeParent].append(newDetection_HIGH)
+	intelDic[testDectorNodeParent] = TestIntelligenceScript.IntelEntry.new()
+	intelDic[testDectorNodeParent].highestIntelLvl = TestIntelligenceScript.InformationLevel.HIGH
 
 	var resDic = testIntelligence._getHighestIntelligence(intelDic)
 
@@ -271,13 +272,19 @@ func test_IntelligenceChanged_Signal_005() -> void:
 	
 "Test the correct signal is sent when inteligence level is lowered"
 func test_IntelligenceChanged_Signal_006() -> void:
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
+	var infoLevelArray = []
+	infoLevelArray.append(TestIntelligenceScript.InformationLevel.MEDIUM)
+	infoLevelArray.append(TestIntelligenceScript.InformationLevel.HIGH)
+	var testData = _createObjectsForDetection(infoLevelArray)
+	
+	for k in testData:
+		testIntelligence.addIntel(k[1], k[2], testEntityDetectorObject)
+	
 	simulate(testIntelligence, 5, 0.1)
 	
 	watch_signals(testIntelligence)
 	
-	testIntelligence.removeDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
+	testIntelligence.removeDetection(testData[1][1], TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
 	simulate(testIntelligence, 5, 0.1)
 	
 	var expectedRes = {testDetectedNodeParent: TestIntelligenceScript.InformationLevel.MEDIUM}

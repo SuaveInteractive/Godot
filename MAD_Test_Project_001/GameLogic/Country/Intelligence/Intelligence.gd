@@ -3,12 +3,9 @@ extends Node
 
 enum InformationLevel {NONE = 0, LOW, MEDIUM, HIGH, TOTAL}
 
-class Detection:
-	var detector : Node = null
-	var detectionLevel = InformationLevel.TOTAL
-	
+"One IntelEntry per Entity which will contain an dictonary of all of it's detections and the level of detection."
 class IntelEntry:
-	var detections : Array = []
+	var detections : Dictionary = {}
 	var highestIntelLvl = InformationLevel.NONE
 
 var Intel : Dictionary = {}
@@ -34,68 +31,74 @@ func addIntel(detectorEntity, informationLevel, detectedEntity) -> void:
 		return
 	
 	var parentNode = detectedEntity.get_parent()
-	var detectorNode = null
+	var detectorParentNode = null
 	if detectorEntity != null:
-		detectorNode = detectorEntity.get_parent()
+		detectorParentNode = detectorEntity.get_parent()
 	
 	if Intel.has(parentNode):
-		for detec in Intel[parentNode].detections:
-			if detec.detector == detectorNode and detec.detectionLevel == informationLevel:
-				return
-		
-	var newDetection = Detection.new()
-	newDetection.detector = detectorNode
-	newDetection.detectionLevel = informationLevel
+		var intelEntry = Intel[parentNode]
+		if intelEntry.detections.has(detectorParentNode) and intelEntry.detections[detectorParentNode] == informationLevel:
+			return
 	
 	if Intel.has(parentNode):
-		Intel[parentNode].detections.append(newDetection)
+		if Intel[parentNode].detections.has(detectorParentNode):
+			if Intel[parentNode].detections[detectorParentNode] < informationLevel:
+				Intel[parentNode].detections[detectorParentNode] = informationLevel
+		else:
+			Intel[parentNode].detections[detectorParentNode] = informationLevel 
+			
 		if Intel[parentNode].highestIntelLvl < informationLevel:
 			Intel[parentNode].highestIntelLvl = informationLevel
 			changedIntel[parentNode] = informationLevel
 	else:
 		Intel[parentNode] = IntelEntry.new()
-		Intel[parentNode].detections.append(newDetection)
+		Intel[parentNode].detections[detectorParentNode] = informationLevel 
 		Intel[parentNode].highestIntelLvl = informationLevel
 		changedIntel[parentNode] = informationLevel
 	
 func removeDetection(detectorEntity, informationLevel, detectedEntity) -> void:
+	if _validEntity(detectedEntity) == false:
+		var stringError : String = "[Intelligence]: Wrong node Type passed to 'removeDetection' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
+		push_error(stringError)
+		return
+		
 	var detectedParentNode = detectedEntity.get_parent()
-	if Intel.has(detectedParentNode):		
-		var intelEntries : Array = Intel[detectedParentNode].detections
-		for intelEntry in intelEntries:
-			var detectorParentNode = detectorEntity.get_parent()
-			if intelEntry.detector == detectorParentNode and intelEntry.detectionLevel == informationLevel:
-				var previousHighesDetection = _getHighestIntelligenceForDetection(intelEntries)
-				intelEntries.erase(intelEntry)
-				intelEntry.detectionLevel = _getHighestIntelligenceForDetection(intelEntries)
-
-				if previousHighesDetection > intelEntry.detectionLevel:
-					changedIntel[detectedParentNode] = intelEntry.detectionLevel
-				break
-		
-		if intelEntries.size() < 1:
+	if Intel.has(detectedParentNode):				
+		if detectorEntity == null or informationLevel == null:
 			Intel.erase(detectedParentNode)
-
-func getKnownIntelligence() -> Dictionary:	
-	var param = {}
-	for k in Intel:
-		param[k] = Intel[k].detections
-		
-	return _getHighestIntelligence(param)
+			changedIntel[detectedParentNode] = InformationLevel.NONE
+		else:
+			var detectorParentNode = detectorEntity.get_parent()
+			
+			if Intel[detectedParentNode].detections.has(detectorParentNode):
+				if Intel[detectedParentNode].detections[detectorParentNode] == informationLevel:
+					Intel[detectedParentNode].detections.erase(detectorParentNode)
+					
+					var previousHighesDetection = Intel[detectedParentNode].highestIntelLvl
+					Intel[detectedParentNode].highestIntelLvl = _getHighestIntelligenceForDetection(Intel[detectedParentNode].detections)
+					
+					if previousHighesDetection > Intel[detectedParentNode].highestIntelLvl:
+						changedIntel[detectedParentNode] = Intel[detectedParentNode].highestIntelLvl
+				
+			if Intel[detectedParentNode].detections.size() < 1:
+				Intel.erase(detectedParentNode)
+			
+func getKnownIntelligence() -> Dictionary:			
+	return _getHighestIntelligence(Intel)
 
 func _getHighestIntelligence(var intelDict : Dictionary) -> Dictionary:
 	var retHighIntel = {}
 	
 	for entity in intelDict:
-		retHighIntel[entity] = _getHighestIntelligenceForDetection(intelDict[entity])
+		retHighIntel[entity] = intelDict[entity].highestIntelLvl
 		
 	return  retHighIntel
 
-func _getHighestIntelligenceForDetection(var detections : Array) -> int:
+func _getHighestIntelligenceForDetection(var detections : Dictionary) -> int:
 	var highestDetectionLevel = InformationLevel.NONE 
-	for detection in detections:
-		if detection.detectionLevel > highestDetectionLevel:
-			highestDetectionLevel = detection.detectionLevel
+	for detector in detections:
+		if detections[detector] > highestDetectionLevel:
+			highestDetectionLevel = detections[detector]
 	return highestDetectionLevel
 
 func _validEntity(var entity : Node) -> bool:
@@ -118,12 +121,11 @@ func _convertDetectionLevelToIntelLevel(var detectionLevel) -> int:
 
 func _on_DetectionProcessing_GainedDetection(detectedEntity, detectionLevel, detector):
 	var intelLvl = _convertDetectionLevelToIntelLevel(detectionLevel)
-	addIntel(detector, _convertDetectionLevelToIntelLevel(intelLvl), detectedEntity)
+	addIntel(detector, intelLvl, detectedEntity)
 
 func _on_DetectionProcessing_ChangedDetection(detectedEntity, detectionLevel, detector):
 	var intelLvl = _convertDetectionLevelToIntelLevel(detectionLevel)
-	addIntel(detector, _convertDetectionLevelToIntelLevel(intelLvl), detectedEntity)
+	addIntel(detector, intelLvl, detectedEntity)
 
-func _on_DetectionProcessing_LostDetection(detectedEntity):
-	#removeDetection(detector, _convertDetectionLevelToIntelLevel(intelLvl), detectedEntity)
-	pass
+func _on_DetectionProcessing_LostDetection(detectedEntity, previousDetectionLevel):
+	removeDetection(null, null, detectedEntity)

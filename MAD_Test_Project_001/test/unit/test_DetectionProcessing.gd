@@ -542,8 +542,10 @@ func test_removeDetection_005() -> void:
 	
 	testDetectionProcessing.removeDetection(testNodes[0], TestDetectionProcessingScript.DetectionLevels.MEDIUM, testNode_01)
 	
+	var expectedRes = [testNode_01, TestDetectionProcessingScript.DetectionLevels.MEDIUM, testNodes[1]]
+	assert_signal_emitted_with_parameters(testDetectionProcessing, "ChangedDetection", expectedRes)
+	
 	assert_signal_not_emitted(testDetectionProcessing, "GainedDetection")
-	assert_signal_not_emitted(testDetectionProcessing, "ChangedDetection")
 	assert_signal_not_emitted(testDetectionProcessing, "LostDetection")
 	
 "'ChangedDetection' Signal is sent if the highest detector is removed "

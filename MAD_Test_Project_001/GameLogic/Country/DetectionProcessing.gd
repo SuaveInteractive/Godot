@@ -14,7 +14,7 @@ enum DetectionLevels {TOTAL = 0, HIGH = 1, MEDIUM = 2, LOW = 3, NONE = 4}
 
 signal GainedDetection(detectedEntity, detectionLevel, detectorEntity)
 signal ChangedDetection(detectedEntity, detectionLevel, detectorEntity)
-signal LostDetection(detectedEntity, detectionLevel)
+signal LostDetection(detectedEntity, previousDetectionLevel)
 
 export(float) var detectionTestTimer = 3.0
 
@@ -96,19 +96,37 @@ func removeDetection(detectorEntity, detectionLevel, detectedEntityNode):
 		push_error(stringError) 
 		return
 		
+	var changed : bool = false
+		
 	if DetectionDic.has(detectedEntityNode):
 		var detectionStatus = DetectionDic[detectedEntityNode]
 		if detectionStatus.detectors.has(detectorEntity):
 			if detectionStatus.detectors[detectorEntity].detectionLevels.has(detectionLevel):
+				changed = true
 				detectionStatus.detectors[detectorEntity].detectionLevels.erase(detectionLevel)
 				if detectionStatus.detectors[detectorEntity].detectionLevels.size() < 1:
 					detectionStatus.detectors.erase(detectorEntity)
-		
+					
 		if detectionStatus.detectors.size() < 1:
 			DetectionDic.erase(detectedEntityNode)
-			
-		_testDetection(detectionStatus, detectedEntityNode)
-		
+			emit_signal("LostDetection", detectedEntityNode, detectionLevel)
+		elif changed == true:
+			var ret = _getHighestDetectionLevel(detectionStatus.detectors)
+			detectionStatus.detectionTimer = detectionTestTimer
+			if detectionLevel != ret[0] or detectorEntity != ret[1]:
+				emit_signal("ChangedDetection", detectedEntityNode, ret[0], ret[1])
+
+func _getHighestDetectionLevel(var detectors : Dictionary) -> Array:
+	var ret : Array = [DetectionLevels.NONE, null]
+	
+	for k in detectors:
+		for level in detectors[k].detectionLevels:
+			if level < ret[0]:
+				ret[0] = level
+				ret[1] = k
+				
+	return ret
+
 func _testDetection(var detectionStatus, var detectedEntity):
 	var overallDetectionLevel = DetectionLevels.NONE
 	var newDetector = null
@@ -128,7 +146,7 @@ func _testDetection(var detectionStatus, var detectedEntity):
 		elif overallDetectionLevel == DetectionLevels.NONE:
 			emit_signal("LostDetection", detectedEntity, detectionStatus.detectedAtLevel)
 		elif detectionStatus.detectedAtLevel != overallDetectionLevel:
-			if detectionStatus.detectedAtLevel < overallDetectionLevel:
+			if detectionStatus.detectedAtLevel > overallDetectionLevel:
 				detectionStatus.detectionTimer = detectionTestTimer
 			emit_signal("ChangedDetection", detectedEntity, overallDetectionLevel, newDetector)
 		
