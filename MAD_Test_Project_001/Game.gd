@@ -141,3 +141,12 @@ func OnCountryDetectionChanged(country):
 
 func _on_ShowRadar_toggled(button_pressed):
 	setDetectionVisibility(ControllingCountry, button_pressed)
+
+func _on_CreateIntelligencePackageBtn_toggled(button_pressed):
+	if button_pressed:
+		var actionInfo = {"ActionName": "CreateIntelPackageAction"}	
+		actionInfo["ControllingCountry"] = ControllingCountry
+		#actionInfo["CountryIntelligence"] = ControllingCountry.getIntelligenceInterface()
+		$GameActions.startAction(actionInfo)
+	else:
+		$GameActions.endAction()

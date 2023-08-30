@@ -6,7 +6,6 @@
 [ext_resource path="res://GameEntities/Structure/Structure.gd" type="Script" id=5]
 
 [node name="Structure" type="Node2D" groups=["Targetor"]]
-scale = Vector2( 0.75, 0.75 )
 z_index = 1
 script = ExtResource( 5 )
 

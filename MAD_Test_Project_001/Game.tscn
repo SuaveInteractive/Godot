@@ -217,6 +217,16 @@ margin_right = 1011.78
 margin_bottom = 34.3826
 text = "Show Radar"
 
+[node name="CreateIntelligencePackageBtn" type="Button" parent="UI Layer/UI"]
+anchor_right = 0.006
+anchor_bottom = 0.017
+margin_left = 873.413
+margin_top = 35.7857
+margin_right = 1009.27
+margin_bottom = 45.5857
+toggle_mode = true
+text = "Create Intel Package"
+
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
 [connection signal="CountryWins" from="GameRules" to="." method="_on_GameRules_CountryWins"]
 [connection signal="WorldEntitySelected" from="ViewportContainer/Viewport/World" to="." method="_on_World_WorldEntitySelected"]
@@ -228,3 +238,4 @@ text = "Show Radar"
 [connection signal="pressed" from="UI Layer/UI/Build/BuildButtonVBoxContainer/BuildSiloButton" to="UI Layer/UI/Build" method="_on_BuildSiloButton_pressed"]
 [connection signal="pressed" from="UI Layer/UI/Build/BuildButtonVBoxContainer/BuildRadarButton" to="UI Layer/UI/Build" method="_on_BuildRadarButton_pressed"]
 [connection signal="toggled" from="UI Layer/UI/ShowRadar" to="." method="_on_ShowRadar_toggled"]
+[connection signal="toggled" from="UI Layer/UI/CreateIntelligencePackageBtn" to="." method="_on_CreateIntelligencePackageBtn_toggled"]

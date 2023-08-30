@@ -5,7 +5,7 @@ enum obfuscation_levels {NONE, LOW, MEDIUM, HIGH, TOTAL}
 
 export(obfuscation_levels) var obfuscation_level = obfuscation_levels.NONE
 
-export var obfuscation_none : Texture setget SetNoneTexture
+export var obfuscation_none : Texture setget setNoneTexture
 export var obfuscation_low : Texture
 export var obfuscation_medium : Texture
 export var obfuscation_high : Texture
@@ -45,9 +45,33 @@ func setObfuscationTotal() -> void:
 	obfuscation_level = obfuscation_levels.TOTAL
 	_updateVisibility()
 	
-func SetNoneTexture(var texture : Texture) -> void:
+func setNoneTexture(var texture : Texture) -> void:
 	obfuscation_none = texture
 	_updateTextures()
+	
+func getSize() -> Vector2:
+	var size : Vector2
+	
+	match obfuscation_level:
+		obfuscation_levels.NONE:
+			if obfuscation_none:
+				size = obfuscation_none.get_size()
+		obfuscation_levels.LOW:
+			if obfuscation_low:
+				size = obfuscation_low.get_size()
+		obfuscation_levels.MEDIUM:
+			if obfuscation_medium:
+				size = obfuscation_medium.get_size()
+		obfuscation_levels.HIGH:
+			if obfuscation_high:
+				size = obfuscation_high.get_size()
+		obfuscation_levels.TOTAL:
+			return Vector2()
+	
+	size.x = size.x * scale.x	
+	size.y = size.y * scale.y	
+	
+	return size
 	
 func _updateTextures() -> void:
 	$None.texture = obfuscation_none

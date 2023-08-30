@@ -14,7 +14,7 @@ var _elapsedContructionTime : float = 0
 
 func _ready():
 	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTING:	
-		$EntityObfuscation.SetNoneTexture(ConstructionImage)
+		$EntityObfuscation.setNoneTexture(ConstructionImage)
 		
 		setShowInfoUI(false)
 	$Selection.setCallback(funcref(self, "setShowInfoUI"))
@@ -24,7 +24,7 @@ func _process(delta):
 		_elapsedContructionTime += delta
 		if _elapsedContructionTime >= StructureInformation.ContructionTimeDays:
 			_structureState = StructureStateEnum.STRUCTURE_ACTIVE
-			$EntityObfuscation.SetNoneTexture(StructureImage)
+			$EntityObfuscation.setNoneTexture(StructureImage)
 			emit_signal("ConstructionFinished", self)
 			
 	_processInfoUI()
@@ -54,6 +54,16 @@ func setShowInfoUI(show: bool) -> void:
 		$"%BuildPercentage".visible = show
 		$"%PauseConstruction".visible = show
 		
+func getRect() -> Rect2:
+	var size = $EntityObfuscation.getSize()
+	
+	size.x = size.x * scale.x
+	size.y = size.y * scale.y
+	
+	var rect = Rect2(position, size)
+	return rect
+
+"***** Callbacks *****"
 func onPauseConstructionPressed():
 	if _structureState == StructureStateEnum.STRUCTURE_CONSTRUCTION_PAUSED:
 		_structureState = StructureStateEnum.STRUCTURE_CONSTRUCTING
