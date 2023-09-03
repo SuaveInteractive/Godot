@@ -18,7 +18,6 @@ radius = 150.0
 radius = 200.0
 
 [node name="Radar" instance=ExtResource( 2 )]
-scale = Vector2( 1, 1 )
 StructureInformation = ExtResource( 3 )
 ConstructionImage = ExtResource( 4 )
 StructureImage = ExtResource( 1 )
