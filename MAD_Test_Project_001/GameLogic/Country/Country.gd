@@ -5,7 +5,7 @@ class_name Country
 var BuildingFactory = null
 
 # Units
-var submarineScene = load("res://GameEntities/Submarine/Submarine.tscn")
+var submarineScene = load("res://GameEntities/Unit/Submarine/Submarine.tscn")
 
 # Missiles
 var targetScene = load("res://GameEntities/Target/Target.tscn")

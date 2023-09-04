@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Submarine_Obfuscation_High.png-68de46982d1987729d5db7358777a793.stex"
+path="res://.import/Submarine_Obfuscation_Medium.png-e6ca854d567220d315d89a76fc49cd0a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://GameEntities/Submarine/Submarine_Obfuscation_High.png"
-dest_files=[ "res://.import/Submarine_Obfuscation_High.png-68de46982d1987729d5db7358777a793.stex" ]
+source_file="res://GameEntities/Unit/Submarine/Submarine_Obfuscation_Medium.png"
+dest_files=[ "res://.import/Submarine_Obfuscation_Medium.png-e6ca854d567220d315d89a76fc49cd0a.stex" ]
 
 [params]
 

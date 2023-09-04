@@ -3,7 +3,7 @@ extends GutTest
 var ridName : String = "TestRID"
 var rid : RID
 
-var SubmarineScene = preload("res://GameEntities/Submarine/Submarine.tscn")
+var SubmarineScene = preload("res://GameEntities/Unit/Submarine/Submarine.tscn")
 var SubmarineObject = null
 	
 func before_all():		
