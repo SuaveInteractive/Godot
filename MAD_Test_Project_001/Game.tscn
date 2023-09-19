@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://RTSCamera.gd" type="Script" id=1]
 [ext_resource path="res://GameSaver/GameSaver.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://GameRules.gd" type="Script" id=7]
 [ext_resource path="res://UnitMenu.gd" type="Script" id=8]
 [ext_resource path="res://FinanceValue.gd" type="Script" id=9]
+[ext_resource path="res://UI Layer.gd" type="Script" id=10]
 [ext_resource path="res://Shaders/Fog of War/FogOfWar.gdshader" type="Shader" id=11]
 [ext_resource path="res://CreateGame.gd" type="Script" id=12]
 [ext_resource path="res://World/World.tscn" type="PackedScene" id=15]
@@ -76,6 +77,7 @@ handle_input_locally = false
 render_target_update_mode = 3
 
 [node name="UI Layer" type="CanvasLayer" parent="."]
+script = ExtResource( 10 )
 
 [node name="UI" type="Control" parent="UI Layer"]
 anchor_right = 1.0
@@ -230,6 +232,8 @@ text = "Create Intel Package"
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
 [connection signal="CountryWins" from="GameRules" to="." method="_on_GameRules_CountryWins"]
 [connection signal="WorldEntitySelected" from="ViewportContainer/Viewport/World" to="." method="_on_World_WorldEntitySelected"]
+[connection signal="HideUIOverlay" from="GameActions" to="UI Layer" method="_on_GameActions_HideUIOverlay"]
+[connection signal="ShowUIOverlay" from="GameActions" to="UI Layer" method="_on_GameActions_ShowUIOverlay"]
 [connection signal="button_down" from="UI Layer/UI/LaunchButton" to="." method="_on_Button_button_down"]
 [connection signal="pressed" from="UI Layer/UI/UnitMenu/Move" to="." method="OnMovePressed"]
 [connection signal="pressed" from="UI Layer/UI/UnitMenu/Target" to="." method="TargetPressed"]

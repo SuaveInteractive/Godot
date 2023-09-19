@@ -1,6 +1,9 @@
 extends Control
 
-var FocusedNode : Node = null
+export var UnselectedColor : Color = Color.red
+export var SelectedColor : Color = Color.green
+
+var FocusedNode : Node = null setget setFocus, getFocus
 
 func _ready():
 	pass
@@ -11,6 +14,12 @@ func _process(delta):
 func setFocus(var focusNode : Node2D):
 	FocusedNode = focusNode
 	
+func getFocus():
+	return FocusedNode
+	
+func isSelected() -> bool:
+	return $HBoxContainer/AddRemove.text == "Remove"
+	
 func _updateFocusPosition() -> void:
 	var rect : Rect2
 	if FocusedNode.has_method("getRect"):
@@ -20,3 +29,10 @@ func _updateFocusPosition() -> void:
 	else:
 		set_position(FocusedNode.position)
 		
+func _on_AddRemove_toggled(button_pressed):
+	if button_pressed:
+		$HBoxContainer/AddRemove.text = "Remove"
+		$NinePatchRect.modulate = SelectedColor
+	else:
+		$HBoxContainer/AddRemove.text = "Add"	
+		$NinePatchRect.modulate = UnselectedColor

@@ -6,31 +6,32 @@
 [node name="IntelligenceWidget" type="Control"]
 margin_right = 200.0
 margin_bottom = 200.0
+mouse_filter = 2
 script = ExtResource( 2 )
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
+modulate = Color( 1, 0, 0, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 1 )
-patch_margin_left = 2
-patch_margin_top = 2
-patch_margin_right = 2
-patch_margin_bottom = 2
+region_rect = Rect2( 0, 0, 200, 200 )
+patch_margin_left = 9
+patch_margin_top = 8
+patch_margin_right = 9
+patch_margin_bottom = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 alignment = 1
 
-[node name="Remove" type="Button" parent="HBoxContainer"]
-margin_left = 47.0
-margin_right = 111.0
+[node name="AddRemove" type="Button" parent="HBoxContainer"]
+margin_left = 81.0
+margin_right = 118.0
 margin_bottom = 20.0
-text = "Remove"
-
-[node name="Add" type="Button" parent="HBoxContainer"]
-margin_left = 115.0
-margin_right = 152.0
-margin_bottom = 20.0
+toggle_mode = true
 text = "Add"
+
+[connection signal="toggled" from="HBoxContainer/AddRemove" to="." method="_on_AddRemove_toggled"]

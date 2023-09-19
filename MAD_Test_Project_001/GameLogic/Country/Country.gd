@@ -11,6 +11,9 @@ var submarineScene = load("res://GameEntities/Unit/Submarine/Submarine.tscn")
 var targetScene = load("res://GameEntities/Target/Target.tscn")
 var missileScene = load("res://GameEntities/Missile/Missile.tscn")
 
+"""
+	Signals
+"""
 signal UnitSelected(country, unit)
 
 signal CountryControlChange(oldControl, newControl)
@@ -21,11 +24,16 @@ signal CountryTargetHit(country, target, hits)
 signal CountryBuildingAdded(building)
 signal CountryDetectionUpdated(country)
 
+"""
+	Memebers
+"""
 var CountryColour : Color = Color(255) setget , get_colour
 var Boarder : PoolVector2Array 
 
 var Control : int = 0 setget set_control, get_control
 var Finance : int = 0 setget set_finance, get_finance
+
+var IntelligencePackages : Array = []
 
 func _init():
 	BuildingFactory = load("res://GameEntities/Structure/StructureFactory.gd").new()
@@ -172,6 +180,12 @@ func addMissile(source, target) -> void:
 	missileInstance.connect("targetReached", self, "OnTargetReached")
 	
 	$Missiles.add_child(missileInstance)
+	
+"""
+	Misc
+"""
+func addIntelPackage(var intelligencePackage) -> void:
+	IntelligencePackages.append(intelligencePackage)
 	
 """
 	Callbacks
