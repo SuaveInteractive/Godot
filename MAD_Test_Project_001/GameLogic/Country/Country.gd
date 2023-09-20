@@ -33,7 +33,7 @@ var Boarder : PoolVector2Array
 var Control : int = 0 setget set_control, get_control
 var Finance : int = 0 setget set_finance, get_finance
 
-var IntelligencePackages : Array = []
+var IntelligencePackages : Array = [] setget , getIntelligencePackages
 
 func _init():
 	BuildingFactory = load("res://GameEntities/Structure/StructureFactory.gd").new()
@@ -186,6 +186,9 @@ func addMissile(source, target) -> void:
 """
 func addIntelPackage(var intelligencePackage) -> void:
 	IntelligencePackages.append(intelligencePackage)
+
+func getIntelligencePackages() -> Array:
+	return IntelligencePackages
 	
 """
 	Callbacks

@@ -31,4 +31,24 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="EnterPackageNameDialog" type="ConfirmationDialog" parent="."]
+visible = true
+margin_left = 381.0
+margin_top = 245.0
+margin_right = 620.0
+margin_bottom = 365.0
+window_title = "Enter Package Name"
+
+[node name="NameTextField" type="TextEdit" parent="EnterPackageNameDialog"]
+anchor_right = 1.0
+anchor_bottom = 0.65
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = 6.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [connection signal="pressed" from="CreatePackageButton" to="." method="_on_CreatePackageButton_pressed"]
+[connection signal="confirmed" from="EnterPackageNameDialog" to="." method="_on_EnterPackageNameDialog_confirmed"]

@@ -16,7 +16,9 @@ func _init(var parameters):
 	CountryIntelligence = ControllingCountry.getIntelligenceInterface()
 	
 	_setupIntelligence(ControllingCountry, CountryIntelligence.getKnownIntelligence())
-
+	
+	_populateExistingPackages(ControllingCountry.getIntelligencePackages())
+	
 func _setupIntelligence(var country : Node, var intelligence : Dictionary):
 	for entity in intelligence:
 		if not country.isOwned(entity):
@@ -28,6 +30,10 @@ func _addIntelWidget(var entity : Node, var intelLevel : int):
 	widgetInstance.setFocus(entity)
 	add_child(widgetInstance)
 	
+func _populateExistingPackages(var intelPackagesArray : Array) -> void:
+	for package in intelPackagesArray:
+		getUIOverlay().addItem(package.PackageName)
+	
 func getUIOverlay() -> Object:
 	if uiSceneInstance == null:
 		uiSceneInstance = createIntelPackageUIScene.instance()
@@ -37,8 +43,9 @@ func getUIOverlay() -> Object:
 """
 	Callbacks
 """
-func OnCreatePacked():
+func OnCreatePacked(var packageName):
 	var intelPackage = IntelligencePackageResourceDef.new()
+	intelPackage.PackageName = packageName
 	
 	for childWidget in get_children():
 		if childWidget.isSelected():
@@ -51,5 +58,5 @@ func OnCreatePacked():
 	
 	if intelPackage.IntelligenceForEntities.size() > 0:
 		ControllingCountry.addIntelPackage(intelPackage)
-		getUIOverlay().addItem("TESTER")
+		getUIOverlay().addItem(intelPackage.PackageName)
 			
