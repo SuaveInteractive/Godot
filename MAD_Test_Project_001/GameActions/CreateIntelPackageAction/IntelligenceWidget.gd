@@ -14,11 +14,14 @@ func _process(delta):
 func setFocus(var focusNode : Node2D):
 	FocusedNode = focusNode
 	
-func getFocus():
+func getFocus() -> Node:
 	return FocusedNode
 	
 func isSelected() -> bool:
 	return $HBoxContainer/AddRemove.text == "Remove"
+	
+func setSelected(var selected : bool):
+	_on_AddRemove_toggled(selected)
 	
 func _updateFocusPosition() -> void:
 	var rect : Rect2
@@ -28,8 +31,12 @@ func _updateFocusPosition() -> void:
 		set_position(rect.position - rect_size / 2) 
 	else:
 		set_position(FocusedNode.position)
-		
+
+"""
+	Callbacks
+"""
 func _on_AddRemove_toggled(button_pressed):
+	$HBoxContainer/AddRemove.pressed = button_pressed
 	if button_pressed:
 		$HBoxContainer/AddRemove.text = "Remove"
 		$NinePatchRect.modulate = SelectedColor

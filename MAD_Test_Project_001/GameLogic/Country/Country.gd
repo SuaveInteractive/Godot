@@ -190,6 +190,12 @@ func addIntelPackage(var intelligencePackage) -> void:
 func getIntelligencePackages() -> Array:
 	return IntelligencePackages
 	
+func getIntelligencePackage(var packageName : String) -> Resource:
+	for package in IntelligencePackages:
+		if package.PackageName == packageName:
+			return package
+	return null
+	
 """
 	Callbacks
 """

@@ -37,6 +37,7 @@ margin_left = 381.0
 margin_top = 245.0
 margin_right = 620.0
 margin_bottom = 365.0
+popup_exclusive = true
 window_title = "Enter Package Name"
 
 [node name="NameTextField" type="TextEdit" parent="EnterPackageNameDialog"]
@@ -51,4 +52,7 @@ __meta__ = {
 }
 
 [connection signal="pressed" from="CreatePackageButton" to="." method="_on_CreatePackageButton_pressed"]
+[connection signal="item_selected" from="IntelligencePackageList" to="." method="_on_IntelligencePackageList_item_selected"]
+[connection signal="about_to_show" from="EnterPackageNameDialog" to="." method="_on_EnterPackageNameDialog_about_to_show"]
 [connection signal="confirmed" from="EnterPackageNameDialog" to="." method="_on_EnterPackageNameDialog_confirmed"]
+[connection signal="text_changed" from="EnterPackageNameDialog/NameTextField" to="." method="_on_NameTextField_text_changed"]

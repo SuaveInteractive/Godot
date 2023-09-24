@@ -38,6 +38,7 @@ func getUIOverlay() -> Object:
 	if uiSceneInstance == null:
 		uiSceneInstance = createIntelPackageUIScene.instance()
 		uiSceneInstance.connect("CreatePacked", self, "OnCreatePacked")
+		uiSceneInstance.connect("PackageSelected", self, "OnPackageSelected")
 	return uiSceneInstance
 	
 """
@@ -59,4 +60,14 @@ func OnCreatePacked(var packageName):
 	if intelPackage.IntelligenceForEntities.size() > 0:
 		ControllingCountry.addIntelPackage(intelPackage)
 		getUIOverlay().addItem(intelPackage.PackageName)
-			
+	
+func OnPackageSelected(var packageName):
+	var package = ControllingCountry.getIntelligencePackage(packageName)
+	
+	for child in get_children():
+		child.setSelected(false)
+		
+	for intel in package.IntelligenceForEntities:
+		for child in get_children():
+			if intel.EntityNodePath ==  child.getFocus().get_path():
+				child.setSelected(true)
