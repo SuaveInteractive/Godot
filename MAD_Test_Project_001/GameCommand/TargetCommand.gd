@@ -5,7 +5,7 @@ var Target_Position : Vector2
 var WorldController : Node = null
 
 func _ready():
-	Command_Name = "Target_Command"
+	SetName("Target_Command")
 	
 func execution() -> bool:
 	if SelectedUnits.empty():

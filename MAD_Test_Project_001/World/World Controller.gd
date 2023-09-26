@@ -14,6 +14,9 @@ func getWorldSize() -> Vector2:
 func getCountries() -> Array:
 	return WorldModel.getCountries()
 	
+func getCountryByName(var countryName : String) -> Node:
+	return WorldModel.getCountry(countryName)
+	
 func getSelectedUnits() -> Array:
 	return WorldModel.getSelectedUnits()
 		

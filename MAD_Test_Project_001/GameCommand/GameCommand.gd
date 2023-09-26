@@ -12,6 +12,7 @@ func execute() -> bool:
 
 func SetName(name) -> void:
 	Command_Name = name
+	self.name = name
 	
 func GetName() -> String:
 	return Command_Name

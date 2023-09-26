@@ -2,6 +2,7 @@ extends "res://GameActions/GameAction.gd"
 
 var ControllingCountry = null
 var CountryIntelligence = null
+var WorldController : Node = null
 
 var intelWidgetScene = preload("res://GameActions/CreateIntelPackageAction/IntelligenceWidget.tscn")
 var createIntelPackageUIScene = preload("res://GameActions/CreateIntelPackageAction/CreateIntelligencePackageUI.tscn")
@@ -13,6 +14,8 @@ func _ready():
 
 func _init(var parameters):
 	ControllingCountry = parameters.ControllingCountry
+	WorldController = parameters.WorldController
+	
 	CountryIntelligence = ControllingCountry.getIntelligenceInterface()
 	
 	_setupIntelligence(ControllingCountry, CountryIntelligence.getKnownIntelligence())
@@ -39,6 +42,7 @@ func getUIOverlay() -> Object:
 		uiSceneInstance = createIntelPackageUIScene.instance()
 		uiSceneInstance.connect("CreatePacked", self, "OnCreatePacked")
 		uiSceneInstance.connect("PackageSelected", self, "OnPackageSelected")
+		uiSceneInstance.connect("PackageSend", self, "OnSendPackage")
 	return uiSceneInstance
 	
 """
@@ -60,6 +64,13 @@ func OnCreatePacked(var packageName):
 	if intelPackage.IntelligenceForEntities.size() > 0:
 		ControllingCountry.addIntelPackage(intelPackage)
 		getUIOverlay().addItem(intelPackage.PackageName)
+	
+func OnSendPackage(var packageName, var sendToCountry) -> void:
+	GameCommands.ShareIntelligence.Package_Name = packageName
+	GameCommands.ShareIntelligence.SendTo_Country = sendToCountry
+	GameCommands.ShareIntelligence.SendFrom_Country = ControllingCountry.get_name()
+	GameCommands.ShareIntelligence.WorldController = WorldController
+	GameCommands.ShareIntelligence.execute()
 	
 func OnPackageSelected(var packageName):
 	var package = ControllingCountry.getIntelligencePackage(packageName)

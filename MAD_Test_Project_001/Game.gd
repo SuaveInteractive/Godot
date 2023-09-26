@@ -21,6 +21,7 @@ func _ready():
 	ScriptRunner.addCommand(GameCommands.TargetCommand)
 	ScriptRunner.addCommand(GameCommands.BuildCommand)
 	ScriptRunner.addCommand(GameCommands.LaunchStrikeCommand)
+	ScriptRunner.addCommand(GameCommands.ShareIntelligence)
 	
 	add_child(ScriptRunner)
 	
@@ -146,7 +147,7 @@ func _on_CreateIntelligencePackageBtn_toggled(button_pressed):
 	if button_pressed:
 		var actionInfo = {"ActionName": "CreateIntelPackageAction"}	
 		actionInfo["ControllingCountry"] = ControllingCountry
-		#actionInfo["CountryIntelligence"] = ControllingCountry.getIntelligenceInterface()
+		actionInfo.WorldController = WorldController
 		$GameActions.startAction(actionInfo)
 	else:
 		$GameActions.endAction()

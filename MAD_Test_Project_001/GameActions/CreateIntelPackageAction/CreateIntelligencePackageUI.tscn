@@ -9,13 +9,29 @@ mouse_filter = 2
 script = ExtResource( 1 )
 
 [node name="CreatePackageButton" type="Button" parent="."]
-anchor_left = 0.0140008
-anchor_top = 0.86307
-anchor_right = 0.115563
-anchor_bottom = 0.879737
-margin_right = 12.0
-margin_bottom = 20.0
+anchor_left = 0.0427139
+anchor_top = 0.725006
+anchor_right = 0.148511
+anchor_bottom = 0.758006
+margin_left = -3.73898
+margin_top = -5.00342
+margin_right = 7.925
+margin_bottom = -4.80344
 text = "Create Package"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="SharePackageButton" type="Button" parent="."]
+anchor_left = 0.0390625
+anchor_top = 0.676667
+anchor_right = 0.138578
+anchor_bottom = 0.71
+margin_top = -6.0
+margin_right = 18.096
+margin_bottom = -6.00003
+disabled = true
+text = "Share Package"
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -52,6 +68,7 @@ __meta__ = {
 }
 
 [connection signal="pressed" from="CreatePackageButton" to="." method="_on_CreatePackageButton_pressed"]
+[connection signal="pressed" from="SharePackageButton" to="." method="_on_SharePackageButton_pressed"]
 [connection signal="item_selected" from="IntelligencePackageList" to="." method="_on_IntelligencePackageList_item_selected"]
 [connection signal="about_to_show" from="EnterPackageNameDialog" to="." method="_on_EnterPackageNameDialog_about_to_show"]
 [connection signal="confirmed" from="EnterPackageNameDialog" to="." method="_on_EnterPackageNameDialog_confirmed"]

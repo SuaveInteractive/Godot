@@ -34,6 +34,7 @@ var Control : int = 0 setget set_control, get_control
 var Finance : int = 0 setget set_finance, get_finance
 
 var IntelligencePackages : Array = [] setget , getIntelligencePackages
+var ReceivedIntelligencePackages : Array = [] setget , getReceivedIntelligencePackages
 
 func _init():
 	BuildingFactory = load("res://GameEntities/Structure/StructureFactory.gd").new()
@@ -195,6 +196,13 @@ func getIntelligencePackage(var packageName : String) -> Resource:
 		if package.PackageName == packageName:
 			return package
 	return null
+
+func addReceivedIntelligencePackage(var receivedInteligencePackage):
+	if receivedInteligencePackage != null:
+		ReceivedIntelligencePackages.append(receivedInteligencePackage)
+	
+func getReceivedIntelligencePackages() -> Array:
+	return ReceivedIntelligencePackages
 	
 """
 	Callbacks
