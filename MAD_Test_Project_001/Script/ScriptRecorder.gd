@@ -103,6 +103,13 @@ func _processObject(object):
 	var ret = null 
 	if object is Node:
 		ret = object.get_path()
+	elif object is Resource:
+		ret = {}
+		var propertyList : Array = object.get_property_list ()
+		for property in propertyList:
+			if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+				var newArg = _processArgument(property.type, object.get(property.name))
+				ret[property.name] = newArg
 	else:
 		var stringError : String = "[ScriptRecorder]: _processObject not given an Node."
 		push_error(stringError)

@@ -53,3 +53,15 @@ func test_non_gdscript_object() -> void:
 	" Should Error "
 	var processedObj = ScriptRecorder._processObject(newObj)
 	assert_null(processedObj)
+
+"Test that Resource Types can be written to scripts"
+func test_Resource_Object_001() -> void:
+	var testString = "WWWWW"
+	
+	var testResource : Resource = TestResource_001.new()
+	testResource.TestData_001 = testString
+	
+	var processedResource = ScriptRecorder._processObject(testResource)
+	
+	assert_eq(processedResource["TestData_001"], testString)
+	assert_eq(processedResource["TestData_002"], null)

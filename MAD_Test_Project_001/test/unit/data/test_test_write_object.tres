@@ -8,7 +8,7 @@ script = ExtResource( 2 )
 CommandName = "Test_Command_002"
 TimeOffset = 0.0
 CommandArguments = {
-"TestObject": NodePath("/root/@@97/Test_Script_Commands_Objects_Node/TestChildNode")
+"TestObject": NodePath("/root/TestRunner/Test_Script_Commands_Objects_Node/TestChildNode")
 }
 
 [resource]

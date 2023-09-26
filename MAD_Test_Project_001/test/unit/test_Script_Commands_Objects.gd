@@ -20,6 +20,10 @@ func before_all():
 	gut.directory_delete_files(ScriptRecorder.getRecordingPath())
 	set_name("Test_Script_Commands_Objects_Node")
 	
+	# Set the parent name so the output matches.  If not set, the path might 
+	# change when tests are added or the order in which they are run
+	get_parent().name = "TestRunner"
+	
 func after_all():
 	assert_no_new_orphans()
 	
@@ -27,7 +31,7 @@ func before_each():
 	ScriptRecorder.resetTimeOffset()
 	_create_script_runner()
 	ScriptRecorder.record()
-	
+
 func test_write_object() -> void:
 	var newChildNode = Sprite.new()
 	newChildNode.name = "TestChildNode"
