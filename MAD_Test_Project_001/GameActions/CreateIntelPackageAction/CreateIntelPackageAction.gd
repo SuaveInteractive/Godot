@@ -48,22 +48,22 @@ func getUIOverlay() -> Object:
 """
 	Callbacks
 """
-func OnCreatePacked(var packageName):
-	var intelPackage = IntelligencePackageResourceDef.new()
-	intelPackage.PackageName = packageName
+func OnCreatePacked(var packageName):	
+	var collectedIntel : Array = []
 	
 	for childWidget in get_children():
 		if childWidget.isSelected():
 			var nodeForIntel : Node = childWidget.getFocus()
+			collectedIntel.push_back(nodeForIntel)
 			
-			var unitIntel = UnitIntelligenceResourceDef.new()
-			unitIntel.EntityNodePath = nodeForIntel.get_path()
-			
-			intelPackage.IntelligenceForEntities.push_back(unitIntel)
-	
-	if intelPackage.IntelligenceForEntities.size() > 0:
-		ControllingCountry.addIntelPackage(intelPackage)
-		getUIOverlay().addItem(intelPackage.PackageName)
+	if collectedIntel.size() > 0:
+		getUIOverlay().addItem(packageName) # Probably should be done via a signal
+		
+		GameCommands.CreateIntelligencePackage.Package_Name = packageName
+		GameCommands.CreateIntelligencePackage.Created_By_Country = ControllingCountry.get_name()
+		GameCommands.CreateIntelligencePackage.Intel_List = collectedIntel
+		GameCommands.CreateIntelligencePackage.WorldController = WorldController
+		GameCommands.CreateIntelligencePackage.execute()
 	
 func OnSendPackage(var packageName, var sendToCountry) -> void:
 	GameCommands.ShareIntelligence.Package_Name = packageName
@@ -80,5 +80,5 @@ func OnPackageSelected(var packageName):
 		
 	for intel in package.IntelligenceForEntities:
 		for child in get_children():
-			if intel.EntityNodePath ==  child.getFocus().get_path():
+			if intel == child.getFocus():
 				child.setSelected(true)

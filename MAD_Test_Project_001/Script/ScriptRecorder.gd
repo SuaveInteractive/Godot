@@ -39,6 +39,9 @@ func executeCommand(command) -> bool:
 		ret = command.execution()
 		if ret:
 			recordCommand(command)
+		else:
+			var stringError : String = "[ScriptRecorder]: Command failed - not recorded.  Command Name [" + str(command.GetName()) + "]"
+			push_error(stringError)
 	else:
 		ret = command.execution()
 	return ret

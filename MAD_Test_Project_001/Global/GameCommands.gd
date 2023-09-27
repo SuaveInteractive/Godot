@@ -15,9 +15,13 @@ var LaunchStrikeCommand = LaunchStrikeCommandscript.new()
 var ShareIntelligenceCommandScript = load("res://GameCommand/ShareIntelligenceCommand.gd")
 var ShareIntelligence = ShareIntelligenceCommandScript.new()
 
+var CreateIntelligencePackageCommand = load("res://GameCommand/CreateIntelligencePackageCommand.gd")
+var CreateIntelligencePackage = CreateIntelligencePackageCommand.new()
+
 func _init():
 	add_child(MoveCommand)
 	add_child(TargetCommand)
 	add_child(BuildCommand)
 	add_child(LaunchStrikeCommand)
 	add_child(ShareIntelligence)
+	add_child(CreateIntelligencePackage)

@@ -22,6 +22,7 @@ func _ready():
 	ScriptRunner.addCommand(GameCommands.BuildCommand)
 	ScriptRunner.addCommand(GameCommands.LaunchStrikeCommand)
 	ScriptRunner.addCommand(GameCommands.ShareIntelligence)
+	ScriptRunner.addCommand(GameCommands.CreateIntelligencePackage)
 	
 	add_child(ScriptRunner)
 	
