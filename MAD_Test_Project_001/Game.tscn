@@ -229,6 +229,14 @@ margin_bottom = 45.5857
 toggle_mode = true
 text = "Create Intel Package"
 
+[node name="ViewIntelligencePackagesBtn" type="Button" parent="UI Layer/UI"]
+margin_left = 873.749
+margin_top = 68.3947
+margin_right = 1009.75
+margin_bottom = 88.3947
+toggle_mode = true
+text = "View Intel Packages"
+
 [connection signal="OnPostLoad" from="GameSaver" to="." method="OnPostLoad"]
 [connection signal="CountryWins" from="GameRules" to="." method="_on_GameRules_CountryWins"]
 [connection signal="WorldEntitySelected" from="ViewportContainer/Viewport/World" to="." method="_on_World_WorldEntitySelected"]
@@ -243,3 +251,4 @@ text = "Create Intel Package"
 [connection signal="pressed" from="UI Layer/UI/Build/BuildButtonVBoxContainer/BuildRadarButton" to="UI Layer/UI/Build" method="_on_BuildRadarButton_pressed"]
 [connection signal="toggled" from="UI Layer/UI/ShowRadar" to="." method="_on_ShowRadar_toggled"]
 [connection signal="toggled" from="UI Layer/UI/CreateIntelligencePackageBtn" to="." method="_on_CreateIntelligencePackageBtn_toggled"]
+[connection signal="toggled" from="UI Layer/UI/ViewIntelligencePackagesBtn" to="." method="_on_ViewIntelligencePackagesBtn_toggled"]

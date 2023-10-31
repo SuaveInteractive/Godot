@@ -18,5 +18,5 @@ func _ready():
 	
 	# Set up some obfuscated intelligence for a country
 	var countryIntel = worldController.getCountries()[0].getIntelligenceInterface()
-	countryIntel.addIntel(null, $"/root/TestWorld/World/World Controller/World Model/Countries/Country_1/Units/unit")
+	countryIntel.addIntelFromDetection(null, $"/root/TestWorld/World/World Controller/World Model/Countries/Country_1/Units/unit")
 	world.setIntelligenceInterface(countryIntel)

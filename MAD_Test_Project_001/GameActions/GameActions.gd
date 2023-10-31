@@ -13,6 +13,7 @@ func _ready():
 	ActionDic["TargetAction"] = load("res://GameActions/TargetAction.gd")
 	ActionDic["LaunchStrikeAction"] = load("res://GameActions/LaunchStrikeAction.gd")
 	ActionDic["CreateIntelPackageAction"] = load("res://GameActions/CreateIntelPackageAction/CreateIntelPackageAction.gd")
+	ActionDic["ViewIntelPackageAction"] = load("res://GameActions/ViewIntelPackages/ViewIntelPackageAction.gd")
 	
 func startAction(actionInfo) -> void:
 	if ActionDic.has(actionInfo.ActionName):

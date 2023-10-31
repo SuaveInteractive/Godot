@@ -23,17 +23,31 @@ func _process(_delta):
 		var parameters = changedIntel.duplicate(true)
 		changedIntel.clear()
 		emit_signal("IntelligenceChanged", parameters)
-			
-func addIntel(detectorEntity, informationLevel, detectedEntity) -> void:
+
+""" Used to add intel form nodes that use the acceptedNodeTypem - i.e. 'DetectNode' """
+func addIntelFromDetection(detectorEntity, informationLevel, detectedEntity) -> void:
 	if _validEntity(detectedEntity) == false:
-		var stringError : String = "[Intelligence]: Wrong node Type passed to 'addIntel' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
+		var stringError : String = "[Intelligence]: Wrong node Type passed to 'addIntelFromDetection' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
 		push_error(stringError)
 		return
-	
+		
 	var parentNode = detectedEntity.get_parent()
 	var detectorParentNode = null
 	if detectorEntity != null:
 		detectorParentNode = detectorEntity.get_parent()
+		
+	addIntel(detectorParentNode, informationLevel, parentNode)
+		
+func addIntel(detectorParentNode, informationLevel, parentNode) -> void:
+#	if _validEntity(detectedEntity) == false:
+#		var stringError : String = "[Intelligence]: Wrong node Type passed to 'addIntel' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
+#		push_error(stringError)
+#		return
+	
+#	var parentNode = detectedEntity.get_parent()
+#	var detectorParentNode = null
+#	if detectorEntity != null:
+#		detectorParentNode = detectorEntity.get_parent()
 	
 	if Intel.has(parentNode):
 		var intelEntry = Intel[parentNode]
@@ -141,9 +155,12 @@ func _convertDetectionLevelToIntelLevel(var detectionLevel) -> int:
 			
 	return InformationLevel.NONE
 
+"""
+	Callbacks
+"""
 func _on_DetectionProcessing_GainedDetection(detectedEntity, detectionLevel, detector):
 	var intelLvl = _convertDetectionLevelToIntelLevel(detectionLevel)
-	addIntel(detector, intelLvl, detectedEntity)
+	addIntelFromDetection(detector, intelLvl, detectedEntity)
 
 func _on_DetectionProcessing_ChangedDetection(detectedEntity, detectionLevel, detector):
 	var intelLvl = _convertDetectionLevelToIntelLevel(detectionLevel)

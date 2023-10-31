@@ -47,7 +47,7 @@ func test_validEntity_001() -> void:
 
 "1 Detector adding 1 detection"
 func test_addIntel_001() -> void:
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
 	assert_eq(testIntelligence.Intel.size(), 1)
 	assert_eq(testIntelligence.Intel[testDetectedNodeParent].detections.size(), 1)
 
@@ -62,7 +62,7 @@ func test_addIntel_002() -> void:
 	var testData = _createObjectsForDetection(infoLevelArray)
 	
 	for k in testData:
-		testIntelligence.addIntel(testEntityDetectorObject, k[2], k[1])
+		testIntelligence.addIntelFromDetection(testEntityDetectorObject, k[2], k[1])
 	
 	assert_eq(testIntelligence.Intel.size(), 4)
 	assert_eq(testIntelligence.Intel[testData[0][0]].detections.size(), 1)
@@ -76,8 +76,8 @@ func test_addIntel_003() -> void:
 	var testEntityDetectorObject_02 = TestEntityDetectorScene.instance()
 	testDectorNodeParent_02.add_child(testEntityDetectorObject_02)
 
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject_02)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject_02)
 
 	assert_eq(testIntelligence.Intel.size(), 2)
 	assert_eq(testIntelligence.Intel[testDetectedNodeParent].detections.size(), 1)
@@ -93,7 +93,7 @@ func test_addIntel_004() -> void:
 	var testData = _createObjectsForDetection(infoLevelArray)
 	
 	for k in testData:
-		testIntelligence.addIntel(k[1], k[2], testEntityDetectorObject)
+		testIntelligence.addIntelFromDetection(k[1], k[2], testEntityDetectorObject)
 	
 	assert_eq(testIntelligence.Intel.size(), 1)
 	assert_eq(testIntelligence.Intel[testDetectedNodeParent].detections.size(), 4)
@@ -103,8 +103,8 @@ func test_addIntel_005() -> void:
 	testDectorNodeParent = add_child_autofree(Node.new())
 	testDectorNodeParent.name = "TestDetector_2"
 
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
 
 	assert_eq(testIntelligence.Intel.size(), 1)
 	assert_eq(testIntelligence.Intel[testDetectedNodeParent].detections.size(), 1)
@@ -114,7 +114,7 @@ func test_changeIntel_001() -> void:
 	testDectorNodeParent = add_child_autofree(Node.new())
 	testDectorNodeParent.name = "TestDetector_2"
 
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
 	testIntelligence.changeIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
 
 	assert_eq(testIntelligence.Intel.size(), 1)
@@ -137,15 +137,15 @@ func test_removeDetection_001() -> void:
 	
 "There is no intel if previous added detection is removed"
 func test_removeDetection_002() -> void:
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
 	testIntelligence.removeDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
 	
 	assert_eq(testIntelligence.Intel.size(), 0)
 
 "There is still intel even if one of the information levels is removed"
 func test_removeDetection_003() -> void:
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.MEDIUM, testEntityDetectorObject)
 
 	testIntelligence.removeDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
 
@@ -159,7 +159,7 @@ func test_removeDetection_004() -> void:
 	var testData = _createObjectsForDetection(infoLevelArray)
 	
 	for k in testData:
-		testIntelligence.addIntel(testDectorNodeParent, k[2], k[1])
+		testIntelligence.addIntelFromDetection(testDectorNodeParent, k[2], k[1])
 		
 	testIntelligence.removeDetection(testDectorNodeParent, testData[0][2], testData[0][1])
 	
@@ -212,7 +212,7 @@ func test_getKnownIntelligence_001() -> void:
 
 "Test that there is intelligence when some has been added"
 func test_getKnownIntelligence_002() -> void:
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
 	
 	var res : Dictionary = testIntelligence.getKnownIntelligence()
 	
@@ -221,7 +221,7 @@ func test_getKnownIntelligence_002() -> void:
 "Test a signal is sent when intel is added"
 func test_IntelligenceChanged_Signal_001() -> void:	
 	watch_signals(testIntelligence)
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
 
 	simulate(testIntelligence, 1, 0.1)
 
@@ -231,8 +231,8 @@ func test_IntelligenceChanged_Signal_001() -> void:
 "Test the correct signal is sent when multiple pieces of intel area added"
 func test_IntelligenceChanged_Signal_002() -> void:
 	watch_signals(testIntelligence)
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
 
 	simulate(testIntelligence, 5, 0.1)
 
@@ -251,7 +251,7 @@ func test_IntelligenceChanged_Signal_003() -> void:
 	var testData = _createObjectsForDetection(infoLevelArray)
 	
 	for k in testData:
-		testIntelligence.addIntel(testDectorNodeParent, k[2], k[1])
+		testIntelligence.addIntelFromDetection(testDectorNodeParent, k[2], k[1])
 
 	simulate(testIntelligence, 5, 0.1)
 	
@@ -265,11 +265,11 @@ func test_IntelligenceChanged_Signal_003() -> void:
 func test_IntelligenceChanged_Signal_004() -> void:
 	watch_signals(testIntelligence)
 	
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
 	
 	simulate(testIntelligence, 5, 0.1)
 	
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
 	
 	simulate(testIntelligence, 5, 0.1)
 	
@@ -278,7 +278,7 @@ func test_IntelligenceChanged_Signal_004() -> void:
 	
 "Test the correct signal is sent when inteligence is removed"
 func test_IntelligenceChanged_Signal_005() -> void:
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
 	simulate(testIntelligence, 5, 0.1)
 	
 	watch_signals(testIntelligence)
@@ -297,7 +297,7 @@ func test_IntelligenceChanged_Signal_006() -> void:
 	var testData = _createObjectsForDetection(infoLevelArray)
 	
 	for k in testData:
-		testIntelligence.addIntel(k[1], k[2], testEntityDetectorObject)
+		testIntelligence.addIntelFromDetection(k[1], k[2], testEntityDetectorObject)
 	
 	simulate(testIntelligence, 5, 0.1)
 	
@@ -313,11 +313,11 @@ func test_IntelligenceChanged_Signal_006() -> void:
 func test_IntelligenceChanged_Signal_007() -> void:
 	watch_signals(testIntelligence)
 	
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
 	
 	simulate(testIntelligence, 5, 0.1)
 	
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
 	
 	simulate(testIntelligence, 5, 0.1)
 	
@@ -326,7 +326,7 @@ func test_IntelligenceChanged_Signal_007() -> void:
 "No signal is send when nothing is removed"
 func test_IntelligenceChanged_Signal_008() -> void:
 	# Ignore the first signal sent when the intel is added
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
 	simulate(testIntelligence, 1, 0.1)
 	
 	watch_signals(testIntelligence)
@@ -339,7 +339,7 @@ func test_IntelligenceChanged_Signal_008() -> void:
 "A signal is sent when something is removed"	
 func test_IntelligenceChanged_Signal_009() -> void:
 	# Ignore the first signal sent when the intel is added
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
 	simulate(testIntelligence, 1, 0.1)
 	
 	watch_signals(testIntelligence)
@@ -352,12 +352,12 @@ func test_IntelligenceChanged_Signal_009() -> void:
 "No signal sent when lower value intelligence is added"	
 func test_IntelligenceChanged_Signal_010() -> void:
 	# Ignore the first signal sent when the intel is added
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.HIGH, testEntityDetectorObject)
 	simulate(testIntelligence, 1, 0.1)
 	
 	watch_signals(testIntelligence)
 	
-	testIntelligence.addIntel(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
+	testIntelligence.addIntelFromDetection(testDectorNodeParent, TestIntelligenceScript.InformationLevel.LOW, testEntityDetectorObject)
 	simulate(testIntelligence, 1, 0.1)
 	
 	assert_signal_not_emitted(testIntelligence, "IntelligenceChanged")

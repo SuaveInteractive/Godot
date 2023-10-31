@@ -14,7 +14,7 @@ func _process(delta):
 			var step = testScript[0]
 			testScript.erase(step)
 			
-			$Intelligence.addIntel(null, step.InfoLevel, step.DetectedEntity)
+			$Intelligence.addIntelFromDetection(null, step.InfoLevel, step.DetectedEntity)
 
 func _on_Intelligence_IntelligenceChanged(changedIntellegence):
 	pass # Replace with function body.

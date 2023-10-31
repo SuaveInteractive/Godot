@@ -152,3 +152,12 @@ func _on_CreateIntelligencePackageBtn_toggled(button_pressed):
 		$GameActions.startAction(actionInfo)
 	else:
 		$GameActions.endAction()
+
+func _on_ViewIntelligencePackagesBtn_toggled(button_pressed):
+	if button_pressed:
+		var actionInfo = {"ActionName": "ViewIntelPackageAction"}	
+		actionInfo["ControllingCountry"] = ControllingCountry
+		actionInfo.WorldController = WorldController
+		$GameActions.startAction(actionInfo)
+	else:
+		$GameActions.endAction()

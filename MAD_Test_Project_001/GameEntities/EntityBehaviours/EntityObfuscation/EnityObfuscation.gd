@@ -16,7 +16,7 @@ func _ready():
 	_updateTextures()
 	_updateVisibility()
 	
-	$None.get_material().set_shader_param("colour", country_colour)
+	$None.get_material().set_shader_param("replacementColour", country_colour)
 	
 func _process(_delta):
 	if Engine.editor_hint:

@@ -135,7 +135,7 @@ func addBuilding(type, pos):
 		buildingInstance.get_node("Selection").connect("EntitySelected", self, "OnUnitSelected")
 	
 	if buildingInstance.has_node("CitySprite"):
-		buildingInstance.get_node("CitySprite").get_material().set_shader_param("colour", CountryColour)
+		buildingInstance.get_node("CitySprite").get_material().set_shader_param("replacementColour", CountryColour)
 	
 	if buildingInstance.has_node("DetectorNode"):
 		var buildingInstanceDetectorNode = buildingInstance.get_node("DetectorNode")
@@ -144,7 +144,7 @@ func addBuilding(type, pos):
 		
 		# Want to pass in InformationLevel.TOTAL which equals 4, but GDScript doens't support 
 		# predefined enums without making a global :(
-		$Intelligence.addIntel(null, 4, buildingInstanceDetectorNode)	
+		$Intelligence.addIntelFromDetection(null, 4, buildingInstanceDetectorNode)	
 	
 	emit_signal("CountryBuildingAdded", buildingInstance)
 """
@@ -167,7 +167,7 @@ func addUnit(unit):
 	
 	# Want to pass in InformationLevel.TOTAL which equals 4, but GDScript doens't support 
 	# predefined enums without making a global :(
-	$Intelligence.addIntel(null, 4, unitInstanceDetectorNode)
+	$Intelligence.addIntelFromDetection(null, 4, unitInstanceDetectorNode)
 
 """
 	Weapons
