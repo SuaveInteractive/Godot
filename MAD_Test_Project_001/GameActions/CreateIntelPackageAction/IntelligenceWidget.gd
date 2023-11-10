@@ -8,7 +8,7 @@ var FocusedNode : Node = null setget setFocus, getFocus
 func _ready():
 	pass
 	
-func _process(delta):
+func _process(_delta):
 	_updateFocusPosition()
 	
 func setFocus(var focusNode : Node2D):

@@ -8,7 +8,7 @@ var countryColourShaderParam : Color = Color.fuchsia
 func _ready():
 	$WidgetHBox/IntelIcon.get_material().set_shader_param("replacementColour", countryColourShaderParam)
 
-func setIntel(var intel):
+func setIntel(var _intel):
 	pass
 	
 """

@@ -8,7 +8,7 @@ func _on_World_Model_WorldEntitySelected(country, entity):
 func setIntelligenceInterface(var intelligence):
 	intelligence.connect("IntelligenceChanged", self, "OnIntelligenceChanged")
 	
-	var intel : Dictionary = intelligence.getKnownIntelligence()
+	var intel : Dictionary = intelligence.getKnownTrackableIntelligence()
 	var countries = $"World Controller/World Model/Countries"
 	for country in countries.get_children():
 		for unit in country.get_node("Units").get_children():
@@ -28,18 +28,30 @@ func setIntelligenceInterface(var intelligence):
 func disconnectIntelligenceInterface(var intelligence):
 	intelligence.disconnect("IntelligenceChanged", self, "OnIntelligenceChanged")
 
-func OnIntelligenceChanged(changedIntel):
+func OnIntelligenceChanged(var changedIntel : Dictionary) -> void:
 	var countries = $"World Controller/World Model/Countries"
 	for country in countries.get_children():
-		for unit in country.get_node("Units").get_children():
-			if changedIntel.has(unit):
-				var intelLevel = changedIntel[unit]
-				_setObfuscationLevel(unit, intelLevel)
-				
-		for building in country.get_node("Buildings").get_children():
-			if changedIntel.has(building):
-				var intelLevel = changedIntel[building]
-				_setObfuscationLevel(building, intelLevel)
+		
+		for intelInfo in changedIntel:
+			if intelInfo.TrackingNodePath != null:
+				var node = get_node(intelInfo.TrackingNodePath)
+				if country.get_node("Units").get_children().has(node):
+					var intelLevel = changedIntel[intelInfo]
+					_setObfuscationLevel(node, intelLevel)
+					
+				if country.get_node("Buildings").get_children().has(node):
+					var intelLevel = changedIntel[intelInfo]
+					_setObfuscationLevel(node, intelLevel)
+			
+#		for unit in country.get_node("Units").get_children():
+#			if changedIntel.has(unit):
+#				var intelLevel = changedIntel[unit]
+#				_setObfuscationLevel(unit, intelLevel)
+#
+#		for building in country.get_node("Buildings").get_children():
+#			if changedIntel.has(building):
+#				var intelLevel = changedIntel[building]
+#				_setObfuscationLevel(building, intelLevel)
 					
 func _setObfuscationLevel(entity, intelLevel) -> void:
 	match intelLevel:

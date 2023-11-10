@@ -18,7 +18,7 @@ func _init(var parameters):
 	
 	CountryIntelligence = ControllingCountry.getIntelligenceInterface()
 	
-	_setupIntelligence(ControllingCountry, CountryIntelligence.getKnownIntelligence())
+	_setupIntelligence(ControllingCountry, CountryIntelligence.getKnownTrackableIntelligence())
 	
 	_populateExistingPackages(ControllingCountry.getIntelligencePackages())
 	
@@ -28,7 +28,7 @@ func _setupIntelligence(var country : Node, var intelligence : Dictionary):
 			var intelLevel = intelligence[entity]
 			_addIntelWidget(entity, intelLevel)
 			
-func _addIntelWidget(var entity : Node, var intelLevel : int):
+func _addIntelWidget(var entity : Node, var _intelLevel : int):
 	var widgetInstance : Node = intelWidgetScene.instance()
 	widgetInstance.setFocus(entity)
 	add_child(widgetInstance)

@@ -7,6 +7,8 @@ enum InformationLevel {NONE = 0, LOW, MEDIUM, HIGH, TOTAL}
 class IntelEntry:
 	var detections : Dictionary = {}
 	var highestIntelLvl = InformationLevel.NONE
+	
+var IntelInfoRes = load("res://ResourceDefinition/Intelligence/IntelligenceInformation.gd")
 
 var Intel : Dictionary = {}
 var changedIntel : Dictionary = {}
@@ -24,7 +26,9 @@ func _process(_delta):
 		changedIntel.clear()
 		emit_signal("IntelligenceChanged", parameters)
 
-""" Used to add intel form nodes that use the acceptedNodeTypem - i.e. 'DetectNode' """
+""" 
+	Used to add intel form nodes that use the acceptedNodeTypem - i.e. 'DetectNode' 
+"""
 func addIntelFromDetection(detectorEntity, informationLevel, detectedEntity) -> void:
 	if _validEntity(detectedEntity) == false:
 		var stringError : String = "[Intelligence]: Wrong node Type passed to 'addIntelFromDetection' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
@@ -35,42 +39,47 @@ func addIntelFromDetection(detectorEntity, informationLevel, detectedEntity) -> 
 	var detectorParentNode = null
 	if detectorEntity != null:
 		detectorParentNode = detectorEntity.get_parent()
-		
-	addIntel(detectorParentNode, informationLevel, parentNode)
-		
-func addIntel(detectorParentNode, informationLevel, parentNode) -> void:
-#	if _validEntity(detectedEntity) == false:
-#		var stringError : String = "[Intelligence]: Wrong node Type passed to 'addIntel' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
-#		push_error(stringError)
-#		return
 	
-#	var parentNode = detectedEntity.get_parent()
-#	var detectorParentNode = null
-#	if detectorEntity != null:
-#		detectorParentNode = detectorEntity.get_parent()
-	
-	if Intel.has(parentNode):
-		var intelEntry = Intel[parentNode]
+	var intelInfo = _getIntelInfoForNode(parentNode)
+	if intelInfo == null:
+		intelInfo = IntelInfoRes.new()
+		intelInfo.TrackingNodePath = parentNode.get_path()
+		if detectorParentNode != null:
+			intelInfo.DetectorNodePath = detectorParentNode.get_path()
+		
+	addIntel(intelInfo, informationLevel, detectorParentNode)
+
+"""
+	Add a IntelligenceInformation entry to the class checking to make sure it is not a 
+	duplicate.
+"""
+func addIntel(intelInfo, informationLevel, detectorParentNode) -> void:
+	var intelEntry = null
+	if Intel.has(intelInfo):
+		intelEntry = Intel[intelInfo]
 		if intelEntry.detections.has(detectorParentNode) and intelEntry.detections[detectorParentNode] == informationLevel:
 			return
 	
-	if Intel.has(parentNode):
-		if Intel[parentNode].detections.has(detectorParentNode):
-			if Intel[parentNode].detections[detectorParentNode] < informationLevel:
-				Intel[parentNode].detections[detectorParentNode] = informationLevel
+	if intelEntry:
+		if intelEntry.detections.has(detectorParentNode):
+			if intelEntry.detections[detectorParentNode] < informationLevel:
+				intelEntry.detections[detectorParentNode] = informationLevel
 		else:
-			Intel[parentNode].detections[detectorParentNode] = informationLevel 
+			intelEntry.detections[detectorParentNode] = informationLevel 
 			
-		if Intel[parentNode].highestIntelLvl < informationLevel:
-			Intel[parentNode].highestIntelLvl = informationLevel
-			changedIntel[parentNode] = informationLevel
+		if intelEntry.highestIntelLvl < informationLevel:
+			intelEntry.highestIntelLvl = informationLevel
+			changedIntel[intelInfo] = informationLevel
 	else:
-		Intel[parentNode] = IntelEntry.new()
-		Intel[parentNode].detections[detectorParentNode] = informationLevel 
-		Intel[parentNode].highestIntelLvl = informationLevel
-		changedIntel[parentNode] = informationLevel
-		
-func changeIntel(detectorEntity, informationLevel, detectedEntity) -> void:
+		Intel[intelInfo] = IntelEntry.new()
+		Intel[intelInfo].detections[detectorParentNode] = informationLevel 
+		Intel[intelInfo].highestIntelLvl = informationLevel
+		changedIntel[intelInfo] = informationLevel
+
+""" 
+	Used to change intel form nodes that use the acceptedNodeTypem - i.e. 'DetectNode' 
+"""
+func changeIntelFromDetection(detectorEntity, informationLevel, detectedEntity) -> void:
 	if _validEntity(detectedEntity) == false:
 		var stringError : String = "[Intelligence]: Wrong node Type passed to 'addIntel' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
 		push_error(stringError)
@@ -80,47 +89,66 @@ func changeIntel(detectorEntity, informationLevel, detectedEntity) -> void:
 	var detectorParentNode = null
 	if detectorEntity != null:
 		detectorParentNode = detectorEntity.get_parent()
-		
-	if Intel.has(parentNode):
-		var intelEntry = Intel[parentNode]
+	
+	var intelInfo = _getIntelInfoForNode(parentNode)
+	
+	changeIntel(intelInfo, informationLevel, detectorParentNode)
+
+func changeIntel(intelInfo, informationLevel, detectorParentNode) -> void:
+	var intelEntry = null
+	if Intel.has(intelInfo):
+		intelEntry = Intel[intelInfo]
 		if intelEntry.detections.has(detectorParentNode) and intelEntry.detections[detectorParentNode] == informationLevel:
 			return
 			
-	if Intel.has(parentNode):
-		if Intel[parentNode].detections.has(detectorParentNode):
-			if Intel[parentNode].detections[detectorParentNode] != informationLevel:
-				Intel[parentNode].detections[detectorParentNode] = informationLevel
-				changedIntel[parentNode] = informationLevel
+		if intelEntry.detections.has(detectorParentNode):
+			if intelEntry.detections[detectorParentNode] != informationLevel:
+				intelEntry.detections[detectorParentNode] = informationLevel
+				
+				var previousHighesDetection = intelEntry.highestIntelLvl
+				intelEntry.highestIntelLvl = _getHighestIntelligenceForDetection(intelEntry.detections)
+				
+				if previousHighesDetection != intelEntry.highestIntelLvl:
+					changedIntel[intelInfo] = intelEntry.highestIntelLvl
 	
 func removeDetection(detectorEntity, informationLevel, detectedEntity) -> void:
 	if _validEntity(detectedEntity) == false:
 		var stringError : String = "[Intelligence]: Wrong node Type passed to 'removeDetection' [" + str(detectedEntity.get_class()) + "].  Expected [" + acceptedNodeType + "]"
 		push_error(stringError)
 		return
-		
-	var detectedParentNode = detectedEntity.get_parent()
-	if Intel.has(detectedParentNode):				
+	
+	var intelInfo = _getIntelInfoForNode(detectedEntity.get_parent())
+	if Intel.has(intelInfo):
+		var intelEntry = Intel[intelInfo]
 		if detectorEntity == null or informationLevel == null:
-			Intel.erase(detectedParentNode)
-			changedIntel[detectedParentNode] = InformationLevel.NONE
+			Intel.erase(intelInfo)
+			changedIntel[intelInfo] = InformationLevel.NONE
 		else:
 			var detectorParentNode = detectorEntity.get_parent()
 			
-			if Intel[detectedParentNode].detections.has(detectorParentNode):
-				if Intel[detectedParentNode].detections[detectorParentNode] == informationLevel:
-					Intel[detectedParentNode].detections.erase(detectorParentNode)
+			if intelEntry.detections.has(detectorParentNode):
+				if intelEntry.detections[detectorParentNode] == informationLevel:
+					intelEntry.detections.erase(detectorParentNode)
 					
-					var previousHighesDetection = Intel[detectedParentNode].highestIntelLvl
-					Intel[detectedParentNode].highestIntelLvl = _getHighestIntelligenceForDetection(Intel[detectedParentNode].detections)
+					var previousHighesDetection = intelEntry.highestIntelLvl
+					intelEntry.highestIntelLvl = _getHighestIntelligenceForDetection(intelEntry.detections)
 					
-					if previousHighesDetection > Intel[detectedParentNode].highestIntelLvl:
-						changedIntel[detectedParentNode] = Intel[detectedParentNode].highestIntelLvl
+					if previousHighesDetection > intelEntry.highestIntelLvl:
+						changedIntel[intelInfo] = intelEntry.highestIntelLvl
 				
-			if Intel[detectedParentNode].detections.size() < 1:
-				Intel.erase(detectedParentNode)
+			if intelEntry.detections.size() < 1:
+				Intel.erase(intelInfo)
 			
-func getKnownIntelligence() -> Dictionary:			
+func _getKnownIntelligence() -> Dictionary:
 	return _getHighestIntelligence(Intel)
+	
+func getKnownTrackableIntelligence() -> Dictionary:
+	var res = {}
+	var highestInfo = _getHighestIntelligence(Intel)
+	for info in highestInfo:
+		if info.TrackingNodePath != null:
+			res[get_node(info.TrackingNodePath)] = highestInfo[info]
+	return res
 
 func _getHighestIntelligence(var intelDict : Dictionary) -> Dictionary:
 	var retHighIntel = {}
@@ -129,6 +157,12 @@ func _getHighestIntelligence(var intelDict : Dictionary) -> Dictionary:
 		retHighIntel[entity] = intelDict[entity].highestIntelLvl
 		
 	return  retHighIntel
+	
+func _getIntelInfoForNode(var node : Node):
+	for k in Intel:
+		if k.TrackingNodePath == node.get_path():
+			return k
+	return null
 
 func _getHighestIntelligenceForDetection(var detections : Dictionary) -> int:
 	var highestDetectionLevel = InformationLevel.NONE 
@@ -164,7 +198,7 @@ func _on_DetectionProcessing_GainedDetection(detectedEntity, detectionLevel, det
 
 func _on_DetectionProcessing_ChangedDetection(detectedEntity, detectionLevel, detector):
 	var intelLvl = _convertDetectionLevelToIntelLevel(detectionLevel)
-	changeIntel(detector, intelLvl, detectedEntity)
+	changeIntelFromDetection(detector, intelLvl, detectedEntity)
 
-func _on_DetectionProcessing_LostDetection(detectedEntity, previousDetectionLevel):
+func _on_DetectionProcessing_LostDetection(detectedEntity, _previousDetectionLevel):
 	removeDetection(null, null, detectedEntity)
