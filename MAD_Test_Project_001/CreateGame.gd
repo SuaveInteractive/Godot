@@ -10,6 +10,7 @@ var DebugScriptController = load("res://Script/Debug/DebugMenuScriptController.g
 var DebugCountryController = load("res://Debug/Countries/DebugMenuCountriesController.gd")
 var DebugMenuDetectionState = load("res://Debug/Detection/DebugMenuDetectionState.gd")
 var DebugShowAIStateScript = load("res://Debug/AIState/DebugShowAIState.gd")
+var DebugWorldScreenPositionScript = load("res://Debug/WorldScreenPosition/WorldScreenPosition.gd")
 
 func createGame(gameObject, worldInformation):
 	# world
@@ -36,20 +37,5 @@ func createGame(gameObject, worldInformation):
 	gameObject.connect("ControllingCountryChanged", debugControl, "OnControllingCountryChanged")
 	DebugOverlay.addDebugControl(debugControl)
 	
-	#debugControl = DebugShowAIStateScript.new(AIList)
-#
-#func _CreateCountry(countryInfo):
-#	var country = countryScript.new(countryInfo.CountryName, countryInfo.CountryColor)
-#
-#	""" Create Country Boarders """
-#	var countryBoarder = _CreateCountryBoarders(countryInfo.CountryBoarder)
-#	country.add_child(countryBoarder)
-#
-#	return country
-#
-#func _CreateCountryBoarders(countryBoarderInfo):
-#	var collisionPoly = CollisionPolygon2D.new()
-#	collisionPoly.name = "Boarder"
-#	collisionPoly.polygon = countryBoarderInfo
-#	return collisionPoly
-
+	debugControl = DebugWorldScreenPositionScript.new(gameObject)
+	DebugOverlay.addDebugControl(debugControl)

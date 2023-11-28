@@ -13,8 +13,6 @@ shader_param/maskColour = Color( 1, 0, 1, 1 )
 script = ExtResource( 2 )
 
 [node name="WidgetHBox" type="VBoxContainer" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
 
 [node name="IntelIcon" type="TextureRect" parent="WidgetHBox"]
 material = SubResource( 1 )

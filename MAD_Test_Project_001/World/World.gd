@@ -1,5 +1,8 @@
 extends Node
 
+# Intel
+var unconfirmedIntelScene = load("res://GameEntities/UnconfirmedIntelligence/UnconfirmedIntelligence.tscn")
+
 signal WorldEntitySelected(country, entity)
 
 func _on_World_Model_WorldEntitySelected(country, entity):
@@ -33,7 +36,7 @@ func OnIntelligenceChanged(var changedIntel : Dictionary) -> void:
 	for country in countries.get_children():
 		
 		for intelInfo in changedIntel:
-			if intelInfo.TrackingNodePath != null:
+			if not intelInfo.TrackingNodePath.is_empty():
 				var node = get_node(intelInfo.TrackingNodePath)
 				if country.get_node("Units").get_children().has(node):
 					var intelLevel = changedIntel[intelInfo]
@@ -42,16 +45,11 @@ func OnIntelligenceChanged(var changedIntel : Dictionary) -> void:
 				if country.get_node("Buildings").get_children().has(node):
 					var intelLevel = changedIntel[intelInfo]
 					_setObfuscationLevel(node, intelLevel)
-			
-#		for unit in country.get_node("Units").get_children():
-#			if changedIntel.has(unit):
-#				var intelLevel = changedIntel[unit]
-#				_setObfuscationLevel(unit, intelLevel)
-#
-#		for building in country.get_node("Buildings").get_children():
-#			if changedIntel.has(building):
-#				var intelLevel = changedIntel[building]
-#				_setObfuscationLevel(building, intelLevel)
+			else:
+				var unconfirmedIntelInstance= unconfirmedIntelScene.instance()
+				unconfirmedIntelInstance.set_name("Intel")
+				unconfirmedIntelInstance.position = intelInfo.Position
+				country.acceptedIntel(unconfirmedIntelInstance)
 					
 func _setObfuscationLevel(entity, intelLevel) -> void:
 	match intelLevel:

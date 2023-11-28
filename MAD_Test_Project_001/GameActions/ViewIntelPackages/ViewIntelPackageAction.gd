@@ -4,6 +4,9 @@ var ControllingCountry = null
 var CountryIntelligence = null
 var WorldController : Node = null
 
+var IntelInfoRes = load("res://ResourceDefinition/Intelligence/IntelligenceInformation.gd")
+var TestIntelligenceScript = preload("res://GameLogic/Country/Intelligence/Intelligence.gd")
+
 var viewIntelPackageUIScene = preload("res://GameActions/ViewIntelPackages/UI/ViewIntelPackagesUI.tscn")
 var proposedIntelWidgetScene = preload("res://GameActions/ViewIntelPackages/UI/ProposedIntelWidget.tscn")
 
@@ -35,7 +38,6 @@ func _addIntelWidget(var intel : Node):
 	widgetInstance.connect("RejectIntel", self, "OnRejectIntel")
 	
 	widgetInstance.setIntel(intel)
-	widgetInstance.set_position(Vector2(300, 300))
 	add_child(widgetInstance)
 
 func getUIOverlay() -> Object:
@@ -52,8 +54,12 @@ func OnPackageSelected(var packageName):
 		if package.PackageName == packageName:
 			_showPackageIntel(package)
 
-func OnAcceptIntel():
-	CountryIntelligence.addIntel()
+func OnAcceptIntel(intelPosition):
+	var intelInfo = IntelInfoRes.new()
+	
+	intelInfo.Position = intelPosition
+	
+	CountryIntelligence.addIntel(intelInfo, TestIntelligenceScript.InformationLevel.LOW, null)
 	
 func OnRejectIntel():
 	pass

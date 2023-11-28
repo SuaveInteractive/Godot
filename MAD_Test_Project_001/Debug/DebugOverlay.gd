@@ -28,10 +28,3 @@ func _process(_delta):
 func addDebugControl(control):
 	VBox.add_child(control.getGUIControl())
 	call_deferred("add_child", control)
-
-""" Add and remove Properties from the debug Menu """
-func add_property(_object, _property, _display):
-	pass
-
-func remove_property(_object, _property):
-	pass

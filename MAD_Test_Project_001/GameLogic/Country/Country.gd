@@ -1,8 +1,8 @@
 extends Node
 class_name Country
 
-# Buildings
-var BuildingFactory = null
+# Structures
+var StructureFactory = null
 
 # Units
 var submarineScene = load("res://GameEntities/Unit/Submarine/Submarine.tscn")
@@ -37,8 +37,9 @@ var IntelligencePackages : Array = [] setget , getIntelligencePackages
 var ReceivedIntelligencePackages : Array = [] setget , getReceivedIntelligencePackages
 
 func _init():
-	BuildingFactory = load("res://GameEntities/Structure/StructureFactory.gd").new()
-	add_child(BuildingFactory)
+	StructureFactory = load("res://GameEntities/Structure/StructureFactory.gd").new()
+	StructureFactory.name = "StructureFactory"
+	add_child(StructureFactory)
 
 func initialize(name, color, boarder):
 	self.set_name(name) 
@@ -123,7 +124,7 @@ func getIntelligenceInterface():
 	Buildings
 """
 func addBuilding(type, pos):
-	var buildingInstance = BuildingFactory.getBuildingInstance(type)
+	var buildingInstance = StructureFactory.getBuildingInstance(type)
 	
 	buildingInstance.position = pos
 	buildingInstance.z_index = 1
@@ -182,6 +183,13 @@ func addMissile(source, target) -> void:
 	
 	$Missiles.add_child(missileInstance)
 	
+"""
+	Weapons
+"""	
+func acceptedIntel(var node : Node) -> void:
+	node.z_index = 1
+	$Intelligence.add_child(node)
+
 """
 	Misc
 """
