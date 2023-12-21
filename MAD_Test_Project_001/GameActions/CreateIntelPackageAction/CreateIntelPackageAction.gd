@@ -3,6 +3,7 @@ extends "res://GameActions/GameAction.gd"
 var ControllingCountry = null
 var CountryIntelligence = null
 var WorldController : Node = null
+var CameraToUse : Camera2D = null
 
 var intelWidgetScene = preload("res://GameActions/CreateIntelPackageAction/IntelligenceWidget.tscn")
 var createIntelPackageUIScene = preload("res://GameActions/CreateIntelPackageAction/CreateIntelligencePackageUI.tscn")
@@ -15,6 +16,7 @@ func _ready():
 func _init(var parameters):
 	ControllingCountry = parameters.ControllingCountry
 	WorldController = parameters.WorldController
+	CameraToUse = parameters.Camera
 	
 	CountryIntelligence = ControllingCountry.getIntelligenceInterface()
 	
@@ -43,6 +45,7 @@ func getUIOverlay() -> Object:
 		uiSceneInstance.connect("CreatePacked", self, "OnCreatePacked")
 		uiSceneInstance.connect("PackageSelected", self, "OnPackageSelected")
 		uiSceneInstance.connect("PackageSend", self, "OnSendPackage")
+		uiSceneInstance.connect("IntelAdded", self, "OnIntelAdded")
 	return uiSceneInstance
 	
 """
@@ -82,3 +85,12 @@ func OnPackageSelected(var packageName):
 		for child in get_children():
 			if intel == child.getFocus():
 				child.setSelected(true)
+				
+func OnIntelAdded(screenPos):
+	var worldPos = _ScreenToWorld(screenPos)
+	
+func _ScreenToWorld(screenPos):
+	var screen_size = OS.get_window_size()
+	#var camera = CameraToUse.get_camera()
+	var viewport_rect = Rect2(0, 0, screen_size.x, screen_size.y)
+	return CameraToUse.project_position(screenPos)

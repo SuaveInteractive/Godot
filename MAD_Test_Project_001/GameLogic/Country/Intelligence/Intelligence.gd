@@ -146,7 +146,7 @@ func getKnownTrackableIntelligence() -> Dictionary:
 	var res = {}
 	var highestInfo = _getHighestIntelligence(Intel)
 	for info in highestInfo:
-		if info.TrackingNodePath != null:
+		if info.TrackingNodePath.is_empty() == false:
 			res[get_node(info.TrackingNodePath)] = highestInfo[info]
 	return res
 

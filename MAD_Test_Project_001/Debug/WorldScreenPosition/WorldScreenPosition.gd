@@ -15,8 +15,6 @@ func _ready():
 	
 func _process(_delta):
 	if worldScreenPositionUIInstance:
-		#worldScreenPositionUIInstance.setWorldPosition(get_viewport().get_mouse_position())
-		#var viewport = viewportContainer.get_child(0)
 		worldScreenPositionUIInstance.setWorldPosition(canvasObject.get_local_mouse_position())
 
 func getGUIControl():

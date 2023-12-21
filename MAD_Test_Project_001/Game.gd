@@ -148,6 +148,7 @@ func _on_CreateIntelligencePackageBtn_toggled(button_pressed):
 	if button_pressed:
 		var actionInfo = {"ActionName": "CreateIntelPackageAction"}	
 		actionInfo["ControllingCountry"] = ControllingCountry
+		actionInfo["Camera"] = $WorldCamera
 		actionInfo.WorldController = WorldController
 		$GameActions.startAction(actionInfo)
 	else:
