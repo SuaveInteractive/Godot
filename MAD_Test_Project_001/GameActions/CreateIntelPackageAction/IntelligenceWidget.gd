@@ -14,6 +14,10 @@ func _process(_delta):
 func setFocus(var focusNode : Node2D):
 	FocusedNode = focusNode
 	
+	if FocusedNode is Sprite:
+		$IntelTexture.texture = FocusedNode.texture
+		set_size($IntelTexture.texture.get_size())
+	
 func getFocus() -> Node:
 	return FocusedNode
 	

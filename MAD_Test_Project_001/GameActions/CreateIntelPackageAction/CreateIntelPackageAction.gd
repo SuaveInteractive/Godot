@@ -86,11 +86,16 @@ func OnPackageSelected(var packageName):
 			if intel == child.getFocus():
 				child.setSelected(true)
 				
-func OnIntelAdded(screenPos):
+func OnIntelAdded(screenPos : Vector2, previewTexture : Texture):
 	var worldPos = _ScreenToWorld(screenPos)
 	
+	var sprite : Sprite = Sprite.new()
+	sprite.texture = previewTexture.duplicate()
+	sprite.position = worldPos
+	
+	_addIntelWidget(sprite, 4)
+	
 func _ScreenToWorld(screenPos):
-	var screen_size = OS.get_window_size()
-	#var camera = CameraToUse.get_camera()
-	var viewport_rect = Rect2(0, 0, screen_size.x, screen_size.y)
-	return CameraToUse.project_position(screenPos)
+	var tranform = CameraToUse.get_viewport().canvas_transform.affine_inverse()
+	var worldPos = tranform * screenPos
+	return worldPos

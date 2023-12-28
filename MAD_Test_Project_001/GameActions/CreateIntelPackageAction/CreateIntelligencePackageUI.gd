@@ -4,7 +4,7 @@ signal CreatePacked(packageName)
 signal PackageSelected(packageName)
 signal PackageSend(packageName, sendToCountry)
 
-signal IntelAdded(screenPosition)
+signal IntelAdded(screenPosition, previewTexture)
 
 func _ready():
 	$EnterPackageNameDialog.get_ok().disabled = true
@@ -44,8 +44,8 @@ func _on_SharePackageButton_pressed():
 func _on_ItemList_item_selected(index):
 	pass # Replace with function body.
 
-func _on_DragController_IntelAdded(screenPos, type):
-	emit_signal("IntelAdded", screenPos)
+func _on_DragController_IntelAdded(screenPos, previewTexture):
+	emit_signal("IntelAdded", screenPos, previewTexture)
 	
 #https://duckduckgo.com/?q=godot+how+to+drag+items+inventory&t=braveed&iax=videos&ia=videos&iai=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdZYlwmBCziM
 

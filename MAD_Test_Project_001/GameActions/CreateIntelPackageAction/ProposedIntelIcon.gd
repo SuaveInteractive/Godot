@@ -14,7 +14,7 @@ func get_drag_data(position):
 	textureRec.texture = texture
 	set_drag_preview(textureRec)
 
-	var dragData = {}
+	var dragData = {"Texture": texture}
 	return dragData
 
 func _handleData(var data):
