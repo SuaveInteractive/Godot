@@ -28,11 +28,12 @@ func _setupIntelligence(var country : Node, var intelligence : Dictionary):
 	for entity in intelligence:
 		if not country.isOwned(entity):
 			var intelLevel = intelligence[entity]
-			_addIntelWidget(entity, intelLevel)
+			_addIntelWidget(entity, {}, intelLevel)
 			
-func _addIntelWidget(var entity : Node, var _intelLevel : int):
+func _addIntelWidget(var entity : Node, data : Dictionary, var _intelLevel : int):
 	var widgetInstance : Node = intelWidgetScene.instance()
 	widgetInstance.setFocus(entity)
+	widgetInstance.setData(data)
 	add_child(widgetInstance)
 	
 func _populateExistingPackages(var intelPackagesArray : Array) -> void:
@@ -56,8 +57,10 @@ func OnCreatePacked(var packageName):
 	
 	for childWidget in get_children():
 		if childWidget.isSelected():
-			var nodeForIntel : Node = childWidget.getFocus()
-			collectedIntel.push_back(nodeForIntel)
+			var dataForIntel : Dictionary = childWidget.getData()
+			#dataForIntel["WorldPos"] = childWidget.get_position()
+			
+			collectedIntel.push_back(dataForIntel)
 			
 	if collectedIntel.size() > 0:
 		getUIOverlay().addItem(packageName) # Probably should be done via a signal
@@ -82,18 +85,24 @@ func OnPackageSelected(var packageName):
 		child.setSelected(false)
 		
 	for intel in package.IntelligenceForEntities:
-		for child in get_children():
-			if intel == child.getFocus():
-				child.setSelected(true)
+		if intel.has("FocusNode"):
+			for child in get_children():
+				if intel["FocusNode"] == child.getFocus():
+					child.setSelected(true)
+#		else:
+#			var sprite : Sprite = Sprite.new()
+#			sprite.texture = intel["PreviewTexture"]
+#			sprite.position = intel["WorldPos"]
+#			_addIntelWidget(sprite, data, 4)
 				
-func OnIntelAdded(screenPos : Vector2, previewTexture : Texture):
+func OnIntelAdded(screenPos: Vector2, previewTexture: Texture, data: Dictionary):
 	var worldPos = _ScreenToWorld(screenPos)
 	
 	var sprite : Sprite = Sprite.new()
 	sprite.texture = previewTexture.duplicate()
 	sprite.position = worldPos
 	
-	_addIntelWidget(sprite, 4)
+	_addIntelWidget(sprite, data, 4)
 	
 func _ScreenToWorld(screenPos):
 	var tranform = CameraToUse.get_viewport().canvas_transform.affine_inverse()

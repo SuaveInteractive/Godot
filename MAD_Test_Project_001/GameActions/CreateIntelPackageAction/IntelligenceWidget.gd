@@ -4,6 +4,7 @@ export var UnselectedColor : Color = Color.red
 export var SelectedColor : Color = Color.green
 
 var FocusedNode : Node = null setget setFocus, getFocus
+var Data : Dictionary = {} setget setData, getData
 
 func _ready():
 	pass
@@ -17,9 +18,24 @@ func setFocus(var focusNode : Node2D):
 	if FocusedNode is Sprite:
 		$IntelTexture.texture = FocusedNode.texture
 		set_size($IntelTexture.texture.get_size())
+		
+		Data["WorldPos"] = get_position()
+		Data["Size"] = get_size()
+		Data["Texture"] = FocusedNode.texture
+	else:
+		Data["FocusNode"] = FocusedNode
 	
 func getFocus() -> Node:
-	return FocusedNode
+	if FocusedNode is Sprite:
+		return $IntelTexture.texture
+	else:
+		return FocusedNode
+	
+func setData(data: Dictionary) -> void:
+	Data.merge(data, true)
+	
+func getData() -> Dictionary:
+	return Data
 	
 func isSelected() -> bool:
 	return $HBoxContainer/AddRemove.text == "Remove"

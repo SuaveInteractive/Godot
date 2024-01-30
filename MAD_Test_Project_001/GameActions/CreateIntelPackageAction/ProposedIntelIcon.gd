@@ -2,7 +2,7 @@ extends TextureRect
 
 signal DragStart()
 
-func get_drag_data(position):
+func get_drag_data(_position):
 	emit_signal("DragStart")
 	
 	var textureRec = TextureRect.new()
