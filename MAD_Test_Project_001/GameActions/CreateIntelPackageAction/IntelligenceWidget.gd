@@ -19,17 +19,13 @@ func setFocus(var focusNode : Node2D):
 		$IntelTexture.texture = FocusedNode.texture
 		set_size($IntelTexture.texture.get_size())
 		
-		Data["WorldPos"] = get_position()
 		Data["Size"] = get_size()
-		Data["Texture"] = FocusedNode.texture
+		Data["Type"] = "Radar"
 	else:
 		Data["FocusNode"] = FocusedNode
 	
 func getFocus() -> Node:
-	if FocusedNode is Sprite:
-		return $IntelTexture.texture
-	else:
-		return FocusedNode
+	return FocusedNode
 	
 func setData(data: Dictionary) -> void:
 	Data.merge(data, true)
@@ -51,6 +47,8 @@ func _updateFocusPosition() -> void:
 		set_position(rect.position - rect_size / 2) 
 	else:
 		set_position(FocusedNode.position)
+		
+	Data["WorldPos"] = get_position()
 
 """
 	Callbacks

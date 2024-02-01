@@ -31,13 +31,17 @@ func _showPackageIntel(var package : Resource):
 	for intel in package.IntelligenceForEntities:
 		_addIntelWidget(intel)
 
-func _addIntelWidget(var intel : Node):
+func _addIntelWidget(var intel):
 	var widgetInstance : Node = proposedIntelWidgetScene.instance()
 	
 	widgetInstance.connect("AcceptIntel", self, "OnAcceptIntel")
 	widgetInstance.connect("RejectIntel", self, "OnRejectIntel")
 	
-	widgetInstance.setIntel(intel)
+	if intel is Node:
+		widgetInstance.setIntel(intel)
+	else:
+		widgetInstance.setData(intel)
+		
 	add_child(widgetInstance)
 
 func getUIOverlay() -> Object:

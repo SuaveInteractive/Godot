@@ -59,6 +59,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Script/GameScript.gd"
 }, {
+"base": "Reference",
+"class": "GutHookScript",
+"language": "GDScript",
+"path": "res://addons/gut/hook_script.gd"
+}, {
+"base": "Node",
+"class": "GutTest",
+"language": "GDScript",
+"path": "res://addons/gut/test.gd"
+}, {
 "base": "Resource",
 "class": "IntelligenceInformation",
 "language": "GDScript",
@@ -115,6 +125,8 @@ _global_script_class_icons={
 "DetectNode": "",
 "DetectionAreaResourceDef": "",
 "GameScript": "",
+"GutHookScript": "",
+"GutTest": "",
 "IntelligenceInformation": "",
 "IntelligencePackageResourceDef": "",
 "Matrix": "",

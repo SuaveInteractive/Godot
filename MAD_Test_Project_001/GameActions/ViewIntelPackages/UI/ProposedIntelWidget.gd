@@ -13,6 +13,15 @@ func setIntel(var intel):
 	var offsetPos : Vector2 = Vector2(intel.position.x - (size.x / 2), intel.position.y - (size.y / 2))
 	set_position(offsetPos)
 	
+func setData(var data : Dictionary):
+	var size : Vector2 = data["Size"]
+	var position : Vector2 = data["WorldPos"]
+	
+	var offsetPos : Vector2 = Vector2(position.x - (size.x / 2), position.y - (size.y / 2))
+	set_position(offsetPos)
+	
+	$WidgetHBox/IntelIcon.texture = load("res://GameActions/ViewIntelPackages/UI/Icons/RadarIcon.png")
+	
 """
 	Callbacks
 """

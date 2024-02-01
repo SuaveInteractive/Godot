@@ -109,10 +109,20 @@ func _processObject(object):
 	elif object is Resource:
 		ret = {}
 		var propertyList : Array = object.get_property_list ()
-		for property in propertyList:
-			if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
-				var newArg = _processArgument(property.type, object.get(property.name))
-				ret[property.name] = newArg
+		
+		if object is StreamTexture:
+			for property in propertyList:
+				var propertyValue = object.get(property.name)
+				if property.name == "load_path":
+					var newArg = _processArgument(property.type, object.get(property.name))
+					ret[object] = newArg
+		else:	
+			for property in propertyList:
+				if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+					var newArg = _processArgument(property.type, object.get(property.name))
+					ret[property.name] = newArg
+				
+		# https://docs.godotengine.org/en/3.5/classes/class_%40globalscope.html#enum-globalscope-propertyusageflags
 	else:
 		var stringError : String = "[ScriptRecorder]: _processObject not given an Node."
 		push_error(stringError)

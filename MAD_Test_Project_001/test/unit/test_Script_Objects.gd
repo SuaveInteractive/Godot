@@ -54,8 +54,8 @@ func test_non_gdscript_object() -> void:
 	var processedObj = ScriptRecorder._processObject(newObj)
 	assert_null(processedObj)
 
-"Test that Resource Types can be written to scripts"
-func test_Resource_Object_001() -> void:
+"Resource Types can be written to scripts"
+func test_Record_Resource_Object_001() -> void:
 	var testString = "WWWWW"
 	
 	var testResource : Resource = TestResource_001.new()
@@ -65,3 +65,22 @@ func test_Resource_Object_001() -> void:
 	
 	assert_eq(processedResource["TestData_001"], testString)
 	assert_eq(processedResource["TestData_002"], null)
+
+"StreamTextures can be written out to script"
+func test_Record_Resource_Object_002() -> void:
+	var sprite : Sprite = Sprite.new()
+	sprite.texture = load("res://test/unit/data/TestIcon.png")
+	add_child_autofree(sprite)
+	
+	var processedResource = ScriptRecorder._processObject(sprite)
+	
+	assert_ne_shallow(processedResource, {})
+
+func test_Run_Resource_Object_002() -> void:
+	ScriptRunner = autofree(ScriptRunnerClass.new())
+	add_child_autofree(ScriptRunner)	
+	
+	var sprite : Sprite = Sprite.new()
+	add_child_autofree(sprite)
+	
+	var node = ScriptRunner._processArgument({sprite:"res://.import/TestIcon.png-92dc32901333d905c153299f14414065.stex"})

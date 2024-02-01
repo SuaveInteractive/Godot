@@ -28,12 +28,13 @@ func _setupIntelligence(var country : Node, var intelligence : Dictionary):
 	for entity in intelligence:
 		if not country.isOwned(entity):
 			var intelLevel = intelligence[entity]
-			_addIntelWidget(entity, {}, intelLevel)
+			_addIntelWidget(entity, {}, intelLevel, false)
 			
-func _addIntelWidget(var entity : Node, data : Dictionary, var _intelLevel : int):
+func _addIntelWidget(var entity : Node, data : Dictionary, var _intelLevel : int, selected : bool = false):
 	var widgetInstance : Node = intelWidgetScene.instance()
 	widgetInstance.setFocus(entity)
 	widgetInstance.setData(data)
+	widgetInstance.setSelected(selected)		
 	add_child(widgetInstance)
 	
 func _populateExistingPackages(var intelPackagesArray : Array) -> void:
@@ -57,9 +58,7 @@ func OnCreatePacked(var packageName):
 	
 	for childWidget in get_children():
 		if childWidget.isSelected():
-			var dataForIntel : Dictionary = childWidget.getData()
-			#dataForIntel["WorldPos"] = childWidget.get_position()
-			
+			var  dataForIntel : Dictionary = childWidget.getData()		
 			collectedIntel.push_back(dataForIntel)
 			
 	if collectedIntel.size() > 0:
@@ -88,12 +87,17 @@ func OnPackageSelected(var packageName):
 		if intel.has("FocusNode"):
 			for child in get_children():
 				if intel["FocusNode"] == child.getFocus():
-					child.setSelected(true)
-#		else:
-#			var sprite : Sprite = Sprite.new()
-#			sprite.texture = intel["PreviewTexture"]
-#			sprite.position = intel["WorldPos"]
-#			_addIntelWidget(sprite, data, 4)
+					child.setSelected(true)		
+		elif intel.has("Type"):
+			var worldPos = intel["WorldPos"]
+			
+			var sprite : Sprite = Sprite.new()
+			sprite.texture = load("res://GameActions/ViewIntelPackages/UI/Icons/RadarIcon.png")
+			sprite.position = worldPos
+			
+			_addIntelWidget(sprite, intel, 4, true)
+		else:
+			push_error('Intel Type Not Supported')
 				
 func OnIntelAdded(screenPos: Vector2, previewTexture: Texture, data: Dictionary):
 	var worldPos = _ScreenToWorld(screenPos)
